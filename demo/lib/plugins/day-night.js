@@ -31,31 +31,26 @@ ig.module(
         geo_coord: {latitude: 40.7789, longitude: 73.9675},
 
         solar: {
-            dusk   : {hour:  0, minute: 0, duration:  0},
+            //dusk   : {hour:  0, minute: 0, duration:  0},
             sunrise: {hour:  6, minute: 0, duration: 60},
             noon   : {hour: 12, minute: 0, duration:  0},
             sunset : {hour: 18, minute: 0, duration: 60}
         },
 
+        //---------------------------------------------------------------------
+        // Init
         init: function(date, timescale, update_rate) {
             this.setDateTime(date);
             this.timescale = timescale;
             this.update_rate = new ig.Timer(update_rate);
 
-            console.log(
-                this.convertJulianToGregorian(
-                    this.convertGregorianToJulian(
-                        this.gregorianDate.year,
-                        this.gregorianDate.month,
-                        this.gregorianDate.day,
-                        this.gregorianDate.hour,
-                        this.gregorianDate.minute,
-                        this.gregorianDate.second
-                    )
-                )
-            );
+            console.log('Current     : ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+
+            this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
         },
 
+        //---------------------------------------------------------------------
+        // Update
         update: function() {
             this.parent();
 
@@ -64,23 +59,10 @@ ig.module(
                 this.update_rate.reset();
 
                 this.updateDateTime(this.gregorianDate, this.timescale);
-
-                console.log(
-                    this.convertJulianToGregorian(
-                        this.convertGregorianToJulian(
-                            this.gregorianDate.year,
-                            this.gregorianDate.month,
-                            this.gregorianDate.day,
-                            this.gregorianDate.hour,
-                            this.gregorianDate.minute,
-                            this.gregorianDate.second
-                        )
-                    )
-                );
             }
         },
 
-        // Update stored date and time
+        // Set/Store date and time
         setDateTime: function(date) {
             this.gregorianDate = {
                 year: date.getFullYear(),
@@ -90,6 +72,18 @@ ig.module(
                 minute: date.getMinutes(),
                 second: date.getSeconds()
             };
+        },
+
+        // Get stored date and time
+        getDateTime: function() {
+            return new Date(
+                this.gregorianDate.year,
+                this.gregorianDate.month,
+                this.gregorianDate.day,
+                this.gregorianDate.hour,
+                this.gregorianDate.mintute,
+                this.gregorianDate.second
+            );
         },
 
         // Update stored date and time
@@ -105,8 +99,8 @@ ig.module(
         },
 
         // Convert Gregorian Date to Chronological Julian Day Number
-        // http://aa.quae.nl/en/reken/juliaansedag.html#3_1
-        // http://calendars.wikia.com/wiki/Julian_day_number#Calculation
+        //   http://aa.quae.nl/en/reken/juliaansedag.html#3_1
+        //   http://calendars.wikia.com/wiki/Julian_day_number#Calculation
         convertGregorianToJulian: function(gYear, gMonth, gDay, gHour, gMinute, gSecond) {
             var a = Math.floor((gMonth - 3) / 12),
                 b = gYear + a,
@@ -121,13 +115,13 @@ ig.module(
                     gMinute / 1440 +
                     gSecond / 86400;
 
-            console.log('Julian: ' + J);
+            //console.log('Julian: ' + J);
             return J;
         },
 
         // Convert Chronological Julian Day Number to Gregorian Date
-        // http://aa.quae.nl/en/reken/juliaansedag.html#3_2
-        // http://calendars.wikia.com/wiki/Julian_day_number
+        //   http://aa.quae.nl/en/reken/juliaansedag.html#3_2
+        //   http://calendars.wikia.com/wiki/Julian_day_number
         convertJulianToGregorian: function(jDate) {
             var f = 4 * (jDate - 1721120) + 3,
                 g = Math.floor(f / 146097),
@@ -144,8 +138,54 @@ ig.module(
                 N = Math.floor((t % 0.0416666666666667) / 0.0006944444444444),
                 S = Math.floor((t % 0.00002893518518528336) / 0.00001157407407407407);
 
-            console.log('Gregorian: ' + Y + '-' + M + '-' + D + ' ' + H + ':' + N + ':' + S);
-            return {year: Y, month: M, day: D};
+            //console.log('Gregorian: ' + Y + '-' + M + '-' + D + ' ' + H + ':' + N + ':' + S);
+            return new Date(Y, M - 1, D, H, N, S);
+            //return {year: Y, month: M, day: D, hour: H, minute: N, second: S};
+        },
+
+        // Computes the sunrise and sunset for the specified date
+        //   http://users.electromagnetic.net/bu/astro/sunrise-set.php
+        //   http://aa.quae.nl/en/reken/zonpositie.html
+        computeSunriset: function(jDate, geoCoords) {
+            var julianCycle        = Math.round((jDate - 2451545 - 0.0009) - (geoCoords.longitude / 360)),
+                solar_noon         = 2451545 + 0.0009 + (geoCoords.longitude / 360) + julianCycle,
+                solar_mean_anomaly = (357.5291 + 0.98560028 * (solar_noon - 2451545)) % 360,
+                equation_of_center = (1.9148 * Math.sin(this.toRadians(solar_mean_anomaly))) +
+                                     (0.0200 * Math.sin(this.toRadians(2 * solar_mean_anomaly))) +
+                                     (0.0003 * Math.sin(this.toRadians(3 * solar_mean_anomaly))),
+                ecliptic_longitude = (solar_mean_anomaly + 102.9372 + equation_of_center + 180) % 360,
+                solar_transit      = solar_noon +
+                                     (0.0053 * Math.sin(this.toRadians(solar_mean_anomaly))) -
+                                     (0.0069 * Math.sin(this.toRadians(2 * ecliptic_longitude))),
+                declination_of_sun = this.toDegrees(
+                                         Math.asin(
+                                             Math.sin(this.toRadians(ecliptic_longitude)) *
+                                             Math.sin(this.toRadians(23.45))
+                                         )
+                                     ),
+                hour_angle         = this.toDegrees(
+                                         Math.acos(
+                                             (Math.sin(this.toRadians(-0.83)) - Math.sin(this.toRadians(geoCoords.latitude)) * Math.sin(this.toRadians(declination_of_sun))) /
+                                             (Math.cos(this.toRadians(geoCoords.latitude)) * Math.cos(this.toRadians(declination_of_sun)))
+                                         )
+                                     ),
+                julian_hour_angle  = 2451545 + 0.0009 + ((hour_angle + geoCoords.longitude) / 360) + julianCycle,
+                sunset             = julian_hour_angle +
+                                     (0.0053 * Math.sin(this.toRadians(solar_mean_anomaly))) -
+                                     (0.0069 * Math.sin(this.toRadians(2 * ecliptic_longitude))) - 0.625,
+                sunrise            = solar_transit - (sunset - solar_transit) - 0.25;
+
+            var rise = this.convertJulianToGregorian(sunrise),
+                noon = this.convertJulianToGregorian(solar_noon),
+                set  = this.convertJulianToGregorian(sunset);
+
+            console.log('Next sunrise: ' + rise.toString());
+            console.log('Next noon   : ' + noon.toString());
+            console.log('Next sunset : ' + set.toString());
+
+            this.solar.sunrise = {hour: rise.getHours(), minute: rise.getMinutes(), duration: 60};
+            this.solar.noon    = {hour: noon.getHours(), minute: noon.getMinutes(), duration: 60};
+            this.solar.sunset  = {hour: set.getHours(),  minute: set.getMinutes(),  duration: 60};
         },
 
         // Convert degrees to radians
