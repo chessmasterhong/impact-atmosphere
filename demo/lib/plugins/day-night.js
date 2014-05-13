@@ -47,7 +47,10 @@ ig.module(
                     this.convertGregorianToJulian(
                         this.gregorianDate.year,
                         this.gregorianDate.month,
-                        this.gregorianDate.day
+                        this.gregorianDate.day,
+                        this.gregorianDate.hour,
+                        this.gregorianDate.minute,
+                        this.gregorianDate.second
                     )
                 )
             );
@@ -67,7 +70,10 @@ ig.module(
                         this.convertGregorianToJulian(
                             this.gregorianDate.year,
                             this.gregorianDate.month,
-                            this.gregorianDate.day
+                            this.gregorianDate.day,
+                            this.gregorianDate.hour,
+                            this.gregorianDate.minute,
+                            this.gregorianDate.second
                         )
                     )
                 );
@@ -98,22 +104,30 @@ ig.module(
             };
         },
 
-        // Gregorian Date to Chronological Julian Day Number
+        // Convert Gregorian Date to Chronological Julian Day Number
         // http://aa.quae.nl/en/reken/juliaansedag.html#3_1
-        convertGregorianToJulian: function(gYear, gMonth, gDay) {
+        // http://calendars.wikia.com/wiki/Julian_day_number#Calculation
+        convertGregorianToJulian: function(gYear, gMonth, gDay, gHour, gMinute, gSecond) {
             var a = Math.floor((gMonth - 3) / 12),
                 b = gYear + a,
                 c = Math.floor(b / 100),
                 d = b % 100,
                 e = gMonth - 12 * a - 3,
-                J = Math.floor(146097 * c / 4) + Math.floor(36525 * d / 100) + Math.floor((153 * e + 2) / 5) + gDay + 1721119;
+                J = Math.floor(146097 * c / 4) +
+                    Math.floor(36525 * d / 100) +
+                    Math.floor((153 * e + 2) / 5) +
+                    gDay + 1721119 +
+                    (gHour - 12) / 24 +
+                    gMinute / 1440 +
+                    gSecond / 86400;
 
             console.log('Julian: ' + J);
             return J;
         },
 
-        // Chronological Julian Day Number to Gregorian Date
+        // Convert Chronological Julian Day Number to Gregorian Date
         // http://aa.quae.nl/en/reken/juliaansedag.html#3_2
+        // http://calendars.wikia.com/wiki/Julian_day_number
         convertJulianToGregorian: function(jDate) {
             var f = 4 * (jDate - 1721120) + 3,
                 g = Math.floor(f / 146097),
@@ -122,11 +136,15 @@ ig.module(
                 j = 5 * Math.floor((h % 36525) / 100) + 2,
                 k = Math.floor(j / 153),
                 l = Math.floor((k + 2) / 12),
+                t = jDate % 1,
                 Y = 100 * g + i + l,
                 M = k - 12 * l + 3,
-                D = Math.floor((j % 153) / 5) + 1;
+                D = Math.floor((j % 153) / 5) + 1,
+                H = Math.floor(t / 0.0416666666666667),
+                N = Math.floor((t % 0.0416666666666667) / 0.0006944444444444),
+                S = Math.floor((t % 0.00002893518518528336) / 0.00001157407407407407);
 
-            console.log('Gregorian: ' + Y + '-' + M + '-' + D);
+            console.log('Gregorian: ' + Y + '-' + M + '-' + D + ' ' + H + ':' + N + ':' + S);
             return {year: Y, month: M, day: D};
         },
 
