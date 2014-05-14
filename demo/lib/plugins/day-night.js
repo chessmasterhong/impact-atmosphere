@@ -40,9 +40,9 @@ ig.module(
         //   Latitude : North = positive, South = negative
         //   Longitude: East  = positive, West  = negative
         //   http://ozoneaq.gsfc.nasa.gov/latlon.md
-        geo_coord: {latitude: 0.7789, longitude: -73.9675},
+        geo_coord: {latitude: 40.7789, longitude: -73.9675},
 
-        solar_next_update: 0,
+        sunriset_next_update: 0,
         solar: {
             //dusk   : {hour:  0, minute: 0, duration:  0},
             sunrise: {date: 0, duration: 60},
@@ -105,7 +105,7 @@ ig.module(
             this.updateTimer = new ig.Timer(this.update_rate);
             this.timescale = timescale;
 
-            console.log('----- Impact Day/Night Cycle Plugin initialized -----');
+            console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
             console.log('Update rate: ' + update_rate + ' seconds');
             console.log('Timescale: ' + this.timescale + 'x real time');
             console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
@@ -146,7 +146,7 @@ ig.module(
                     this.gregorianDate.second
                 );
 
-            if(jDate_curr >= this.solar_next_update) {
+            if(jDate_curr >= this.sunriset_next_update) {
                 console.log('----- Time to recompute sunriset -----');
                 console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
                 this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
@@ -167,7 +167,7 @@ ig.module(
             } else {
                 // Sun is down, handle new day hour wraparound
                 // (0.0006944444444444 = 1 JD / 1440 mins -> mins to JD)
-                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar_next_update)) {
+                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
                     // Sun has set
                     //console.log('Sun has set');
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -294,8 +294,8 @@ ig.module(
             console.log('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString());
             console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
 
-            this.solar_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
-            console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar_next_update).toString());
+            this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
+            console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString());
 
         }, // End computeSunriset
 

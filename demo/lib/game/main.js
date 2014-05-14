@@ -15,8 +15,9 @@ ig.module(
 .defines(function() {
     var MainGame = ig.Game.extend({
         init: function() {
-            // Initialize Day/Night Cycle Plugin, set date to today, update every 60 seconds
-            this.daynight = new ig.DayNight(new Date, 60);
+            // Initialize Day/Night Cycle Plugin
+            // Start from current date and time, updating every 0.5 seconds, running at 600x real time
+            this.daynight = new ig.DayNight(new Date, 0.5, 600);
 
             this.loadLevel(LevelDemo);
         },
