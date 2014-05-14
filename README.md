@@ -21,6 +21,11 @@ TODO
 TODO
 
 
+## Disclaimer
+
+I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. It's original purpose and intent was to *roughly* simulate a realistic system for a potential game. As a result, I do not encourage using this plugin for sensitive projects or research.
+
+
 ## Credits
 
 ### Based on
@@ -30,7 +35,4 @@ TODO
 * [http://aa.usno.navy.mil/data/docs/JulianDate.php](http://aa.usno.navy.mil/data/docs/JulianDate.php)
 * [http://calendars.wikia.com/wiki/Julian_day_number](http://calendars.wikia.com/wiki/Julian_day_number)
 * [http://users.electromagnetic.net/bu/astro/sunrise-set.php](http://users.electromagnetic.net/bu/astro/sunrise-set.php)
-
-
-
 
