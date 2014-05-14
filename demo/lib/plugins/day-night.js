@@ -28,106 +28,159 @@ ig.module(
     "use strict";
 
     ig.DayNight = ig.Game.extend({
-        // Time speed multiplier (1 = real time, 2 = 2x real time, 0.5 = 0.5x real time, etc.)
+        // Time speed multiplier
+        //   1 = real time (default), 2 = 2x real time, 0.5 = 0.5x real time, etc.
         timescale: 1,
 
         // Real time in seconds before auto-updating and recalculating time
+        //   Default: 60 (seconds)
         update_rate: 60,
 
         // Geographical coordinate system
-        geo_coord: {latitude: 40.7789, longitude: 73.9675},
+        //   Latitude : North = positive, South = negative
+        //   Longitude: East  = positive, West  = negative
+        //   http://ozoneaq.gsfc.nasa.gov/latlon.md
+        geo_coord: {latitude: 0.7789, longitude: -73.9675},
 
+        solar_next_update: 0,
         solar: {
             //dusk   : {hour:  0, minute: 0, duration:  0},
-            sunrise: {hour:  6, minute: 0, duration: 10},
-            noon   : {hour: 12, minute: 0, duration:  0},
-            sunset : {hour: 18, minute: 0, duration: 10}
+            sunrise: {date: 0, duration: 60},
+            noon   : {date: 0, duration:  0},
+            sunset : {date: 0, duration: 60}
         },
 
         //---------------------------------------------------------------------
         // Init
-        init: function(datetime, update_rate) {
-            this.setDateTime(datetime);
-            this.update_rate = new ig.Timer(update_rate);
+        init: function(datetime, update_rate, timescale) {
+            // ----- Begin sanity checks -----
+            if(typeof datetime !== 'undefined') {
+                if(!(datetime instanceof Date) && typeof datetime.getFullYear === 'undefined') {
+                    console.warn('datetime \'' + datetime + '\' not a valid Date object. Attempting to create Date object from datetime.');
+                    datetime = new Date(datetime);
 
-            console.log('----- Date/Time initialized -----');
+                    if(typeof datetime.getFullYear() === 'number') {
+                        console.warn('Failed to create Date object. Defaulting datetime to current date and time.');
+                        datetime = new Date(datetime);
+                    }
+                }
+            } else {
+                //console.warn('datetime not provided. Defaulting datetime to current date and time.');
+                datetime = new Date;
+            }
+
+            if(typeof update_rate !== 'undefined') {
+                if(typeof update_rate === 'number') {
+                    if(update_rate <= 0) {
+                        console.warn('update_rate \'' + update_rate + '\' not a positive integer. Assuming update_rate absolute value.')
+                        update_rate = Math.abs(update_rate);
+                    }
+                } else {
+                    console.warn('update_rate \'' + update_rate + '\' not a number. Typecasting update_rate to integer.');
+                    update_rate = Number(update_rate);
+                }
+            } else {
+                //console.warn('update_rate not provided. Defaulting update_rate to 60.');
+                update_rate = this.update_rate;
+            }
+
+            if(typeof timescale !== 'undefined') {
+                if(typeof timescale === 'number') {
+                    if(timescale <= 0) {
+                        console.warn('timescale \'' + timescale + '\' not a positive integer. Assuming timescale absolute value.')
+                        timescale = Math.abs(timescale);
+                    }
+                } else {
+                    console.warn('timescale \'' + timescale + '\' not a number. Typecasting timescale to integer.');
+                    timescale = Number(timescale);
+                }
+            } else {
+                //console.warn('timescale not provided. Defaulting timescale to 1.');
+                timescale = this.timescale;
+            }
+            // ----- End sanity checks -----
+
+            this.setDateTime(datetime);
+            this.update_rate = update_rate;
+            this.updateTimer = new ig.Timer(this.update_rate);
+            this.timescale = timescale;
+
+            console.log('----- Impact Day/Night Cycle Plugin initialized -----');
+            console.log('Update rate: ' + update_rate + ' seconds');
+            console.log('Timescale: ' + this.timescale + 'x real time');
+            console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
             console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second));
             console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
 
             this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
-        },
+        }, // End init
+        //---------------------------------------------------------------------
 
         //---------------------------------------------------------------------
         // Update
         update: function() {
             //this.parent();
 
-            if(this.update_rate.delta() >= 0) {
-                this.update_rate.reset();
+            if(this.updateTimer.delta() >= 0) {
+                this.updateTimer.reset();
 
                 // Update and recalculate time
-                console.log('----- Date/Time updated -----');
+                //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
                 this.updateDateTime(this.gregorianDate, this.timescale);
-                console.log('Current     : ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+                //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
             }
-        },
+        }, // End update
+        //---------------------------------------------------------------------
 
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
             //this.parent();
 
-            var r = 0.0006944444444444 * this.solar.sunrise.duration,
-                s = 0.0006944444444444 * this.solar.sunset.duration,
-                jDate_curr = this.convertGregorianToJulian(
+            var jDate_curr = this.convertGregorianToJulian(
                     this.gregorianDate.year,
                     this.gregorianDate.month,
                     this.gregorianDate.day,
                     this.gregorianDate.hour,
                     this.gregorianDate.minute,
                     this.gregorianDate.second
-                ),
-                jDate_rise = this.convertGregorianToJulian(
-                    this.gregorianDate.year,
-                    this.gregorianDate.month,
-                    this.gregorianDate.day,
-                    this.solar.sunrise.hour,
-                    this.solar.sunrise.minute,
-                    0
-                ) - r,
-                jDate_set = this.convertGregorianToJulian(
-                    this.gregorianDate.year,
-                    this.gregorianDate.month,
-                    this.gregorianDate.day,
-                    this.solar.sunset.hour,
-                    this.solar.sunset.minute,
-                    0
-                ) - s;
+                );
 
-            if(jDate_curr >= jDate_rise && jDate_curr < jDate_set) {
-                if(jDate_curr >= jDate_rise + r) {
+            if(jDate_curr >= this.solar_next_update) {
+                console.log('----- Time to recompute sunriset -----');
+                console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+                this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
+            }
+
+            if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
+                // Sun is up
+                // (0.0006944444444444 = 1 JD / 1440 mins -> mins to JD)
+                if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration * 0.0006944444444444) {
                     // Sun has risen
                     //console.log('Sun has risen');
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, 0)';
                 } else {
                     // Sun is rising
                     //console.log('Sun is rising');
-                    // TODO: Sunrise transition equation
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (0.5 - 0.5 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration * 0.0006944444444444)) + ')';
                 }
             } else {
-                if(jDate_curr >= jDate_set + s) {
+                // Sun is down, handle new day hour wraparound
+                // (0.0006944444444444 = 1 JD / 1440 mins -> mins to JD)
+                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar_next_update)) {
                     // Sun has set
                     //console.log('Sun has set');
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
                 } else {
                     // Sun is setting
                     //console.log('Sun is setting');
-                    // TODO: Sunset transition equation
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (0.5 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration * 0.0006944444444444)) + ')';
                 }
             }
 
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
-        },
+        }, // End draw
+        //---------------------------------------------------------------------
 
         // Set/Store date and time
         setDateTime: function(datetime) {
@@ -139,7 +192,7 @@ ig.module(
                 minute: datetime.getMinutes(),
                 second: datetime.getSeconds()
             };
-        },
+        }, // End setDateTime
 
         // Get stored date and time
         getDateTime: function() {
@@ -151,19 +204,19 @@ ig.module(
                 this.gregorianDate.mintute,
                 this.gregorianDate.second
             );
-        },
+        }, // End getDateTime
 
         // Update stored date and time
         updateDateTime: function(datetime, timescale) {
             this.gregorianDate = {
-                year: datetime.year, // TODO: Handle overflow months into years
-                month: datetime.month, // TODO: Handle overflow days into months
-                day: datetime.day + (parseInt(timescale / 86400, 10) % 60),
-                hour: datetime.hour + (parseInt(timescale / 3600, 10) % 60),
-                minute: datetime.minute + (parseInt(timescale / 60, 10) % 60),
-                second: datetime.second + parseInt(timescale % 60, 10)
+                year:   datetime.year,  // TODO: Handle overflow months into years
+                month:  datetime.month, // TODO: Handle overflow days into months
+                day:    datetime.day    + this.update_rate * (parseInt(timescale / 86400, 10) % 60),
+                hour:   datetime.hour   + this.update_rate * (parseInt(timescale /  3600, 10) % 60),
+                minute: datetime.minute + this.update_rate * (parseInt(timescale /    60, 10) % 60),
+                second: datetime.second + this.update_rate *  parseInt(timescale %    60, 10)
             };
-        },
+        }, // End updateDateTime
 
         // Convert Gregorian Date to Julian Date
         convertGregorianToJulian: function(gYear, gMonth, gDay, gHour, gMinute, gSecond) {
@@ -182,7 +235,7 @@ ig.module(
 
             //console.log('Julian: ' + J);
             return J;
-        },
+        }, // End convertGregorianToJulian
 
         // Convert Julian Date to Gregorian Date
         convertJulianToGregorian: function(jDate) {
@@ -196,19 +249,19 @@ ig.module(
                 t = jDate % 1,
                 Y = 100 * g + i + l,
                 M = k - 12 * l + 3,
-                D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1,
+                D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1
                 H = Math.floor(t / 0.0416666666666667) + 12,
                 N = Math.floor((t % 0.0416666666666667) / 0.0006944444444444),
                 S = Math.floor((t % 0.00002893518518528336) / 0.00001157407407407407);
 
             //console.log('Gregorian: ' + Y + '-' + M + '-' + D + ' ' + H + ':' + N + ':' + S);
             return new Date(Y, M - 1, D, H, N, S);
-        },
+        }, // End convertJulianToGregorian
 
         // Computes sunrise and sunset for specified date and geographical coordinates
         computeSunriset: function(jDate, geoCoords) {
-            var julianCycle        = Math.round((jDate - 2451545 - 0.0009) - (geoCoords.longitude / 360)),
-                solar_noon         = 2451545 + 0.0009 + (geoCoords.longitude / 360) + julianCycle,
+            var julianCycle        = Math.round((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)),
+                solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
                 solar_mean_anomaly = (357.5291 + 0.98560028 * (solar_noon - 2451545)) % 360,
                 equation_of_center = (1.9148 * Math.sin(this.toRadians(solar_mean_anomaly))) +
                                      (0.0200 * Math.sin(this.toRadians(2 * solar_mean_anomaly))) +
@@ -225,26 +278,29 @@ ig.module(
                                        (Math.sin(this.toRadians(-0.83)) - Math.sin(this.toRadians(geoCoords.latitude)) * Math.sin(this.toRadians(declination_of_sun))) /
                                        (Math.cos(this.toRadians(geoCoords.latitude)) * Math.cos(this.toRadians(declination_of_sun)))
                                      )),
-                julian_hour_angle  = 2451545 + 0.0009 + ((hour_angle + geoCoords.longitude) / 360) + julianCycle,
+                julian_hour_angle  = 2451545 + 0.0009 + ((hour_angle - geoCoords.longitude) / 360) + julianCycle,
                 sunset             = julian_hour_angle +
                                      (0.0053 * Math.sin(this.toRadians(solar_mean_anomaly))) -
                                      (0.0069 * Math.sin(this.toRadians(2 * ecliptic_longitude))),
                 sunrise            = solar_transit - (sunset - solar_transit);
 
             // ** Manual time offset correction applied **
-            var rise = this.convertJulianToGregorian(sunrise - 0.125),
-                noon = this.convertJulianToGregorian(solar_noon + 0.875),
-                set  = this.convertJulianToGregorian(sunset - 0.125);
+            this.solar.sunrise.date = sunrise - 0.0006944444444444 * this.solar.sunrise.duration - 0.125,
+            this.solar.noon.date    = solar_noon + 0.875,
+            this.solar.sunset.date  = sunset - 0.0006944444444444 * this.solar.sunset.duration - 0.125;
 
             console.log('----- computeSunriset() -----');
-            console.log('Sunrise: ' + rise.toString());
-            console.log('Noon   : ' + noon.toString());
-            console.log('Sunset : ' +  set.toString());
+            console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
+            console.log('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString());
+            console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
 
-            this.solar.sunrise = {hour: rise.getHours(), minute: rise.getMinutes(), duration: this.solar.sunrise.duration};
-            this.solar.noon    = {hour: noon.getHours(), minute: noon.getMinutes(), duration: this.solar.noon.duration   };
-            this.solar.sunset  = {hour:  set.getHours(), minute:  set.getMinutes(), duration: this.solar.sunset.duration };
-        },
+            this.solar_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
+            console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar_next_update).toString());
+
+        }, // End computeSunriset
+
+        //---------------------------------------------------------------------
+        // Utility Functions
 
         // Convert degrees to radians
         toRadians: function(deg) {
@@ -255,5 +311,8 @@ ig.module(
         toDegrees: function(rad) {
             return rad * 180 / Math.PI;
         }
+
+        // End utility functions
+        //---------------------------------------------------------------------
     });
 });
