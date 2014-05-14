@@ -8,6 +8,13 @@
  *
  *  A plugin for the Impact game engine that simulates day/night cycles based
  *  on configurable time of day, day of year, and geographical coordinates.
+ *
+ *  Based on:
+ *      http://aa.quae.nl/en/reken/juliaansedag.html
+ *      http://aa.quae.nl/en/reken/zonpositie.html
+ *      http://aa.usno.navy.mil/data/docs/JulianDate.php
+ *      http://calendars.wikia.com/wiki/Julian_day_number
+ *      http://users.electromagnetic.net/bu/astro/sunrise-set.php
  */
 
 
@@ -32,19 +39,18 @@ ig.module(
 
         solar: {
             //dusk   : {hour:  0, minute: 0, duration:  0},
-            sunrise: {hour:  6, minute: 0, duration: 60},
+            sunrise: {hour:  6, minute: 0, duration: 10},
             noon   : {hour: 12, minute: 0, duration:  0},
-            sunset : {hour: 18, minute: 0, duration: 60}
+            sunset : {hour: 18, minute: 0, duration: 10}
         },
 
         //---------------------------------------------------------------------
         // Init
-        init: function(datetime, timescale, update_rate) {
+        init: function(datetime, update_rate) {
             this.setDateTime(datetime);
-            this.timescale = timescale;
             this.update_rate = new ig.Timer(update_rate);
 
-            console.log('----- Date/Time set -----');
+            console.log('----- Date/Time initialized -----');
             console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second));
             console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
 
@@ -54,7 +60,7 @@ ig.module(
         //---------------------------------------------------------------------
         // Update
         update: function() {
-            this.parent();
+            //this.parent();
 
             if(this.update_rate.delta() >= 0) {
                 this.update_rate.reset();
@@ -69,7 +75,58 @@ ig.module(
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
-            this.parent();
+            //this.parent();
+
+            var r = 0.0006944444444444 * this.solar.sunrise.duration,
+                s = 0.0006944444444444 * this.solar.sunset.duration,
+                jDate_curr = this.convertGregorianToJulian(
+                    this.gregorianDate.year,
+                    this.gregorianDate.month,
+                    this.gregorianDate.day,
+                    this.gregorianDate.hour,
+                    this.gregorianDate.minute,
+                    this.gregorianDate.second
+                ),
+                jDate_rise = this.convertGregorianToJulian(
+                    this.gregorianDate.year,
+                    this.gregorianDate.month,
+                    this.gregorianDate.day,
+                    this.solar.sunrise.hour,
+                    this.solar.sunrise.minute,
+                    0
+                ) - r,
+                jDate_set = this.convertGregorianToJulian(
+                    this.gregorianDate.year,
+                    this.gregorianDate.month,
+                    this.gregorianDate.day,
+                    this.solar.sunset.hour,
+                    this.solar.sunset.minute,
+                    0
+                ) - s;
+
+            if(jDate_curr >= jDate_rise && jDate_curr < jDate_set) {
+                if(jDate_curr >= jDate_rise + r) {
+                    // Sun has risen
+                    //console.log('Sun has risen');
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, 0)';
+                } else {
+                    // Sun is rising
+                    //console.log('Sun is rising');
+                    // TODO: Sunrise transition equation
+                }
+            } else {
+                if(jDate_curr >= jDate_set + s) {
+                    // Sun has set
+                    //console.log('Sun has set');
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                } else {
+                    // Sun is setting
+                    //console.log('Sun is setting');
+                    // TODO: Sunset transition equation
+                }
+            }
+
+            ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
         },
 
         // Set/Store date and time
@@ -99,8 +156,8 @@ ig.module(
         // Update stored date and time
         updateDateTime: function(datetime, timescale) {
             this.gregorianDate = {
-                year: datetime.year, // TODO
-                month: datetime.month, // TODO
+                year: datetime.year, // TODO: Handle overflow months into years
+                month: datetime.month, // TODO: Handle overflow days into months
                 day: datetime.day + (parseInt(timescale / 86400, 10) % 60),
                 hour: datetime.hour + (parseInt(timescale / 3600, 10) % 60),
                 minute: datetime.minute + (parseInt(timescale / 60, 10) % 60),
@@ -109,8 +166,6 @@ ig.module(
         },
 
         // Convert Gregorian Date to Julian Date
-        //   http://aa.quae.nl/en/reken/juliaansedag.html#3_1
-        //   http://calendars.wikia.com/wiki/Julian_day_number#Calculation
         convertGregorianToJulian: function(gYear, gMonth, gDay, gHour, gMinute, gSecond) {
             var a = Math.floor((gMonth - 3) / 12),
                 b = gYear + a,
@@ -130,9 +185,6 @@ ig.module(
         },
 
         // Convert Julian Date to Gregorian Date
-        //   http://aa.quae.nl/en/reken/juliaansedag.html#3_2
-        //   http://calendars.wikia.com/wiki/Julian_day_number
-        //   http://aa.usno.navy.mil/data/docs/JulianDate.php
         convertJulianToGregorian: function(jDate) {
             var f = 4 * (jDate - 1721120) + 3,
                 g = Math.floor(f / 146097),
@@ -154,9 +206,6 @@ ig.module(
         },
 
         // Computes sunrise and sunset for specified date and geographical coordinates
-        //   http://users.electromagnetic.net/bu/astro/sunrise-set.php
-        //   http://aa.quae.nl/en/reken/zonpositie.html
-        //   http://aa.usno.navy.mil/data/docs/JulianDate.php
         computeSunriset: function(jDate, geoCoords) {
             var julianCycle        = Math.round((jDate - 2451545 - 0.0009) - (geoCoords.longitude / 360)),
                 solar_noon         = 2451545 + 0.0009 + (geoCoords.longitude / 360) + julianCycle,
@@ -187,14 +236,14 @@ ig.module(
                 noon = this.convertJulianToGregorian(solar_noon + 0.875),
                 set  = this.convertJulianToGregorian(sunset - 0.125);
 
-            console.log('----- computeSunriset() -----')
+            console.log('----- computeSunriset() -----');
             console.log('Sunrise: ' + rise.toString());
             console.log('Noon   : ' + noon.toString());
             console.log('Sunset : ' +  set.toString());
 
-            this.solar.sunrise = {hour: rise.getHours(), minute: rise.getMinutes(), duration: 60};
-            this.solar.noon    = {hour: noon.getHours(), minute: noon.getMinutes(), duration: 60};
-            this.solar.sunset  = {hour:  set.getHours(), minute:  set.getMinutes(), duration: 60};
+            this.solar.sunrise = {hour: rise.getHours(), minute: rise.getMinutes(), duration: this.solar.sunrise.duration};
+            this.solar.noon    = {hour: noon.getHours(), minute: noon.getMinutes(), duration: this.solar.noon.duration   };
+            this.solar.sunset  = {hour:  set.getHours(), minute:  set.getMinutes(), duration: this.solar.sunset.duration };
         },
 
         // Convert degrees to radians
