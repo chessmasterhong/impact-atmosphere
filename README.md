@@ -96,7 +96,5 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## Disclaimer
 
-I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to *roughly* simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage using this plugin for sensitive projects or research.
-
-###### By using this plugin, you hereby agree that you have read and understood this disclaimer.
+I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to *roughly* simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage the use of this plugin for sensitive projects or research. Instead, please consult a more creditable, well-tested source for such purposes.
 
