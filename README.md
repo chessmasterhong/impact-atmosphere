@@ -13,7 +13,37 @@ configurable time of day, day of year, and geographical coordinates.
 
 ## Basic Usage
 
-TODO
+1. To initialize the plugin: in your `init` method of your main game, you may add any **one** of the following:
+
+    a. To use **all default** settings:
+
+        this.daynight = new ig.DayNight();
+
+    b. To specify a custom **date and time**, but leave the other arguments to default:
+
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37));
+
+    c. To specify a custom **date and time** and **update rate**, but leave the other arguments to default:
+
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 30);
+
+    d. To specify a custom **date and time**, **update rate**, and **timescale**:
+
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 30, 2);
+
+2. In your `update` method of your main game, add the following:
+
+
+    this.daynight.update();
+
+
+3. In your `draw` method of your main game, add the following:
+
+
+    this.daynight.draw();
+
+
+4. That's it! Start up your game and enjoy!
 
 
 ## Configuration
