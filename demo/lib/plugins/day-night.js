@@ -136,7 +136,6 @@ ig.module(
                 //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
                 this.updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
-                console.log(this.gregorianDate.millisecond)
             }
         }, // End update
         //---------------------------------------------------------------------
@@ -156,31 +155,25 @@ ig.module(
 
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
                 // Sun is up
-                // (0.0006944444444444 = 1 JD / 1440 mins -> mins to JD)
-                if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration * 0.0006944444444444) {
+                if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
-                    //console.log('Sun has risen');
                     this.sun_state = 1;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, 0)';
                 } else {
                     // Sun is rising
-                    //console.log('Sun is rising');
                     this.sun_state = 0;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration * 0.0006944444444444)) + ')';
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)) + ')';
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
-                // (0.0006944444444444 = 1 JD / 1440 mins -> mins to JD)
-                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
+                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
                     // Sun has set
-                    //console.log('Sun has set');
                     this.sun_state = 3;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + this.brightness_night + ')';
                 } else {
                     // Sun is setting
-                    //console.log('Sun is setting');
                     this.sun_state = 2;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration * 0.0006944444444444)) + ')';
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)) + ')';
                 }
             }
 
@@ -368,9 +361,9 @@ ig.module(
 
             // ** Manual time offset correction applied **
             // Possible timezone issue?
-            this.solar.sunrise.date = sunrise - 0.0006944444444444 * this.solar.sunrise.duration - 0.125,
+            this.solar.sunrise.date = sunrise - this.solar.sunrise.duration / 1440 - 0.125,
             this.solar.noon.date    = solar_noon - 0.125,
-            this.solar.sunset.date  = sunset - 0.0006944444444444 * this.solar.sunset.duration - 0.125;
+            this.solar.sunset.date  = sunset - this.solar.sunset.duration / 1440 - 0.125;
 
             this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
 
