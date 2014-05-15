@@ -53,7 +53,7 @@ ig.module(
             sunset : {date: 0, duration: 60}
         },
 
-        brightness_night: 0.65,
+        brightness_night: 0.7,
 
         //---------------------------------------------------------------------
         // Init
@@ -114,10 +114,10 @@ ig.module(
             //console.log('Update rate: ' + update_rate + ' seconds');
             //console.log('Timescale: ' + this.timescale + 'x real time');
             //console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
-            //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second) + ' JD');
-            //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+            //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
+            //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
-            this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
+            this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coord);
         }, // End init
         //---------------------------------------------------------------------
 
@@ -132,7 +132,7 @@ ig.module(
                 // Update and recalculate time
                 //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
                 this.updateDateTime(this.gregorianDate, this.timescale);
-                //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+                //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
             }
         }, // End update
         //---------------------------------------------------------------------
@@ -142,19 +142,12 @@ ig.module(
         draw: function() {
             //this.parent();
 
-            var jDate_curr = this.convertGregorianToJulian(
-                    this.gregorianDate.year,
-                    this.gregorianDate.month,
-                    this.gregorianDate.day,
-                    this.gregorianDate.hour,
-                    this.gregorianDate.minute,
-                    this.gregorianDate.second
-                );
+            var jDate_curr = this.convertGregorianToJulian(this.gregorianDate);
 
             if(jDate_curr >= this.sunriset_next_update) {
                 //console.log('----- Time to recompute sunriset -----');
-                //console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
-                this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
+                //console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
+                this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coord);
             }
 
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
@@ -282,8 +275,14 @@ ig.module(
         }, // End updateDateTime
 
         // Convert Gregorian Date to Julian Date
-        convertGregorianToJulian: function(gYear, gMonth, gDay, gHour, gMinute, gSecond) {
-            var a = Math.floor((gMonth - 3) / 12),
+        convertGregorianToJulian: function(gDate) {
+            var gYear   = gDate.year,
+                gMonth  = gDate.month,
+                gDay    = gDate.day,
+                gHour   = gDate.hour,
+                gMinute = gDate.minute,
+                gSecond = gDate.second,
+                a = Math.floor((gMonth - 3) / 12),
                 b = gYear + a,
                 c = Math.floor(b / 100),
                 d = b % 100,
