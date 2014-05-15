@@ -91,14 +91,13 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 ## Bugs and Known Issues
 
 * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
-* Frequently, the Gregorian Date may display the seconds off by 1 second (i.e., the plugin date may have a 0 or 2 second increase). This is due to the round-off in the calculations of what would have been the milliseconds. Do not worry too much about this though; the values during the round-off were just omitted for that single calculation and will correct itself in subsequent calculations (hence the 0 second increase will offset the 2 second increase and vice versa). Check your computer's clock time and see it for yourself.
+* Frequently, the Gregorian Date may display the seconds off by 1 second (i.e., the plugin date may have a 0 or 2 second increase). Do not worry too much about this though; the values during the round-off were just omitted for that single calculation and will correct itself in subsequent calculations (hence the 0 second increase will offset the 2 second increase and vice versa). Check your computer's clock time and see it for yourself.
 * Extremely large timescales (timescale > ~2419200) are not handled properly (plugin still needs to account for variable days, hours, minutes, seconds in months, years, and leap years).
 
 
 ## TODO
 
 * Fix calculations and add support for arbitrary timezones.
-* Improve precision of conversion by extending round-off to milliseconds. Current calculations round off at seconds.
 * Improve overflow date handling for arbitrary timescales.
 * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
 * Compute solstices' and equinoxes' date and time based on geographical coordinates.

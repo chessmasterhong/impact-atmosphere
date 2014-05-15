@@ -53,7 +53,10 @@ ig.module(
             sunset : {date: 0, duration: 60}
         },
 
-        brightness_night: 0.7,
+        // "Brightness" of nights
+        // Greater values yields darker nights
+        // 0 = no change compared to day brightness, 1 = pitch black
+        brightness_night: 0.65,
 
         //---------------------------------------------------------------------
         // Init
@@ -133,6 +136,7 @@ ig.module(
                 //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
                 this.updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
+                console.log(this.gregorianDate.millisecond)
             }
         }, // End update
         //---------------------------------------------------------------------
@@ -224,12 +228,13 @@ ig.module(
         // Set/Store date and time
         setDateTime: function(datetime) {
             this.gregorianDate = {
-                year: datetime.getFullYear(),
-                month: datetime.getMonth() + 1,
-                day: datetime.getDate(),
-                hour: datetime.getHours(),
-                minute: datetime.getMinutes(),
-                second: datetime.getSeconds()
+                year       : datetime.getFullYear(),
+                month      : datetime.getMonth() + 1,
+                day        : datetime.getDate(),
+                hour       : datetime.getHours(),
+                minute     : datetime.getMinutes(),
+                second     : datetime.getSeconds(),
+                millisecond: datetime.getMilliseconds()
             };
         }, // End setDateTime
 
@@ -241,7 +246,8 @@ ig.module(
                 this.gregorianDate.day,
                 this.gregorianDate.hour,
                 this.gregorianDate.mintute,
-                this.gregorianDate.second
+                this.gregorianDate.second,
+                this.gregorianDate.millisecond
             );
         }, // End getDateTime
 
@@ -250,13 +256,19 @@ ig.module(
             // TODO: Handle overflow dates and times. Assume timescale > ~2419200 (# of days of shortest month (assume Feb. 28) * 86400)
             //       Account for variable days, hours, minutes, seconds in months, years, and leap years
             this.gregorianDate = {
-                year  : datetime.year,
-                month : datetime.month,
-                day   : datetime.day    + (this.update_rate * Math.floor(timescale / 86400)),
-                hour  : datetime.hour   + (this.update_rate * Math.floor(timescale /  3600)) % 24,
-                minute: datetime.minute + (this.update_rate * Math.floor(timescale /    60)) % 60,
-                second: datetime.second + (this.update_rate * Math.floor(timescale        )) % 60
+                year       : datetime.year,
+                month      : datetime.month,
+                day        : datetime.day         + (this.update_rate * Math.floor(timescale / 86400)),
+                hour       : datetime.hour        + (this.update_rate * Math.floor(timescale /  3600)) % 24,
+                minute     : datetime.minute      + (this.update_rate * Math.floor(timescale /    60)) % 60,
+                second     : datetime.second      + (this.update_rate * Math.floor(timescale        )) % 60,
+                millisecond: datetime.millisecond + (this.update_rate * Math.floor((timescale % 1) * 1000))
             };
+
+            if(this.gregorianDate.millisecond >= 1000) {
+                this.gregorianDate.millisecond -= 1000;
+                this.gregorianDate.second++;
+            }
 
             if(this.gregorianDate.second >= 60) {
                 this.gregorianDate.second -= 60;
@@ -276,12 +288,13 @@ ig.module(
 
         // Convert Gregorian Date to Julian Date
         convertGregorianToJulian: function(gDate) {
-            var gYear   = gDate.year,
-                gMonth  = gDate.month,
-                gDay    = gDate.day,
-                gHour   = gDate.hour,
-                gMinute = gDate.minute,
-                gSecond = gDate.second,
+            var gYear        = gDate.year,
+                gMonth       = gDate.month,
+                gDay         = gDate.day,
+                gHour        = gDate.hour,
+                gMinute      = gDate.minute,
+                gSecond      = gDate.second,
+                gMillisecond = gDate.millisecond,
                 a = Math.floor((gMonth - 3) / 12),
                 b = gYear + a,
                 c = Math.floor(b / 100),
@@ -317,14 +330,14 @@ ig.module(
                 D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1
                 H = Math.floor(t / u) + 12,
                 N = Math.floor((t % u) / v),
-                S = Math.floor((t % v) / w);
-                //m = Math.floor((t % w) / (1 / 86400000));
+                S = Math.floor((t % v) / w),
+                m = Math.floor((t % w) / (1 / 86400000));
 
             // ** Manual time offset correction applied **
             // Possible timezone issue?
             D += H >= 12 && H < 18 ? 1 : 0;
 
-            return new Date(Y, M - 1, D, H, N, S);
+            return new Date(Y, M - 1, D, H, N, S, m);
         }, // End convertJulianToGregorian
 
         // Computes sunrise and sunset for specified date and geographical coordinates
