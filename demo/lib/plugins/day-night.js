@@ -214,7 +214,7 @@ ig.module(
                 ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')', x, y += 15);
 
                 ig.system.context.fillStyle = 'yellow';
-                ig.system.context.fillText('Current: ' + jDate_curr + ' JD', x, y += 15);
+                ig.system.context.fillText('Current: ' + jDate_curr.toFixed(8) + ' JD', x, y += 15);
                 ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString(), x, y += 10);
                 ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid>'), x, y += 15);
 
@@ -258,13 +258,28 @@ ig.module(
             // TODO: Handle overflow dates and times. Assume timescale > ~2419200 (# of days of shortest month (assume Feb. 28) * 86400)
             //       Account for variable days, hours, minutes, seconds in months, years, and leap years
             this.gregorianDate = {
-                year  : datetime.year,  // TODO: Handle overflow months into years
-                month : datetime.month, // TODO: Handle overflow days into months
-                day   : datetime.day    + this.update_rate * (parseInt(timescale / 86400, 10) % 60),
-                hour  : datetime.hour   + this.update_rate * (parseInt(timescale /  3600, 10) % 60),
-                minute: datetime.minute + this.update_rate * (parseInt(timescale /    60, 10) % 60),
-                second: datetime.second + this.update_rate *  parseInt(timescale %    60, 10)
+                year  : datetime.year,
+                month : datetime.month,
+                day   : datetime.day    + (this.update_rate * Math.floor(timescale / 86400)),
+                hour  : datetime.hour   + (this.update_rate * Math.floor(timescale /  3600)) % 24,
+                minute: datetime.minute + (this.update_rate * Math.floor(timescale /    60)) % 60,
+                second: datetime.second + (this.update_rate * Math.floor(timescale        )) % 60
             };
+
+            if(this.gregorianDate.second >= 60) {
+                this.gregorianDate.second -= 60;
+                this.gregorianDate.minute++;
+            }
+
+            if(this.gregorianDate.minute >= 60) {
+                this.gregorianDate.minute -= 60;
+                this.gregorianDate.hour++;
+            }
+
+            if(this.gregorianDate.hour >= 24) {
+                this.gregorianDate.hour -= 24;
+                this.gregorianDate.day++;
+            }
         }, // End updateDateTime
 
         // Convert Gregorian Date to Julian Date
@@ -281,6 +296,7 @@ ig.module(
                     (gHour - 12) / 24 +
                     gMinute / 1440 +
                     gSecond / 86400;
+                    //+ gMillisecond / 86400000;
 
             return J;
         }, // End convertGregorianToJulian
@@ -305,6 +321,10 @@ ig.module(
                 N = Math.floor((t % u) / v),
                 S = Math.floor((t % v) / w);
                 //m = Math.floor((t % w) / (1 / 86400000));
+
+            // ** Manual time offset correction applied **
+            // Possible timezone issue?
+            D += H >= 12 && H < 18 ? 1 : 0;
 
             return new Date(Y, M - 1, D, H, N, S);
         }, // End convertJulianToGregorian
@@ -336,8 +356,9 @@ ig.module(
                 sunrise            = solar_transit - (sunset - solar_transit);
 
             // ** Manual time offset correction applied **
+            // Possible timezone issue?
             this.solar.sunrise.date = sunrise - 0.0006944444444444 * this.solar.sunrise.duration - 0.125,
-            this.solar.noon.date    = solar_noon + 0.875,
+            this.solar.noon.date    = solar_noon - 0.125,
             this.solar.sunset.date  = sunset - 0.0006944444444444 * this.solar.sunset.duration - 0.125;
 
             this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
