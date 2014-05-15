@@ -48,35 +48,44 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## Configuration
 
+*For reference, the values listed below are the plugin's default values.*
 
 * To configure the plugin's current date and time:
 
     *Must be a JavaScript Date object. Attempts to convert into Date object if not.*
 
-      this.daynight.datetime = new Date    // Start plugin from current date and time
+      this.daynight.datetime = new Date;    // Start plugin from current date and time
 
 * To configure the time in seconds the plugin should update at:
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.daynight.update_rate = 60    // Update plugin every 60 seconds
+      this.daynight.update_rate = 60;    // Update plugin every 60 seconds
 
 * To configure the time speed multiplier the plugin should run at:
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.daynight.timescale = 1    // 1 second plugin time = 1 second real time
+      this.daynight.timescale = 1;    // 1 second plugin time = 1 second real time
 
 * To configure the geographical coordinates the plugin should use in its computations:
 
-  *Must be a number (integer or floating point number). Attempts to convert to number if not.*
+  *Must be a number (integer or floating point number).*
 
   *Latitude : North = positive, South = negative*
 
   *Longitude: East  = positive, West  = negative*
 
-      this.daynight.geo_coords.latitude = 40.7789      // 40.7789 degrees North
-      this.daynight.geo_coords.longitude = -73.9675    // 73.9675 degrees West
+      this.daynight.geo_coords.latitude = 40.7789;      // 40.7789 degrees North
+      this.daynight.geo_coords.longitude = -73.9675;    // 73.9675 degrees West
+
+* To configure the "brightness" of nights:
+
+  *Must be a positive number (integer or floating point number) between 0 and 1 (both inclusive).*
+
+  *The *greater* the number, the darker the nights will be. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
+
+      this.daynight.brightness_night = 0.65;
 
 
 ## TODO
@@ -85,6 +94,7 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 * Compute solstices' and equinoxes' date and time based on geographical coordinates.
 * Compute seasons based on solstices and equinoxes.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
+* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
 
 
 ## Credits
@@ -96,6 +106,7 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 * [http://aa.usno.navy.mil/data/docs/JulianDate.php](http://aa.usno.navy.mil/data/docs/JulianDate.php)
 * [http://calendars.wikia.com/wiki/Julian_day_number](http://calendars.wikia.com/wiki/Julian_day_number)
 * [http://users.electromagnetic.net/bu/astro/sunrise-set.php](http://users.electromagnetic.net/bu/astro/sunrise-set.php)
+* [http://www.esrl.noaa.gov/gmd/grad/solcalc](http://www.esrl.noaa.gov/gmd/grad/solcalc)
 
 ### Additional resources
 

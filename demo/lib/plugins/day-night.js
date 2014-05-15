@@ -15,6 +15,7 @@
  *      http://aa.usno.navy.mil/data/docs/JulianDate.php
  *      http://calendars.wikia.com/wiki/Julian_day_number
  *      http://users.electromagnetic.net/bu/astro/sunrise-set.php
+ *      http://www.esrl.noaa.gov/gmd/grad/solcalc
  */
 
 
