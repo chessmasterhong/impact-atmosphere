@@ -255,11 +255,13 @@ ig.module(
 
         // Update stored date and time
         updateDateTime: function(datetime, timescale) {
+            // TODO: Handle overflow dates and times. Assume timescale > ~2419200 (# of days of shortest month (assume Feb. 28) * 86400)
+            //       Account for variable days, hours, minutes, seconds in months, years, and leap years
             this.gregorianDate = {
-                year:   datetime.year,  // TODO: Handle overflow months into years
-                month:  datetime.month, // TODO: Handle overflow days into months
-                day:    datetime.day    + this.update_rate * (parseInt(timescale / 86400, 10) % 60),
-                hour:   datetime.hour   + this.update_rate * (parseInt(timescale /  3600, 10) % 60),
+                year  : datetime.year,  // TODO: Handle overflow months into years
+                month : datetime.month, // TODO: Handle overflow days into months
+                day   : datetime.day    + this.update_rate * (parseInt(timescale / 86400, 10) % 60),
+                hour  : datetime.hour   + this.update_rate * (parseInt(timescale /  3600, 10) % 60),
                 minute: datetime.minute + this.update_rate * (parseInt(timescale /    60, 10) % 60),
                 second: datetime.second + this.update_rate *  parseInt(timescale %    60, 10)
             };
@@ -280,7 +282,6 @@ ig.module(
                     gMinute / 1440 +
                     gSecond / 86400;
 
-            //console.log('Julian: ' + J);
             return J;
         }, // End convertGregorianToJulian
 
@@ -294,14 +295,17 @@ ig.module(
                 k = Math.floor(j / 153),
                 l = Math.floor((k + 2) / 12),
                 t = jDate % 1,
+                u = 1 / 24,
+                v = 1 / 1440,
+                w = 1 / 86400,
                 Y = 100 * g + i + l,
                 M = k - 12 * l + 3,
                 D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1
-                H = Math.floor(t / 0.0416666666666667) + 12,
-                N = Math.floor((t % 0.0416666666666667) / 0.0006944444444444),
-                S = Math.floor((t % 0.00002893518518528336) / 0.00001157407407407407);
+                H = Math.floor(t / u) + 12,
+                N = Math.floor((t % u) / v),
+                S = Math.floor((t % v) / w);
+                //m = Math.floor((t % w) / (1 / 86400000));
 
-            //console.log('Gregorian: ' + Y + '-' + M + '-' + D + ' ' + H + ':' + N + ':' + S);
             return new Date(Y, M - 1, D, H, N, S);
         }, // End convertJulianToGregorian
 
