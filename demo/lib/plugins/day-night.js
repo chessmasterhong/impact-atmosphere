@@ -29,6 +29,8 @@ ig.module(
     "use strict";
 
     ig.DayNight = ig.Game.extend({
+        debug: true,
+
         // Time speed multiplier
         //   1 = real time (default), 2 = 2x real time, 0.5 = 0.5x real time, etc.
         timescale: 1,
@@ -112,7 +114,7 @@ ig.module(
             console.log('Update rate: ' + update_rate + ' seconds');
             console.log('Timescale: ' + this.timescale + 'x real time');
             console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
-            console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second));
+            console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second) + ' JD');
             console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
 
             this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
@@ -186,6 +188,44 @@ ig.module(
             }
 
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
+
+            // ----- Begin debug -----
+            if(this.debug) {
+                var x = 0,
+                    y = 0;
+
+                ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.25)';
+                ig.system.context.fillRect(
+                    x += 5,
+                    y += 5,
+                    ig.system.realWidth - 2 * x,
+                    150
+                );
+
+                ig.system.context.fillStyle = 'white';
+                ig.system.context.font = '11px monospace';
+                ig.system.context.textBaseline = 'top';
+
+                ig.system.context.fillText('========== Impact Day/Night Cycle Plugin ==========', x += 5, y += 5);
+
+                ig.system.context.fillText('Update rate: ' + this.update_rate + ' seconds', x, y += 15);
+                ig.system.context.fillText('Timescale: ' + this.timescale + 'x real time', x, y += 10);
+
+                ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')', x, y += 15);
+
+                ig.system.context.fillStyle = 'yellow';
+                ig.system.context.fillText('Current: ' + jDate_curr + ' JD', x, y += 15);
+                ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString(), x, y += 10);
+                ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid>'), x, y += 15);
+
+                ig.system.context.fillStyle = 'white';
+                ig.system.context.fillText('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString(), x, y += 15);
+                ig.system.context.fillText('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString(), x, y += 10);
+                ig.system.context.fillText('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString(), x, y += 10);
+
+                ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString(), x, y += 15);
+            }
+            // ----- End debug -----
         }, // End draw
         //---------------------------------------------------------------------
 
