@@ -69,13 +69,13 @@ ig.module(
                 }
             } else {
                 //console.warn('datetime not provided. Defaulting datetime to current date and time.');
-                datetime = new Date;
+                datetime = new Date();
             }
 
             if(typeof update_rate !== 'undefined') {
                 if(typeof update_rate === 'number') {
                     if(update_rate <= 0) {
-                        console.warn('update_rate \'' + update_rate + '\' not a positive integer. Assuming update_rate absolute value.')
+                        console.warn('update_rate \'' + update_rate + '\' not a positive integer. Assuming update_rate absolute value.');
                         update_rate = Math.abs(update_rate);
                     }
                 } else {
@@ -90,7 +90,7 @@ ig.module(
             if(typeof timescale !== 'undefined') {
                 if(typeof timescale === 'number') {
                     if(timescale <= 0) {
-                        console.warn('timescale \'' + timescale + '\' not a positive integer. Assuming timescale absolute value.')
+                        console.warn('timescale \'' + timescale + '\' not a positive integer. Assuming timescale absolute value.');
                         timescale = Math.abs(timescale);
                     }
                 } else {
@@ -161,10 +161,12 @@ ig.module(
                 if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration * 0.0006944444444444) {
                     // Sun has risen
                     //console.log('Sun has risen');
+                    this.sun_state = 1;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, 0)';
                 } else {
                     // Sun is rising
                     //console.log('Sun is rising');
+                    this.sun_state = 0;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration * 0.0006944444444444)) + ')';
                 }
             } else {
@@ -173,10 +175,12 @@ ig.module(
                 if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
                     // Sun has set
                     //console.log('Sun has set');
+                    this.sun_state = 3;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + this.brightness_night + ')';
                 } else {
                     // Sun is setting
                     //console.log('Sun is setting');
+                    this.sun_state = 2;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration * 0.0006944444444444)) + ')';
                 }
             }
