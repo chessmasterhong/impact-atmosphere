@@ -1,9 +1,10 @@
 # Impact Day/Night Cycle Plugin
 
-A plugin for the Impact game engine that simulates a day/night system based on configurable time of day, day of year, and geographical coordinates.
+A plugin for the Impact game engine that simulates a day/night system based on configurable date, time, and geographical coordinates.
 
 
 ## Features
+
 
 * Dynamic ambient brightness during sunrise and sunset
 * Variable length of day and night based on geographical coordinates
@@ -54,7 +55,6 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
       this.daynight.datetime = new Date    // Start plugin from current date and time
 
-
 * To configure the time in seconds the plugin should update at:
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
@@ -70,13 +70,21 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 * To configure the geographical coordinates the plugin should use in its computations:
 
   *Must be a number (integer or floating point number). Attempts to convert to number if not.*
-  
+
   *Latitude : North = positive, South = negative*
-  
+
   *Longitude: East  = positive, West  = negative*
-    
+
       this.daynight.geo_coords.latitude = 40.7789      // 40.7789 degrees North
       this.daynight.geo_coords.longitude = -73.9675    // 73.9675 degrees West
+
+
+## TODO
+
+* Support for arbitrary timezones. Current calculations assume Eastern Standard Time.
+* Compute solstices' and equinoxes' date and time based on geographical coordinates.
+* Compute seasons based on solstices and equinoxes.
+* Compute sunrise and sunset duration based on season and geographical coordinates.
 
 
 ## Credits
@@ -96,5 +104,5 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## Disclaimer
 
-I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to *roughly* simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage the use of this plugin for sensitive projects or research. Instead, please consult a more creditable, well-tested source for such purposes.
+I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to *roughly* simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage the use of this plugin for sensitive projects or research. Instead, please consult more creditable, well-tested sources for such purposes.
 
