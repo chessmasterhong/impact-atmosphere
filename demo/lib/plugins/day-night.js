@@ -50,6 +50,8 @@ ig.module(
             sunset : {date: 0, duration: 60}
         },
 
+        brightness_night: 0.65,
+
         //---------------------------------------------------------------------
         // Init
         init: function(datetime, update_rate, timescale) {
@@ -162,7 +164,7 @@ ig.module(
                 } else {
                     // Sun is rising
                     //console.log('Sun is rising');
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (0.5 - 0.5 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration * 0.0006944444444444)) + ')';
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration * 0.0006944444444444)) + ')';
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
@@ -170,11 +172,11 @@ ig.module(
                 if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration * 0.0006944444444444 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
                     // Sun has set
                     //console.log('Sun has set');
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + this.brightness_night + ')';
                 } else {
                     // Sun is setting
                     //console.log('Sun is setting');
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (0.5 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration * 0.0006944444444444)) + ')';
+                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration * 0.0006944444444444)) + ')';
                 }
             }
 
@@ -296,8 +298,11 @@ ig.module(
 
             this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
             console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString());
-
         }, // End computeSunriset
+
+        //computeSeasons: function() {
+            // TODO
+        //}, // End computeSeasons
 
         //---------------------------------------------------------------------
         // Utility Functions
