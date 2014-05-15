@@ -10,6 +10,7 @@ ig.module(
 .requires(
     'impact.game',
     'game.levels.demo',
+    'game.levels.demo2',
     'plugins.day-night'
 )
 .defines(function() {
@@ -23,7 +24,8 @@ ig.module(
 
             ig.input.bind(ig.KEY.MOUSE1, 'click');
 
-            this.loadLevel(LevelDemo);
+            //this.loadLevel(LevelDemo);
+            this.loadLevel(LevelDemo2);
         },
 
         update: function() {
@@ -84,5 +86,5 @@ ig.module(
         }
     });
 
-    ig.main('#canvas', MainGame, 60, 480, 320, 1);
+    ig.main('#canvas', MainGame, 60, 640, 480, 1);
 });
