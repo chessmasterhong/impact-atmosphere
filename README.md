@@ -17,31 +17,31 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
     a. To use **all default** settings:
 
-       // Start from current date and time, updating every 60 seconds, running at 1x real time
-       this.daynight = new ig.DayNight();
+        // Start from current date and time, updating every 60 seconds, running at 1x real time
+        this.daynight = new ig.DayNight();
 
     b. To specify a custom **date and time**, but leave the other arguments to default:
 
-       // Start from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
-       this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37));
+        // Start from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37));
 
     c. To specify a custom **date and time** and **update rate**, but leave the other arguments to default:
 
-       // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
-       this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15);
+        // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15);
 
     d. To specify a custom **date and time**, **update rate**, and **timescale**:
 
-       // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
-       this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
+        // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
+        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
 
 2. In your `update` method of your main game, add the following:
 
-       this.daynight.update();
+        this.daynight.update();
 
 3. In your `draw` method of your main game, add the following:
 
-       this.daynight.draw();
+        this.daynight.draw();
 
 4. That's it! Start up your game and enjoy!
 
@@ -54,7 +54,7 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
     *Must be a JavaScript Date object. Attempts to convert into Date object if not.*
 
-      this.daynight.datetime = new Date;    // Start plugin from current date and time
+        this.daynight.datetime = new Date;    // Start plugin from current date and time
 
 * To configure the time in seconds the plugin should update at:
 
@@ -83,7 +83,7 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
   *Must be a positive number (integer or floating point number) between 0 and 1 (both inclusive).*
 
-  *The *greater* the number, the darker the nights will be. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
+  *The greater the number, the darker the nights will be. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
 
       this.daynight.brightness_night = 0.65;
 
