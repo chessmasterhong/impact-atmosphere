@@ -90,11 +90,13 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## TODO
 
-* Support for arbitrary timezones. Current calculations assume Eastern Standard Time.
+* Add support for arbitrary timezones. Current calculations assume Eastern Standard Time.
 * Compute solstices' and equinoxes' date and time based on geographical coordinates.
 * Compute seasons based on solstices and equinoxes.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
 * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
+* Improve precision of conversion by extending round-off to milliseconds. Current calculations round off at seconds.
+* Improve overflow date handling for extremely large timescales (timescale > ~2419200).
 
 
 ## Credits
