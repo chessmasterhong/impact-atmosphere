@@ -110,12 +110,12 @@ ig.module(
             this.updateTimer = new ig.Timer(this.update_rate);
             this.timescale = timescale;
 
-            console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
-            console.log('Update rate: ' + update_rate + ' seconds');
-            console.log('Timescale: ' + this.timescale + 'x real time');
-            console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
-            console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second) + ' JD');
-            console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+            //console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
+            //console.log('Update rate: ' + update_rate + ' seconds');
+            //console.log('Timescale: ' + this.timescale + 'x real time');
+            //console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
+            //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second) + ' JD');
+            //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
 
             this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
         }, // End init
@@ -152,8 +152,8 @@ ig.module(
                 );
 
             if(jDate_curr >= this.sunriset_next_update) {
-                console.log('----- Time to recompute sunriset -----');
-                console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
+                //console.log('----- Time to recompute sunriset -----');
+                //console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second)).toString());
                 this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate.year, this.gregorianDate.month, this.gregorianDate.day, this.gregorianDate.hour, this.gregorianDate.minute, this.gregorianDate.second), this.geo_coord);
             }
 
@@ -336,13 +336,13 @@ ig.module(
             this.solar.noon.date    = solar_noon + 0.875,
             this.solar.sunset.date  = sunset - 0.0006944444444444 * this.solar.sunset.duration - 0.125;
 
-            console.log('----- computeSunriset() -----');
-            console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
-            console.log('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString());
-            console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
-
             this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
-            console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString());
+
+            //console.log('----- computeSunriset() -----');
+            //console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
+            //console.log('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString());
+            //console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
+            //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString());
         }, // End computeSunriset
 
         //computeSeasons: function() {
