@@ -134,8 +134,6 @@ ig.module(
         //---------------------------------------------------------------------
         // Update
         update: function() {
-            //this.parent();
-
             if(this.updateTimer.delta() >= 0) {
                 this.updateTimer.reset();
 
@@ -143,6 +141,17 @@ ig.module(
                 //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
                 this.updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
+
+                if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.next_update) {
+                    //console.log('----- Time to recompute sunriset -----');
+                    this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
+                }
+
+                //console.log(this.gregorianDate.year - this.convertJulianToGregorian(this.season.vernal_equinox).getFullYear())
+                if(this.gregorianDate.year !== this.convertJulianToGregorian(this.season.vernal_equinox).getFullYear()) {
+                    //console.log('----- Time to recompute seasons -----');
+                    this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
+                }
             }
         }, // End update
         //---------------------------------------------------------------------
@@ -150,15 +159,7 @@ ig.module(
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
-            //this.parent();
-
             var jDate_curr = this.convertGregorianToJulian(this.gregorianDate);
-
-            if(jDate_curr >= this.solar.next_update) {
-                //console.log('----- Time to recompute sunriset -----');
-                //console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
-                this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
-            }
 
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
                 // Sun is up
@@ -196,7 +197,7 @@ ig.module(
                     x += 5,
                     y += 5,
                     ig.system.realWidth - 2 * x,
-                    130
+                    190
                 );
 
                 ig.system.context.fillStyle = '#ffffff';
@@ -221,7 +222,7 @@ ig.module(
                 ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.solar.next_update).toString(), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffff00';
-                ig.system.context.fillText('Season state: ' + (this.season_state === 0 ? 'Spring' : this.season_state === 1 ? 'Summer' : this.season_state === 2 ? 'Autumn' : this.season_state === 3 ? 'Winter' : '<invalid season state>'), x, y += 15);
+                ig.system.context.fillText('Season state: ' + (this.season_state === 0 ? 'Spring/Vernal' : this.season_state === 1 ? 'Summer/Estival' : this.season_state === 2 ? 'Autumn/Autumnal' : this.season_state === 3 ? 'Winter/Hibernal' : '<invalid season state>'), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Spring : ' + this.convertJulianToGregorian(this.season.vernal_equinox).toString() + ' | ' + this.season.vernal_equinox.toFixed(8) + ' JD', x, y += 15);
@@ -261,40 +262,18 @@ ig.module(
 
         // Update stored date and time
         updateDateTime: function(datetime, timescale) {
-            // TODO: Handle overflow dates and times. Assume timescale > ~2419200 (# of days of shortest month (assume Feb. 28) * 86400)
-            //       Account for variable days, hours, minutes, seconds in months, years, and leap years
-            this.gregorianDate = {
-                year       : datetime.year,
-                month      : datetime.month,
-                day        : datetime.day         + (this.update_rate * Math.floor(timescale / 86400)),
-                hour       : datetime.hour        + (this.update_rate * Math.floor(timescale /  3600)) % 24,
-                minute     : datetime.minute      + (this.update_rate * Math.floor(timescale /    60)) % 60,
-                second     : datetime.second      + (this.update_rate * Math.floor(timescale        )) % 60,
-                millisecond: datetime.millisecond + (this.update_rate * Math.floor((timescale % 1) * 1000))
-            };
-
-            if(this.gregorianDate.millisecond >= 1000) {
-                this.gregorianDate.millisecond -= 1000;
-                this.gregorianDate.second++;
-            }
-
-            if(this.gregorianDate.second >= 60) {
-                this.gregorianDate.second -= 60;
-                this.gregorianDate.minute++;
-            }
-
-            if(this.gregorianDate.minute >= 60) {
-                this.gregorianDate.minute -= 60;
-                this.gregorianDate.hour++;
-            }
-
-            if(this.gregorianDate.hour >= 24) {
-                this.gregorianDate.hour -= 24;
-                this.gregorianDate.day++;
-            }
+            this.setDateTime(new Date(
+                this.gregorianDate.year,
+                this.gregorianDate.month - 1,
+                this.gregorianDate.day,
+                this.gregorianDate.hour,
+                this.gregorianDate.minute,
+                this.gregorianDate.second,
+                this.gregorianDate.millisecond + this.update_rate * timescale * 1000
+            ));
 
             var jDate = this.convertGregorianToJulian(this.gregorianDate);
-            if(jDate < this.season.vernal_equinox)
+            if(jDate < this.season.vernal_equinox || jDate >= this.season.hibernal_solstice)
                 this.season_state = 3;
             else if(jDate < this.season.estival_solstice)
                 this.season_state = 0;
