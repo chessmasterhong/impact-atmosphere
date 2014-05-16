@@ -13,7 +13,11 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## Basic Usage
 
-1. To initialize the plugin: in your `init` method of your main game, you may choose from **one** of the following:
+1. Download and place the file `impact-day-night.js` in your `lib/plugins/` directory.
+
+2. Add `'plugins.impact-day-night'` to the `.requires( ... )` section of your main game.
+
+3. In the `init` method of your main game, add **one** (and only one) of the following:
 
     a. To use **all default** settings:
 
@@ -35,15 +39,15 @@ A plugin for the Impact game engine that simulates a day/night system based on c
         // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
         this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
 
-2. In your `update` method of your main game, add the following:
+4. In the `update` method of your main game, add the following:
 
         this.daynight.update();
 
-3. In your `draw` method of your main game, add the following:
+5. In the `draw` method of your main game, add the following:
 
         this.daynight.draw();
 
-4. That's it! Start up your game and enjoy!
+6. That's it! Start up your game and enjoy!
 
 
 ## Configuration
