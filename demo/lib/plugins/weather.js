@@ -21,28 +21,33 @@ ig.module(
     "use strict";
 
     ig.Weather = ig.Game.extend({
-        condition: 0, // 0 = clear, 1 = rain, 2 = snow
+        condition: 2, // 0 = clear, 1 = rain, 2 = snow
 
-        count: 100,
+        max_particles: 100,
 
         //---------------------------------------------------------------------
         // Init
         init: function() {
-            this.nextParticle = new ig.Timer();
+            if(this.condition)
+                this.nextParticle = new ig.Timer();
         }, // End init
         //---------------------------------------------------------------------
 
         //---------------------------------------------------------------------
         // Update
         update: function() {
-            if(this.nextParticle.delta() >= 0 && this.count > 0) {
-                this.count--;
-                this.nextParticle.set(1 / this.count);
-                ig.game.spawnEntity(
-                    EntitySnow,
-                    Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                    ig.game.screen.y
-                );
+            if(this.condition === 1) {
+
+            } else if(this.condition === 2) {
+                if(this.nextParticle.delta() >= 0 && this.max_particles > 0) {
+                    this.max_particles--;
+                    this.nextParticle.set(1 / this.max_particles);
+                    ig.game.spawnEntity(
+                        EntitySnow,
+                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
+                        ig.game.screen.y
+                    );
+                }
             }
         }, // End update
         //---------------------------------------------------------------------
