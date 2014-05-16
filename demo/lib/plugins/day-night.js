@@ -10,6 +10,7 @@
  *  on configurable time of day, day of year, and geographical coordinates.
  *
  *  Based on:
+ *      http://aa.quae.nl/en/antwoorden/seizoenen.html
  *      http://aa.quae.nl/en/reken/juliaansedag.html
  *      http://aa.quae.nl/en/reken/zonpositie.html
  *      http://aa.usno.navy.mil/data/docs/JulianDate.php
@@ -43,14 +44,19 @@ ig.module(
         //   Latitude : North = positive, South = negative
         //   Longitude: East  = positive, West  = negative
         //   http://ozoneaq.gsfc.nasa.gov/latlon.md
-        geo_coord: {latitude: 40.7789, longitude: -73.9675},
+        geo_coords: {latitude: 40.7789, longitude: -73.9675},
 
-        sunriset_next_update: 0,
         solar: {
-            //dusk   : {hour:  0, minute: 0, duration:  0},
             sunrise: {date: 0, duration: 60},
-            noon   : {date: 0, duration:  0},
-            sunset : {date: 0, duration: 60}
+            sunset : {date: 0, duration: 60},
+            next_update: 0
+        },
+
+        season: {
+            vernal_equinox   : 0,
+            estival_solstice : 0,
+            autumnal_equinox : 0,
+            hibernal_solstice: 0
         },
 
         // "Brightness" of nights
@@ -116,11 +122,12 @@ ig.module(
             //console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
             //console.log('Update rate: ' + update_rate + ' seconds');
             //console.log('Timescale: ' + this.timescale + 'x real time');
-            //console.log('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')');
+            //console.log('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')');
             //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
             //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
-            this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coord);
+            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
+            this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
         }, // End init
         //---------------------------------------------------------------------
 
@@ -147,10 +154,10 @@ ig.module(
 
             var jDate_curr = this.convertGregorianToJulian(this.gregorianDate);
 
-            if(jDate_curr >= this.sunriset_next_update) {
+            if(jDate_curr >= this.solar.next_update) {
                 //console.log('----- Time to recompute sunriset -----');
                 //console.log('New date/time: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
-                this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coord);
+                this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
             }
 
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
@@ -166,7 +173,7 @@ ig.module(
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
-                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.sunriset_next_update)) {
+                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
                     ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + this.brightness_night + ')';
@@ -189,7 +196,7 @@ ig.module(
                     x += 5,
                     y += 5,
                     ig.system.realWidth - 2 * x,
-                    140
+                    130
                 );
 
                 ig.system.context.fillStyle = '#ffffff';
@@ -201,7 +208,7 @@ ig.module(
                 ig.system.context.fillText('Update rate: ' + this.update_rate + ' seconds', x, y += 15);
                 ig.system.context.fillText('Timescale: ' + this.timescale + 'x real time', x, y += 10);
 
-                ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coord.latitude + ', Lng: ' + this.geo_coord.longitude + ')', x, y += 15);
+                ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')', x, y += 15);
 
                 ig.system.context.fillStyle = '#ffff00';
                 ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString() + ' | ' + jDate_curr.toFixed(8) + ' JD', x, y += 15);
@@ -209,10 +216,14 @@ ig.module(
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString() + ' | ' + this.solar.sunrise.date.toFixed(8) + ' JD', x, y += 15);
-                ig.system.context.fillText('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString() + ' | ' + this.solar.noon.date.toFixed(8) + ' JD', x, y += 10);
                 ig.system.context.fillText('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString() + ' | ' + this.solar.sunset.date.toFixed(8) + ' JD', x, y += 10);
 
-                ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString(), x, y += 15);
+                ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.solar.next_update).toString(), x, y += 15);
+
+                ig.system.context.fillText('Spring : ' + this.convertJulianToGregorian(this.season.vernal).toString(), x, y += 15);
+                ig.system.context.fillText('Summer : ' + this.convertJulianToGregorian(this.season.estival).toString(), x, y += 10);
+                ig.system.context.fillText('Autumn : ' + this.convertJulianToGregorian(this.season.autumnal).toString(), x, y += 10);
+                ig.system.context.fillText('Winter : ' + this.convertJulianToGregorian(this.season.hibernal).toString(), x, y += 10);
             }
             // ----- End debug -----
         }, // End draw
@@ -292,17 +303,16 @@ ig.module(
                 b = gYear + a,
                 c = Math.floor(b / 100),
                 d = b % 100,
-                e = gMonth - 12 * a - 3,
-                J = Math.floor(146097 * c / 4) +
-                    Math.floor(36525 * d / 100) +
-                    Math.floor((153 * e + 2) / 5) +
-                    gDay + 1721119 +
-                    (gHour - 12) / 24 +
-                    gMinute / 1440 +
-                    gSecond / 86400;
-                    //+ gMillisecond / 86400000;
+                e = gMonth - 12 * a - 3
 
-            return J;
+            return Math.floor(146097 * c / 4) +
+                   Math.floor(36525 * d / 100) +
+                   Math.floor((153 * e + 2) / 5) +
+                   gDay + 1721119 +
+                   (gHour - 12) / 24 +
+                   gMinute / 1440 +
+                   gSecond / 86400;
+                   //+ gMillisecond / 86400000;
         }, // End convertGregorianToJulian
 
         // Convert Julian Date to Gregorian Date
@@ -317,8 +327,9 @@ ig.module(
                 t = jDate % 1,
                 u = 1 / 24,
                 v = 1 / 1440,
-                w = 1 / 86400,
-                Y = 100 * g + i + l,
+                w = 1 / 86400;
+
+            var Y = 100 * g + i + l,
                 M = k - 12 * l + 3,
                 D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1
                 H = Math.floor(t / u) + 12,
@@ -361,22 +372,81 @@ ig.module(
 
             // ** Manual time offset correction applied **
             // Possible timezone issue?
-            this.solar.sunrise.date = sunrise - this.solar.sunrise.duration / 1440 - 0.125,
-            this.solar.noon.date    = solar_noon - 0.125,
-            this.solar.sunset.date  = sunset - this.solar.sunset.duration / 1440 - 0.125;
+            return {
+                sunrise: { date: sunrise - this.solar.sunrise.duration / 1440 - 0.125, duration: this.solar.sunrise.duration },
+                sunset : { date: sunset - this.solar.sunset.duration / 1440 - 0.125,   duration: this.solar.sunset.duration  },
 
-            this.sunriset_next_update = Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1); // 0.7063657403923571 JD = 4:57:10
+                next_update: Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1) // 0.7063657403923571 JD = 4:57:10
+            };
 
             //console.log('----- computeSunriset() -----');
             //console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
-            //console.log('Noon   : ' + this.convertJulianToGregorian(this.solar.noon.date).toString());
             //console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
-            //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.sunriset_next_update).toString());
+            //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
         }, // End computeSunriset
 
-        //computeSeasons: function() {
-            // TODO
-        //}, // End computeSeasons
+        computeSeasons: function(gDate, geoCoords) {
+            var gYear = gDate.year;
+
+            // Estimated bound for solstice and equinox dates
+            var jDate_vernal_min   = this.convertGregorianToJulian({year: gYear, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
+                jDate_vernal_max   = jDate_vernal_min + 3, // March 23
+                jDate_estival_min  = this.convertGregorianToJulian({year: gYear, month:  6, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // June 20
+                jDate_estival_max  = jDate_estival_min + 3, // June 23
+                jDate_autumnal_min = this.convertGregorianToJulian({year: gYear, month:  9, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // September 20
+                jDate_autumnal_max = jDate_autumnal_min + 3, // September 23
+                jDate_hibernal_min = this.convertGregorianToJulian({year: gYear, month: 12, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // December 20
+                jDate_hibernal_max = jDate_hibernal_min + 3; // December 23
+
+            var jDate_vernal_equinox    = -1, v_day_length = 1,
+                jDate_estival_solstice  = -1, e_day_length = 0,
+                jDate_autumnal_equinox  = -1, a_day_length = 1,
+                jDate_hibernal_solstice = -1, h_day_length = 1,
+                day_length;
+
+            for(var v = jDate_vernal_min; v <= jDate_vernal_max; v++) {
+                day_length = this.computeSunriset(v, geoCoords);
+
+                if(day_length.sunset.date - day_length.sunrise.date < v_day_length) {
+                    jDate_vernal_equinox = v;
+                    v_day_length = day_length.sunset.date - day_length.sunrise.date;
+                }
+            }
+
+            for(var e = jDate_estival_min; e <= jDate_estival_max; e++) {
+                day_length = this.computeSunriset(e, geoCoords);
+
+                if(day_length.sunset.date - day_length.sunrise.date > e_day_length) {
+                    jDate_estival_solstice = e;
+                    e_day_length = day_length.sunset.date - day_length.sunrise.date;
+                }
+            }
+
+            for(var a = jDate_autumnal_min; a <= jDate_autumnal_max; a++) {
+                day_length = this.computeSunriset(a, geoCoords);
+
+                if(day_length.sunset.date - day_length.sunrise.date < a_day_length) {
+                    jDate_autumnal_equinox = a;
+                    a_day_length = day_length.sunset.date - day_length.sunrise.date;
+                }
+            }
+
+            for(var h = jDate_hibernal_min; h <= jDate_hibernal_max; h++) {
+                day_length = this.computeSunriset(h, geoCoords);
+
+                if(day_length.sunset.date - day_length.sunrise.date < h_day_length) {
+                    jDate_hibernal_solstice = h;
+                    h_day_length = day_length.sunset.date - day_length.sunrise.date;
+                }
+            }
+
+            return {
+                vernal  : jDate_vernal_equinox,
+                estival : jDate_estival_solstice,
+                autumnal: jDate_autumnal_equinox,
+                hibernal: jDate_hibernal_solstice
+            };
+        }, // End computeSeasons
 
         //---------------------------------------------------------------------
         // Utility Functions
