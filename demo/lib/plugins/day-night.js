@@ -358,7 +358,7 @@ ig.module(
             return new Date(Y, M - 1, D, H, N, S, m);
         }, // End convertJulianToGregorian
 
-        // Computes sunrise and sunset for specified date and geographical coordinates
+        // Computes the approximate sunrise and sunset time for specified date and geographical coordinates
         computeSunriset: function(jDate, geoCoords) {
             var julianCycle        = Math.round((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)),
                 solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
@@ -399,17 +399,71 @@ ig.module(
             //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
         }, // End computeSunriset
 
+        // Compute the solstices, equinoxes, and current season based on specified specified date
+        //
+        // NOTE: This algorithm has no creditable source (or at least that I can find); it was
+        //       something I made up. I was trying to find some form of mathematical equation to
+        //       compute solstices and equinoxes but with no luck. So, I used various tiny bits of
+        //       information gathered from various sources along with general knowledge and
+        //       constructed my own algorithm. I then compared the final results against some
+        //       precomputed tables of solstices and equinoxes, with some degree of inaccuracy.
+        //
+        // General Algorithm Outline:
+        //      0. Information gathering and assumptions
+        //          a. Assume day length (sunrise - sunset) can be computed for arbitrary days.
+        //          b. Assume vernal equinox occurs between March 20 and March 23.
+        //             Assume estival solstice occurs between June 20 and June 23.
+        //             Assume autumnal equinox occurs between September 20 and September 23.
+        //             Assume hibernal solstice occurs between December 20 and December 23.
+        //      1. Computation of vernal equinox
+        //          a. For each potential day of vernal equinox, compute day length.
+        //          b. Of all potential days of vernal equinox, take the day where day length is
+        //             closest to 12 hours. This day is the vernal equinox.
+        //             This is because:
+        //                 vernal equinox: day length = night length
+        //                 day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+        //      2. Computation of estival solstice
+        //          a. For each potential day of estival solstice, compute day length.
+        //          b. Of all potential days of estival solstice, take the day where day length is
+        //             greatest. This day is the estival solstice.
+        //             This is because:
+        //                 estival solstice: longest day
+        //                 longest day = greatest day length
+        //      3. Computation of autumnal equinox
+        //          a. For each potential day of autumnal equinox, compute day length.
+        //          b. Of all potential days of autumnal equinox, take the day where day length is
+        //             closest to 12 hours. This day is the autumnal equinox.
+        //             This is because:
+        //                 autumnal equinox: day length = night length
+        //                 day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+        //      4. Computation of hibernal solstice
+        //          a. For each potential day of hibernal solstice, compute day length.
+        //          b. Of all potential days of hibernal solstice, take the day where day length is
+        //             least value. This day is the hibernal solstice.
+        //             This is because:
+        //                 hibernal solstice: shortest day
+        //                 shortest day = least day length
+        //      5. Computation of current season
+        //         Once solstices and equinoxes are determined, take current date (and time) and
+        //         compare it against solstices and equinoxes.
+        //          a. If current date falls between vernal equinox (inclusive) and estival
+        //             solstice (exclusive), current date is in vernal season (Spring).
+        //          b. If current date falls between estival solstice (inclusive) and autumnal
+        //             equinox (exclusive), current date is in estival season (Summer).
+        //          c. If current date falls between autumnal equinox (inclusive) and hibernal
+        //             solstice (exclusive), current date is in autumnal season (Autumn).
+        //          d. If current date falls between hibernal solstice (inclusive) and vernal
+        //             equinox (exclusive), current date is in hibernal season (Winter).
         computeSeasons: function(gDate, geoCoords) {
-            var gYear = gDate.year;
-
             // Estimated bound for solstice and equinox dates
-            var jDate_vernal_min   = this.convertGregorianToJulian({year: gYear, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
+            // TODO: Account for arbitrary latitudes (for polar day and polar night)
+            var jDate_vernal_min   = this.convertGregorianToJulian({year: gDate.year, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
                 jDate_vernal_max   = jDate_vernal_min + 3, // March 23
-                jDate_estival_min  = this.convertGregorianToJulian({year: gYear, month:  6, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // June 20
+                jDate_estival_min  = this.convertGregorianToJulian({year: gDate.year, month:  6, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // June 20
                 jDate_estival_max  = jDate_estival_min + 3, // June 23
-                jDate_autumnal_min = this.convertGregorianToJulian({year: gYear, month:  9, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // September 20
+                jDate_autumnal_min = this.convertGregorianToJulian({year: gDate.year, month:  9, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // September 20
                 jDate_autumnal_max = jDate_autumnal_min + 3, // September 23
-                jDate_hibernal_min = this.convertGregorianToJulian({year: gYear, month: 12, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // December 20
+                jDate_hibernal_min = this.convertGregorianToJulian({year: gDate.year, month: 12, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // December 20
                 jDate_hibernal_max = jDate_hibernal_min + 3; // December 23
 
             var jDate_vernal_equinox    = -1, v_day_length = 1,
@@ -418,6 +472,7 @@ ig.module(
                 jDate_hibernal_solstice = -1, h_day_length = 1,
                 day_length;
 
+            // Compute vernal equinox
             for(var v = jDate_vernal_min; v <= jDate_vernal_max; v++) {
                 day_length = this.computeSunriset(v, geoCoords);
 
@@ -427,6 +482,7 @@ ig.module(
                 }
             }
 
+            // Compute estival solstice
             for(var e = jDate_estival_min; e <= jDate_estival_max; e++) {
                 day_length = this.computeSunriset(e, geoCoords);
 
@@ -436,6 +492,7 @@ ig.module(
                 }
             }
 
+            // Compute autumnal equinox
             for(var a = jDate_autumnal_min; a <= jDate_autumnal_max; a++) {
                 day_length = this.computeSunriset(a, geoCoords);
 
@@ -445,6 +502,7 @@ ig.module(
                 }
             }
 
+            // Compute hibernal solstice
             for(var h = jDate_hibernal_min; h <= jDate_hibernal_max; h++) {
                 day_length = this.computeSunriset(h, geoCoords);
 
@@ -454,8 +512,9 @@ ig.module(
                 }
             }
 
+            // Determine current season based on current date relative to solstices and equinoxs
             var jDate = this.convertGregorianToJulian(gDate);
-            if(jDate < jDate_vernal_equinox)
+            if(jDate < jDate_vernal_equinox || jDate >= jDate_hibernal_solstice)
                 this.season_state = 3;
             else if(jDate < jDate_estival_solstice)
                 this.season_state = 0;
