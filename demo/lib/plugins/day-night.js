@@ -212,7 +212,7 @@ ig.module(
 
                 ig.system.context.fillStyle = '#ffff00';
                 ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString() + ' | ' + jDate_curr.toFixed(8) + ' JD', x, y += 15);
-                ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid>'), x, y += 15);
+                ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid sun state>'), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString() + ' | ' + this.solar.sunrise.date.toFixed(8) + ' JD', x, y += 15);
@@ -220,10 +220,14 @@ ig.module(
 
                 ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.solar.next_update).toString(), x, y += 15);
 
-                ig.system.context.fillText('Spring : ' + this.convertJulianToGregorian(this.season.vernal).toString(), x, y += 15);
-                ig.system.context.fillText('Summer : ' + this.convertJulianToGregorian(this.season.estival).toString(), x, y += 10);
-                ig.system.context.fillText('Autumn : ' + this.convertJulianToGregorian(this.season.autumnal).toString(), x, y += 10);
-                ig.system.context.fillText('Winter : ' + this.convertJulianToGregorian(this.season.hibernal).toString(), x, y += 10);
+                ig.system.context.fillStyle = '#ffff00';
+                ig.system.context.fillText('Season state: ' + (this.season_state === 0 ? 'Spring' : this.season_state === 1 ? 'Summer' : this.season_state === 2 ? 'Autumn' : this.season_state === 3 ? 'Winter' : '<invalid season state>'), x, y += 15);
+
+                ig.system.context.fillStyle = '#ffffff';
+                ig.system.context.fillText('Spring : ' + this.convertJulianToGregorian(this.season.vernal_equinox).toString() + ' | ' + this.season.vernal_equinox.toFixed(8) + ' JD', x, y += 15);
+                ig.system.context.fillText('Summer : ' + this.convertJulianToGregorian(this.season.estival_solstice).toString() + ' | ' + this.season.estival_solstice.toFixed(8) + ' JD', x, y += 10);
+                ig.system.context.fillText('Autumn : ' + this.convertJulianToGregorian(this.season.autumnal_equinox).toString() + ' | ' + this.season.autumnal_equinox.toFixed(8) + ' JD', x, y += 10);
+                ig.system.context.fillText('Winter : ' + this.convertJulianToGregorian(this.season.hibernal_solstice).toString() + ' | ' + this.season.hibernal_solstice.toFixed(8) + ' JD', x, y += 10);
             }
             // ----- End debug -----
         }, // End draw
@@ -288,6 +292,16 @@ ig.module(
                 this.gregorianDate.hour -= 24;
                 this.gregorianDate.day++;
             }
+
+            var jDate = this.convertGregorianToJulian(this.gregorianDate);
+            if(jDate < this.season.vernal_equinox)
+                this.season_state = 3;
+            else if(jDate < this.season.estival_solstice)
+                this.season_state = 0;
+            else if(jDate < this.season.autumnal_equinox)
+                this.season_state = 1;
+            else if(jDate < this.season.hibernal_solstice)
+                this.season_state = 2;
         }, // End updateDateTime
 
         // Convert Gregorian Date to Julian Date
@@ -440,11 +454,21 @@ ig.module(
                 }
             }
 
+            var jDate = this.convertGregorianToJulian(gDate);
+            if(jDate < jDate_vernal_equinox)
+                this.season_state = 3;
+            else if(jDate < jDate_estival_solstice)
+                this.season_state = 0;
+            else if(jDate < jDate_autumnal_equinox)
+                this.season_state = 1;
+            else if(jDate < jDate_hibernal_solstice)
+                this.season_state = 2;
+
             return {
-                vernal  : jDate_vernal_equinox,
-                estival : jDate_estival_solstice,
-                autumnal: jDate_autumnal_equinox,
-                hibernal: jDate_hibernal_solstice
+                vernal_equinox   : jDate_vernal_equinox,
+                estival_solstice : jDate_estival_solstice,
+                autumnal_equinox : jDate_autumnal_equinox,
+                hibernal_solstice: jDate_hibernal_solstice
             };
         }, // End computeSeasons
 
