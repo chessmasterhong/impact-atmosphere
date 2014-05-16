@@ -6,8 +6,9 @@
  *
  *  Kevin Chan (chessmasterhong)
  *
- *  A plugin for the Impact game engine that simulates day/night cycles based
- *  on configurable time of day, day of year, and geographical coordinates.
+ *  A plugin for the Impact game engine that simulates day/night cycles and
+ *  seasonal cycles based on configurable date, time, and geographical
+ *  coordinates.
  *
  *  Based on:
  *      http://aa.quae.nl/en/antwoorden/seizoenen.html

@@ -1,6 +1,6 @@
-# Impact Day/Night Cycle Plugin
+# Impact Day/Night and Seasonal Cycle Plugin
 
-A plugin for the Impact game engine that simulates a day/night system and season system based on configurable date, time, and geographical coordinates.
+A plugin for the [Impact game engine](http://impactjs.com) that simulates day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.
 
 
 ## Features
@@ -11,10 +11,10 @@ A plugin for the Impact game engine that simulates a day/night system and season
     * Configurable initial plugin date and time
     * Configurable geographical coordinates
     * Configurable brightness/darkness of nights (for those who like brighter/darker nights)
-* Day/Night System
+* Day/Night Cycle System
     * Variable length of day and night based on day of year and geographical coordinates
     * Dynamic ambient brightness during sunrise and sunset
-* Season System
+* Seasonal Cycle System
     * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
     * Current season detection based on current date and time relative to year
 
@@ -56,6 +56,15 @@ A plugin for the Impact game engine that simulates a day/night system and season
         this.daynight.draw();
 
 6. That's it! Start up your game and enjoy!
+
+*If you are still unclear about the usage, see the demo for additional details.*
+
+
+## Demonstration
+
+Located in the `demo` directory is a demonstration of the plugin. I also use this as my development testing grounds, so it should be up-to-date.
+
+All you need to do is place the Impact game engine source code (sorry, batteries not included) into the `lib/impact/` directory of the `demo` directory. Then, start up your game. Everything should be preconfigured for you already.
 
 
 ## Configuration
