@@ -7,5 +7,39 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
+
+        <p><em>(to show/hide debug messages, left click the canvas)</em></p>
+
+        <p>Timescale:
+            <button id="ts_0.1x">0.1x</button>
+            <button id="ts_0.5x">0.5x</button>
+            <button id="ts_1x">1x (default)</button>
+            <button id="ts_60x">60x</button>
+            <button id="ts_3600x">3600x</button>
+            <button id="ts_86400x">86400x</button>
+            <button id="ts_2592000x">2592000x</button>
+        </p>
+
+        <p>Update Rate:
+            <button id="ur_0.1">0.1 second</button>
+            <button id="ur_1">1 second</button>
+            <button id="ur_10">10 seconds</button>
+            <button id="ur_60">60 seconds (default)</button>
+        </p>
+
+        <script>
+            document.getElementById('ts_0.1x').onclick = function() { ig.game.daynight.timescale = 0.1; };
+            document.getElementById('ts_0.5x').onclick = function() { ig.game.daynight.timescale = 0.5; };
+            document.getElementById('ts_1x').onclick = function() { ig.game.daynight.timescale = 1; };
+            document.getElementById('ts_60x').onclick = function() { ig.game.daynight.timescale = 60; };
+            document.getElementById('ts_3600x').onclick = function() { ig.game.daynight.timescale = 3600; };
+            document.getElementById('ts_86400x').onclick = function() {ig.game.daynight.timescale = 86400; };
+            document.getElementById('ts_2592000x').onclick = function() {ig.game.daynight.timescale = 2592000; };
+
+            document.getElementById('ur_0.1').onclick = function() { ig.game.daynight.updateUpdateRate(0.1); }
+            document.getElementById('ur_1').onclick = function() { ig.game.daynight.updateUpdateRate(1); }
+            document.getElementById('ur_10').onclick = function() { ig.game.daynight.updateUpdateRate(10); }
+            document.getElementById('ur_60').onclick = function() { ig.game.daynight.updateUpdateRate(60); }
+        </script>
     </body>
 </html>
