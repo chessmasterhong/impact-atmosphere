@@ -1,14 +1,22 @@
 # Impact Day/Night Cycle Plugin
 
-A plugin for the Impact game engine that simulates a day/night system based on configurable date, time, and geographical coordinates.
+A plugin for the Impact game engine that simulates a day/night system and season system based on configurable date, time, and geographical coordinates.
 
 
 ## Features
 
-* Variable length of day and night based on time of year and geographical coordinates
-* Dynamic ambient brightness during sunrise and sunset
-* Season detection (Spring/Vernal, Summer/Estival, Autumn/Autumnal, Winter/Hibernal)
-* Time speed multiplier to cycle through day and night faster or slower
+* General
+    * Configurable time speed multiplier to cycle through day and night faster or slower
+    * Configurable update rate to update plugin more or less frequently
+    * Configurable initial plugin date and time
+    * Configurable geographical coordinates
+    * Configurable brightness/darkness of nights (for those who like brighter/darker nights)
+* Day/Night System
+    * Variable length of day and night based on day of year and geographical coordinates
+    * Dynamic ambient brightness during sunrise and sunset
+* Season System
+    * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
+    * Current season detection based on current date and time relative to year
 
 
 ## Basic Usage
@@ -95,16 +103,13 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 ## Bugs and Known Issues
 
 * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
-* Frequently, the Gregorian Date may display the seconds off by 1 second (i.e., the plugin date may have a 0 or 2 second increase). Do not worry too much about this though; the values during the round-off were just omitted for that single calculation and will correct itself in subsequent calculations (hence the 0 second increase will offset the 2 second increase and vice versa). Check your computer's clock time and see it for yourself.
-* Extremely large timescales (timescale > ~2419200) are not handled properly (plugin still needs to account for variable days, hours, minutes, seconds in months, years, and leap years).
 
 
 ## TODO
 
 * Fix calculations and add support for arbitrary timezones.
-* Improve overflow date handling for arbitrary timescales.
-* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
+* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
 
 
 ## Credits
