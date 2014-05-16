@@ -72,7 +72,7 @@ A plugin for the Impact game engine that simulates a day/night system and season
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.daynight.update_rate = 60;    // Update plugin every 60 seconds
+      this.daynight.updateUpdateRate(60);    // Update plugin every 60 seconds
 
 * To configure the time speed multiplier the plugin should run at:
 
