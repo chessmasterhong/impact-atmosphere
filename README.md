@@ -5,15 +5,15 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ## Features
 
-
+* Variable length of day and night based on time of year and geographical coordinates
 * Dynamic ambient brightness during sunrise and sunset
-* Variable length of day and night based on geographical coordinates
-* Time speed multiplier to cycle through day and night quicker or slower
+* Season detection (Spring/Vernal, Summer/Estival, Autumn/Autumnal, Winter/Hibernal)
+* Time speed multiplier to cycle through day and night faster or slower
 
 
 ## Basic Usage
 
-1. To initialize the plugin: in your `init` method of your main game, you may add any **one** of the following:
+1. To initialize the plugin: in your `init` method of your main game, you may choose from **one** of the following:
 
     a. To use **all default** settings:
 
@@ -100,8 +100,6 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 * Fix calculations and add support for arbitrary timezones.
 * Improve overflow date handling for arbitrary timescales.
 * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
-* Compute solstices' and equinoxes' date and time based on geographical coordinates.
-* Compute seasons based on solstices and equinoxes.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
 
 
@@ -109,6 +107,7 @@ A plugin for the Impact game engine that simulates a day/night system based on c
 
 ### Based on
 
+* [http://aa.quae.nl/en/antwoorden/seizoenen.html](http://aa.quae.nl/en/antwoorden/seizoenen.html)
 * [http://aa.quae.nl/en/reken/juliaansedag.html](http://aa.quae.nl/en/reken/juliaansedag.html)
 * [http://aa.quae.nl/en/reken/zonpositie.html](http://aa.quae.nl/en/reken/zonpositie.html)
 * [http://aa.usno.navy.mil/data/docs/JulianDate.php](http://aa.usno.navy.mil/data/docs/JulianDate.php)
