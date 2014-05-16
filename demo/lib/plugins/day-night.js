@@ -115,8 +115,7 @@ ig.module(
             // ----- End sanity checks -----
 
             this.setDateTime(datetime);
-            this.update_rate = update_rate;
-            this.updateTimer = new ig.Timer(this.update_rate);
+            this.updateUpdateRate(update_rate);
             this.timescale = timescale;
 
             //console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
@@ -126,8 +125,8 @@ ig.module(
             //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
             //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
-            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
             this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
+            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
         }, // End init
         //---------------------------------------------------------------------
 
@@ -142,15 +141,16 @@ ig.module(
                 this.updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
-                if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.next_update) {
-                    //console.log('----- Time to recompute sunriset -----');
-                    this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
-                }
-
-                //console.log(this.gregorianDate.year - this.convertJulianToGregorian(this.season.vernal_equinox).getFullYear())
+                // Recompute solstices, equinoxes, and current season for new year
                 if(this.gregorianDate.year !== this.convertJulianToGregorian(this.season.vernal_equinox).getFullYear()) {
                     //console.log('----- Time to recompute seasons -----');
                     this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
+                }
+
+                // Recompute sunrise and sunset times for new day
+                if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.next_update) {
+                    //console.log('----- Time to recompute sunriset -----');
+                    this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
                 }
             }
         }, // End update
@@ -283,6 +283,11 @@ ig.module(
                 this.season_state = 2;
         }, // End updateDateTime
 
+        updateUpdateRate: function(new_update_rate) {
+            this.update_rate = new_update_rate;
+            this.updateTimer = new ig.Timer(new_update_rate);
+        },
+
         // Convert Gregorian Date to Julian Date
         convertGregorianToJulian: function(gDate) {
             var gYear        = gDate.year,
@@ -296,7 +301,7 @@ ig.module(
                 b = gYear + a,
                 c = Math.floor(b / 100),
                 d = b % 100,
-                e = gMonth - 12 * a - 3
+                e = gMonth - 12 * a - 3;
 
             return Math.floor(146097 * c / 4) +
                    Math.floor(36525 * d / 100) +
@@ -304,8 +309,8 @@ ig.module(
                    gDay + 1721119 +
                    (gHour - 12) / 24 +
                    gMinute / 1440 +
-                   gSecond / 86400;
-                   //+ gMillisecond / 86400000;
+                   gSecond / 86400 +
+                   gMillisecond / 86400000;
         }, // End convertGregorianToJulian
 
         // Convert Julian Date to Gregorian Date
