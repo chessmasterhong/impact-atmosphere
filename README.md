@@ -103,13 +103,15 @@ A plugin for the Impact game engine that simulates a day/night system and season
 ## Bugs and Known Issues
 
 * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
+* Plugin breaks (fails in its computations) when the latitude becomes too large (as it approaches the North and South Poles, specifically around the Arctic and Antarctic Circles).
 
 
 ## TODO
 
 * Fix calculations and add support for arbitrary timezones.
+* Fix calculations and add support for arbitrary latitudes.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
-* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration.
+* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration. (Maybe consider looking at [Rayleigh scattering](http://en.wikipedia.org/wiki/Rayleigh_scattering) and [Mie scattering](http://en.wikipedia.org/wiki/Mie_scattering)?).
 
 
 ## Credits
