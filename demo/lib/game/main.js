@@ -3,6 +3,7 @@ ig.module(
 )
 .requires(
     'impact.game',
+    'impact.debug.debug',
     'game.levels.demo',
     'game.levels.demo2',
     'plugins.day-night',
@@ -31,6 +32,7 @@ ig.module(
                 this.daynight.debug = !this.daynight.debug;
 
             this.daynight.update();
+            this.weather.update();
         },
 
         draw: function() {
