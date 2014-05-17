@@ -53,7 +53,8 @@ ig.module(
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
                         ig.game.screen.y
                     );
-                }
+                } else
+                    this.nextParticle.set(0);
             } else if(this.condition === 2) {
                 // Snow
                 if(this.nextParticle.delta() >= 0 && this.particles.curr < this.particles.max) {
@@ -64,7 +65,8 @@ ig.module(
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
                         ig.game.screen.y
                     );
-                }
+                } else
+                    this.nextParticle.set(0);
             } else {
                 if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
                     var r = ig.game.getEntitiesByType(EntityRain)[0];
