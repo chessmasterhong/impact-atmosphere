@@ -25,24 +25,28 @@ ig.module(
         // 0 = clear, 1 = rain, 2 = snow, 3 = fog (EXPERIMENTAL!!)
         condition: 0,
 
-        max_particles: 100,
+        particles: {
+            max: 100,
+            curr: 0
+        },
 
         //---------------------------------------------------------------------
         // Init
         init: function() {
-            if(this.condition)
-                this.nextParticle = new ig.Timer();
         }, // End init
         //---------------------------------------------------------------------
 
         //---------------------------------------------------------------------
         // Update
         update: function() {
+            if(this.condition && typeof this.nextParticle === 'undefined')
+                this.nextParticle = new ig.Timer();
+
             // Generate particles based on weather condition
             if(this.condition === 1) {
                 // Rain
-                if(this.nextParticle.delta() >= 0 && this.max_particles > 0) {
-                    this.max_particles--;
+                if(this.nextParticle.delta() >= 0 && this.particles.curr < this.particles.max) {
+                    this.particles.curr++;
                     this.nextParticle.set(1 / ig.system.height);
                     ig.game.spawnEntity(
                         EntityRain,
@@ -52,14 +56,30 @@ ig.module(
                 }
             } else if(this.condition === 2) {
                 // Snow
-                if(this.nextParticle.delta() >= 0 && this.max_particles > 0) {
-                    this.max_particles--;
-                    this.nextParticle.set(1 / this.max_particles);
+                if(this.nextParticle.delta() >= 0 && this.particles.curr < this.particles.max) {
+                    this.particles.curr++;
+                    this.nextParticle.set(1 / (this.particles.max - this.particles.curr));
                     ig.game.spawnEntity(
                         EntitySnow,
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
                         ig.game.screen.y
                     );
+                }
+            } else {
+                if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
+                    var r = ig.game.getEntitiesByType(EntityRain)[0];
+                    if(typeof r !== 'undefined') {
+                        r.kill();
+                        this.particles.curr--;
+                    }
+
+                    var s = ig.game.getEntitiesByType(EntitySnow)[0];
+                    if(typeof s !== 'undefined') {
+                        s.kill();
+                        this.particles.curr--;
+                    }
+
+                    this.nextParticle.set(2 / this.particles.curr);
                 }
             }
         }, // End update
@@ -75,7 +95,7 @@ ig.module(
                 for(var x = ig.game.screen.x; x < ig.game.screen.x + ig.system.width; x += size) {
                     for(var y = ig.game.screen.y; y < ig.game.screen.y + ig.system.height; y += size) {
                         r = g = b = Math.round(255 * PerlinNoise.noise(size * x / ig.system.width, size * y / ig.system.height, 0.6));
-                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)'
+                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)';
                         ig.system.context.fillRect(x, y, size, size);
                     }
                 }
@@ -117,6 +137,7 @@ ig.module(
             ig.system.context.beginPath();
             ig.system.context.moveTo(this.pos.x, this.pos.y);
             ig.system.context.lineTo(this.pos.x + this.vel.x * 0.05, this.pos.y + this.vel.y * 0.025);
+            ig.system.context.closePath();
             ig.system.context.stroke();
         },
 
@@ -157,13 +178,14 @@ ig.module(
             // Draw snow
             ig.system.context.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ig.system.context.beginPath();
-            ig.system.context.arc(
-                this.pos.x,
-                this.pos.y,
-                this.radius,
-                0,
-                2 * Math.PI
-            );
+                ig.system.context.arc(
+                    this.pos.x,
+                    this.pos.y,
+                    this.radius,
+                    0,
+                    2 * Math.PI
+                );
+            ig.system.context.closePath();
             ig.system.context.fill();
         },
 
@@ -234,5 +256,5 @@ ig.module(
             return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
         },
         scale: function(n) { return (1 + n) / 2; }
-    }
+    };
 });
