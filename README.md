@@ -113,8 +113,13 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
 ## Bugs and Known Issues
 
-* Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
-* Plugin breaks (fails in its computations) when the latitude becomes too large (as it approaches the North and South Poles, specifically around the Arctic and Antarctic Circles).
+* Day/Night Cycle System
+    * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
+    * Plugin breaks (fails in its computations) when the latitude becomes too large (as it approaches the North and South Poles, specifically around the Arctic and Antarctic Circles).
+* Seasonal Cycle System
+    * (none at the moment)
+* Weather System
+    * The current method of generating fog is *very* slow and is considered experimental.
 
 
 ## TODO
@@ -123,6 +128,7 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 * Fix calculations and add support for arbitrary latitudes.
 * Compute sunrise and sunset duration based on season and geographical coordinates.
 * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration. (Maybe consider looking at [Rayleigh scattering](http://en.wikipedia.org/wiki/Rayleigh_scattering) and [Mie scattering](http://en.wikipedia.org/wiki/Mie_scattering)?).
+* Improve method to generate fog faster.
 
 
 ## Credits
@@ -141,6 +147,7 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
 * [2D Lost Garden Zelda Style Tiles](http://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-to-32x32-with-additions) by Daniel Cook, Jetrel, Saphy, Zabin, and Bertram
 * [Snow Emitter](https://github.com/ansimuz/snow-emitter) by ansimuz (for the base code that this plugin's snow and rain generator is based on)
+* [JavaScript port of Perlin noise](http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html) by Kas Thomas
 
 
 ## Disclaimer
