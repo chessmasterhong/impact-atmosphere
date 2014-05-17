@@ -39,6 +39,7 @@ ig.module(
             this.parent();
 
             this.daynight.draw();
+            this.weather.draw();
         }
     });
 
