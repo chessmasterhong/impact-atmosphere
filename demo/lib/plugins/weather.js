@@ -137,9 +137,9 @@ ig.module(
             // ----- End debug -----
         } // End draw
         //---------------------------------------------------------------------
-    });
+    }); // End ig.Weather
 
-    //#########################################################################
+    //-------------------------------------------------------------------------
     // Particles
 
     // Rain particle
@@ -254,6 +254,9 @@ ig.module(
         }
     }); // End EntitySnow
 
+    // End particles
+    //-------------------------------------------------------------------------
+
     // Perlin Noise Generator
     //
     // My modifications: Minor code adaptation for use in ImpactJS. Algorithm remains unmodified.
@@ -315,5 +318,5 @@ ig.module(
             return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
         },
         scale: function(n) { return (1 + n) / 2; }
-    };
+    }; // End PerlinNoise
 });

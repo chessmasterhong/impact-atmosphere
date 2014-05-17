@@ -3,23 +3,25 @@ ig.module(
 )
 .requires(
     'impact.game',
-    'impact.debug.debug',
-    'game.levels.demo',
+    //'game.levels.demo',
     'game.levels.demo2',
-    'plugins.atmosphere',
+    'plugins.atmosphere', // Add plugin to .requires section
     'plugins.weather'
 )
 .defines(function() {
     var MainGame = ig.Game.extend({
         init: function() {
             // Initialize Atmospheric System Plugin
+            // Used to setup necessary components for plugin to begin operation
             // Start from current date and time, updating every 0.5 seconds, running at 600x real time
             // (0.5 real_sec/update) * (600 plugin_secs/real_sec) = (300 plugin_secs/update) * (1/60 plugin_min/plugin_sec) = 5 plugin_mins/update
             this.atmosphere = new ig.Atmosphere(new Date(), 0.5, 600);
             this.weather = new ig.Weather();
 
+            // Bind a key for togging debug messages
             ig.input.bind(ig.KEY.MOUSE1, 'click');
 
+            // Load a level
             //this.loadLevel(LevelDemo);
             this.loadLevel(LevelDemo2);
         },
@@ -31,6 +33,8 @@ ig.module(
             if(ig.input.pressed('click'))
                 this.atmosphere.debug = !this.atmosphere.debug;
 
+            // Call plugin's update method
+            // Used to update plugin's computations
             this.atmosphere.update();
             this.weather.update();
         },
@@ -38,6 +42,8 @@ ig.module(
         draw: function() {
             this.parent();
 
+            // Call plugin's draw method
+            // Used to draw and update plugin's elements in canvas
             this.atmosphere.draw();
             this.weather.draw();
         }
