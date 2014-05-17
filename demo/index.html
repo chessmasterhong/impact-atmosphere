@@ -27,19 +27,31 @@
             <button id="ur_60">60 seconds (default)</button>
         </p>
 
-        <script>
-            document.getElementById('ts_0.1x').onclick = function() { ig.game.daynight.timescale = 0.1; };
-            document.getElementById('ts_0.5x').onclick = function() { ig.game.daynight.timescale = 0.5; };
-            document.getElementById('ts_1x').onclick = function() { ig.game.daynight.timescale = 1; };
-            document.getElementById('ts_60x').onclick = function() { ig.game.daynight.timescale = 60; };
-            document.getElementById('ts_3600x').onclick = function() { ig.game.daynight.timescale = 3600; };
-            document.getElementById('ts_86400x').onclick = function() {ig.game.daynight.timescale = 86400; };
-            document.getElementById('ts_2592000x').onclick = function() {ig.game.daynight.timescale = 2592000; };
+        <p>Weather Condition:
+            <button id="w_clear">Clear (default)</button>
+            <button id="w_rain">Rain</button>
+            <button id="w_snow">Snow</button>
+            <button id="w_fog">Fog (EXPERIMENTAL!!)</button>
+        </p>
 
-            document.getElementById('ur_0.1').onclick = function() { ig.game.daynight.updateUpdateRate(0.1); }
-            document.getElementById('ur_1').onclick = function() { ig.game.daynight.updateUpdateRate(1); }
-            document.getElementById('ur_10').onclick = function() { ig.game.daynight.updateUpdateRate(10); }
-            document.getElementById('ur_60').onclick = function() { ig.game.daynight.updateUpdateRate(60); }
+        <script>
+            document.getElementById('ts_0.1x').onclick     = function() { ig.game.daynight.timescale =       0.1; };
+            document.getElementById('ts_0.5x').onclick     = function() { ig.game.daynight.timescale =       0.5; };
+            document.getElementById('ts_1x').onclick       = function() { ig.game.daynight.timescale =       1;   };
+            document.getElementById('ts_60x').onclick      = function() { ig.game.daynight.timescale =      60;   };
+            document.getElementById('ts_3600x').onclick    = function() { ig.game.daynight.timescale =    3600;   };
+            document.getElementById('ts_86400x').onclick   = function() { ig.game.daynight.timescale =   86400;   };
+            document.getElementById('ts_2592000x').onclick = function() { ig.game.daynight.timescale = 2592000;   };
+
+            document.getElementById('ur_0.1').onclick = function() { ig.game.daynight.updateUpdateRate( 0.1); };
+            document.getElementById('ur_1').onclick   = function() { ig.game.daynight.updateUpdateRate( 1  ); };
+            document.getElementById('ur_10').onclick  = function() { ig.game.daynight.updateUpdateRate(10  ); };
+            document.getElementById('ur_60').onclick  = function() { ig.game.daynight.updateUpdateRate(60  ); };
+
+            document.getElementById('w_clear').onclick = function() { ig.game.weather.condition = 0; };
+            document.getElementById('w_rain').onclick  = function() { ig.game.weather.condition = 1; };
+            document.getElementById('w_snow').onclick  = function() { ig.game.weather.condition = 2; };
+            document.getElementById('w_fog').onclick   = function() { ig.game.weather.condition = 3; };
         </script>
     </body>
 </html>
