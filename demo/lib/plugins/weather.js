@@ -26,8 +26,8 @@ ig.module(
         condition: 0,
 
         particles: {
-            max: 100,
-            curr: 0
+            max: 100, // Maximum number of particles to generate before stopping
+            curr: 0   // Keep track of current number of particles
         },
 
         //---------------------------------------------------------------------
@@ -108,16 +108,23 @@ ig.module(
 
     //#########################################################################
     // Particles
+
+    // Rain particle
     var EntityRain = ig.Entity.extend({
         vel: {x: 20, y: 400},
         maxVel: {x: 100, y: 400},
+
+        weight: 1,
 
         init: function(x, y, settings) {
             this.parent(x, y, settings);
 
             // Randomize initial velocity
-            //this.vel.x *= Math.random() * 2 - 1;
-            //this.vel.y *= Math.abs(Math.random() * 2 - 1); // Rain should not "fall" upwards...
+            this.vel.x *= Math.random() + 0.5; // 0.5 - 1.5
+            this.vel.y *= Math.random() + 1;   // 1.0 - 2.0 (rain should not "fall" upwards...)
+
+            // Randomize raindrop weight
+            this.weight = Math.random() + 0.5; // 0.5 - 1.5
         },
 
         update: function() {
@@ -136,9 +143,10 @@ ig.module(
         draw: function() {
             // Draw rain
             ig.system.context.strokeStyle = 'rgba(200, 200, 200, 0.6)';
+            ig.system.context.lineWidth = this.weight;
             ig.system.context.beginPath();
             ig.system.context.moveTo(this.pos.x, this.pos.y);
-            ig.system.context.lineTo(this.pos.x + this.vel.x * 0.05, this.pos.y + this.vel.y * 0.025);
+            ig.system.context.lineTo(this.pos.x + this.vel.x * 0.05, this.pos.y + this.vel.y * 0.02);
             ig.system.context.closePath();
             ig.system.context.stroke();
         },
@@ -149,18 +157,22 @@ ig.module(
         }
     }); // End EntityRain
 
+    // Snow particle
     var EntitySnow = ig.Entity.extend({
         vel: {x: 60, y: 80},
         maxVel: {x: 100, y: 100},
 
-        radius: 1.5,
+        radius: 1,
 
         init: function(x, y, settings) {
             this.parent(x, y, settings);
 
             // Randomize initial velocity
-            this.vel.x *= Math.random() * 2 - 1;
-            this.vel.y *= Math.abs(Math.random() * 2 - 1); // Snow should not "fall" upwards...
+            this.vel.x *= Math.random() * 2 - 1; // -1.0 - 1.0
+            this.vel.y *= Math.abs(Math.random() * 2 - 1); // 0.0 - 1.0 (skewed towards 0) (snow should not "fall" upwards...)
+
+            // Randomize snow particle size
+            this.radius = Math.random() * 0.5 + 1 // 1.0 - 1.5
         },
 
         update: function() {
