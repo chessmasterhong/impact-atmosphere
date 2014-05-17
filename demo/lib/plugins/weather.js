@@ -26,8 +26,8 @@ ig.module(
         condition: 0,
 
         particles: {
-            max: 100, // Maximum number of particles to generate before stopping
-            curr: 0   // Keep track of current number of particles
+            max : 100, // Maximum number of particles to generate before stopping
+            curr: 0    // Keep track of current number of particles
         },
 
         //---------------------------------------------------------------------
@@ -114,17 +114,22 @@ ig.module(
         vel: {x: 20, y: 400},
         maxVel: {x: 100, y: 400},
 
-        weight: 1,
+        lifetime: 10, // Raindrop lifetime
+        weight: 1,    // Raindrop weight
 
         init: function(x, y, settings) {
             this.parent(x, y, settings);
 
+            // Randomize raindrop lifetime
+            this.lifetime = ig.system.height / this.vel.y;
+            this.lifetimeTimer = new ig.Timer(Math.abs(Math.random() * this.lifetime * 1.5 - this.lifetime) + this.lifetime / 2); // Range: 0.5 - lifetime (skewed towards lifetime)
+
             // Randomize initial velocity
-            this.vel.x *= Math.random() + 0.5; // 0.5 - 1.5
-            this.vel.y *= Math.random() + 1;   // 1.0 - 2.0 (rain should not "fall" upwards...)
+            this.vel.x *= Math.random() + 0.5; // Range: 0.5 - 1.5
+            this.vel.y *= Math.random() + 1;   // Range: 1.0 - 2.0 (rain should not "fall" upwards...)
 
             // Randomize raindrop weight
-            this.weight = Math.random() + 0.5; // 0.5 - 1.5
+            this.weight = Math.random() + 0.5; // Range: 0.5 - 1.5
         },
 
         update: function() {
@@ -132,9 +137,10 @@ ig.module(
 
             // Handle entity moving out of screen bounds
             // Wraparound to opposite side of screen
-            if(this.pos.y > ig.game.screen.y + ig.system.height)
+            if(this.pos.y > ig.game.screen.y + ig.system.height || this.lifetimeTimer.delta() >= 0) {
                this.pos.y = ig.game.screen.y;
-            else if(this.pos.x > ig.game.screen.x + ig.system.width)
+               this.lifetimeTimer.set(Math.random() * this.lifetime + this.lifetime / 2);
+            } else if(this.pos.x > ig.game.screen.x + ig.system.width)
                 this.pos.x = ig.game.screen.x;
             else if(this.pos.x < ig.game.screen.x)
                 this.pos.x = ig.game.screen.x + ig.system.width;
@@ -162,17 +168,22 @@ ig.module(
         vel: {x: 60, y: 80},
         maxVel: {x: 100, y: 100},
 
-        radius: 1,
+        lifetime: 10, // Particle lifetime
+        radius: 1,    // Particle radius
 
         init: function(x, y, settings) {
             this.parent(x, y, settings);
 
+            // Randomize snow particle lifetime
+            this.lifetime = ig.system.height / this.vel.y * 1.5;
+            this.lifetimeTimer = new ig.Timer(Math.abs(Math.random() * this.lifetime * 1.5 - this.lifetime) + this.lifetime / 2); // Range: 0.5 - lifetime (skewed towards lifetime)
+
             // Randomize initial velocity
-            this.vel.x *= Math.random() * 2 - 1; // -1.0 - 1.0
-            this.vel.y *= Math.abs(Math.random() * 2 - 1); // 0.0 - 1.0 (skewed towards 0) (snow should not "fall" upwards...)
+            this.vel.x *= Math.random() * 2 - 1; // Range: -1.0 - 1.0
+            this.vel.y *= Math.abs(Math.random() * 2 - 1); // Range: 0.0 - 1.0 (skewed towards 0) (snow should not "fall" upwards...)
 
             // Randomize snow particle size
-            this.radius = Math.random() * 0.5 + 1 // 1.0 - 1.5
+            this.radius = Math.random() * 0.5 + 1 // Range: 1.0 - 1.5
         },
 
         update: function() {
@@ -180,9 +191,10 @@ ig.module(
 
             // Handle entity moving out of screen bounds
             // Wraparound to opposite side of screen
-            if(this.pos.y > ig.game.screen.y + ig.system.height)
+            if(this.pos.y > ig.game.screen.y + ig.system.height || this.lifetimeTimer.delta() >= 0) {
                this.pos.y = ig.game.screen.y;
-            else if(this.pos.x > ig.game.screen.x + ig.system.width)
+               this.lifetimeTimer.set(Math.random() * this.lifetime + this.lifetime / 2);
+            } else if(this.pos.x > ig.game.screen.x + ig.system.width)
                 this.pos.x = ig.game.screen.x;
             else if(this.pos.x < ig.game.screen.x)
                 this.pos.x = ig.game.screen.x + ig.system.width;
