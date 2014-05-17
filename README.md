@@ -32,30 +32,30 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
     a. To use **all default** settings:
 
         // Start from current date and time, updating every 60 seconds, running at 1x real time
-        this.daynight = new ig.DayNight();
+        this.atmosphere = new ig.Atmosphere();
 
     b. To specify a custom **date and time**, but leave the other arguments to default:
 
         // Start from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
-        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37));
+        this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37));
 
     c. To specify a custom **date and time** and **update rate**, but leave the other arguments to default:
 
         // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
-        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15);
+        this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);
 
     d. To specify a custom **date and time**, **update rate**, and **timescale**:
 
         // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
-        this.daynight = new ig.DayNight(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
+        this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
 
 4. In the `update` method of your main game, add the following:
 
-        this.daynight.update();
+        this.atmosphere.update();
 
 5. In the `draw` method of your main game, add the following:
 
-        this.daynight.draw();
+        this.atmosphere.draw();
 
 6. That's it! Start up your game and enjoy!
 
@@ -77,19 +77,19 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
     *Must be a JavaScript Date object. Attempts to convert into Date object if not.*
 
-        this.daynight.datetime = new Date;    // Start plugin from current date and time
+        this.atmosphere.datetime = new Date;    // Start plugin from current date and time
 
 * To configure the time in seconds the plugin should update at:
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.daynight.updateUpdateRate(60);    // Update plugin every 60 seconds
+      this.atmosphere.updateUpdateRate(60);    // Update plugin every 60 seconds
 
 * To configure the time speed multiplier the plugin should run at:
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.daynight.timescale = 1;    // 1 second plugin time = 1 second real time
+      this.atmosphere.timescale = 1;    // 1 second plugin time = 1 second real time
 
 * To configure the geographical coordinates the plugin should use in its computations:
 
@@ -99,8 +99,8 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
   *Longitude: East  = positive, West  = negative*
 
-      this.daynight.geo_coords.latitude = 40.7789;      // 40.7789 degrees North
-      this.daynight.geo_coords.longitude = -73.9675;    // 73.9675 degrees West
+      this.atmosphere.geo_coords.latitude = 40.7789;      // 40.7789 degrees North
+      this.atmosphere.geo_coords.longitude = -73.9675;    // 73.9675 degrees West
 
 * To configure the "brightness" of nights:
 
@@ -108,7 +108,7 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
   *The greater the number, the darker the nights will be. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
 
-      this.daynight.brightness_night = 0.65;
+      this.atmosphere.brightness_night = 0.65;
 
 
 ## Bugs and Known Issues

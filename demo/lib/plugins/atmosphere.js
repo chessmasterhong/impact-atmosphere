@@ -1,14 +1,14 @@
 /**
- *  day-night.js
+ *  atmosphere.js
  *  -----
- *  Impact Day/Night Cycle Plugin
- *  https://github.com/chessmasterhong/impact-day-night
+ *  Impact Atmospheric System Plugin
+ *  https://github.com/chessmasterhong/impact-atmosphere
  *
  *  Kevin Chan (chessmasterhong)
  *
- *  A plugin for the Impact game engine that simulates day/night cycles and
- *  seasonal cycles based on configurable date, time, and geographical
- *  coordinates.
+ *  A plugin for the Impact game engine that simulates an atmospheric weather
+ *  system (add-on), day/night cycles and seasonal cycles based on configurable
+ *  date, time, and geographical coordinates.
  *
  *  Based on:
  *      http://aa.quae.nl/en/antwoorden/seizoenen.html
@@ -22,7 +22,7 @@
 
 
 ig.module(
-    'plugins.day-night'
+    'plugins.atmosphere'
 )
 .requires(
     'impact.game'
@@ -30,7 +30,7 @@ ig.module(
 .defines(function() {
     "use strict";
 
-    ig.DayNight = ig.Game.extend({
+    ig.Atmosphere = ig.Game.extend({
         debug: true,
 
         // Time speed multiplier
@@ -119,7 +119,7 @@ ig.module(
             this.updateUpdateRate(update_rate);
             this.timescale = timescale;
 
-            //console.log('========== Impact Day/Night Cycle Plugin initialized ==========');
+            //console.log('========== Impact Atmospheric System Plugin initialized ==========');
             //console.log('Update rate: ' + update_rate + ' seconds');
             //console.log('Timescale: ' + this.timescale + 'x real time');
             //console.log('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')');
@@ -205,7 +205,7 @@ ig.module(
                 ig.system.context.font = '11px monospace';
                 ig.system.context.textBaseline = 'top';
 
-                ig.system.context.fillText('========== Impact Day/Night Cycle Plugin ==========', x += 5, y += 5);
+                ig.system.context.fillText('========== Impact Atmospheric System Plugin ==========', x += 5, y += 5);
 
                 ig.system.context.fillText('Update rate: ' + this.update_rate + ' seconds', x, y += 15);
                 ig.system.context.fillText('Timescale: ' + this.timescale + 'x real time', x, y += 10);

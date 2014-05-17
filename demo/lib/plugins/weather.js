@@ -1,13 +1,13 @@
 /**
  *  weather.js
  *  -----
- *  Impact Weather Add-on for the Impact Day/Night Cycle Plugin
- *  https://github.com/chessmasterhong/impact-day-night
+ *  Impact Weather Add-on for the Impact Atmospheric System Plugin
+ *  https://github.com/chessmasterhong/impact-atmosphere
  *
  *  Kevin Chan (chessmasterhong)
  *
- *  An add-on for the Impact Day/Night Cycle Plugin for the Impact game engine
- *  that simulates weather conditions.
+ *  An add-on for the Impact Atmospheric System Plugin for the Impact game
+ *  engine that simulates weather conditions.
  */
 
 

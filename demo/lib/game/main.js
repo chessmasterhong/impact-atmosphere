@@ -6,16 +6,16 @@ ig.module(
     'impact.debug.debug',
     'game.levels.demo',
     'game.levels.demo2',
-    'plugins.day-night',
+    'plugins.atmosphere',
     'plugins.weather'
 )
 .defines(function() {
     var MainGame = ig.Game.extend({
         init: function() {
-            // Initialize Day/Night Cycle Plugin
+            // Initialize Atmospheric System Plugin
             // Start from current date and time, updating every 0.5 seconds, running at 600x real time
             // (0.5 real_sec/update) * (600 plugin_secs/real_sec) = (300 plugin_secs/update) * (1/60 plugin_min/plugin_sec) = 5 plugin_mins/update
-            this.daynight = new ig.DayNight(new Date(), 0.5, 600);
+            this.atmosphere = new ig.Atmosphere(new Date(), 0.5, 600);
             this.weather = new ig.Weather();
 
             ig.input.bind(ig.KEY.MOUSE1, 'click');
@@ -29,16 +29,16 @@ ig.module(
 
             // Used to toggle debug display
             if(ig.input.pressed('click'))
-                this.daynight.debug = !this.daynight.debug;
+                this.atmosphere.debug = !this.atmosphere.debug;
 
-            this.daynight.update();
+            this.atmosphere.update();
             this.weather.update();
         },
 
         draw: function() {
             this.parent();
 
-            this.daynight.draw();
+            this.atmosphere.draw();
             this.weather.draw();
         }
     });
