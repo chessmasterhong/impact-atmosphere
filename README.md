@@ -18,7 +18,8 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
     * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
     * Current season detection based on current date and time relative to year
 * Weather System (add-on)
-    * Weather conditions (clear, rain, snow)
+    * Weather conditions (clear, rain, snow, fog)
+    * Configurable maximum particles (snow particles, raindrops)
 
 
 ## Basic Usage
@@ -113,22 +114,30 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
 ## Bugs and Known Issues
 
-* Day/Night Cycle System
+* General
     * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
     * Plugin breaks (fails in its computations) when the latitude becomes too large (as it approaches the North and South Poles, specifically around the Arctic and Antarctic Circles).
+* Day/Night Cycle System
+    * *(none at the moment)*
 * Seasonal Cycle System
-    * (none at the moment)
+    * *(none at the moment)*
 * Weather System
-    * The current method of generating fog is *very* slow and is considered experimental.
+    * Current method of generating fog is *very* slow and is considered experimental.
 
 
 ## TODO
 
-* Fix calculations and add support for arbitrary timezones.
-* Fix calculations and add support for arbitrary latitudes.
-* Compute sunrise and sunset duration based on season and geographical coordinates.
-* Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration. (Maybe consider looking at [Rayleigh scattering](http://en.wikipedia.org/wiki/Rayleigh_scattering) and [Mie scattering](http://en.wikipedia.org/wiki/Mie_scattering)?).
-* Improve method to generate fog faster.
+* General
+    * Fix calculations and add support for arbitrary timezones.
+    * Fix calculations and add support for arbitrary latitudes.
+* Day/Night Cycle System
+    * Compute sunrise and sunset duration based on season and geographical coordinates.
+    * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration. (Maybe consider looking at [Rayleigh scattering](http://en.wikipedia.org/wiki/Rayleigh_scattering) and [Mie scattering](http://en.wikipedia.org/wiki/Mie_scattering)?).
+* Seasonal Cycle System
+    * Account for polar days and polar nights as latitude approaches North and South Poles.
+* Weather System
+    * Additional weather conditions (hail, sleet, cloudy, lightning).
+    * Improve method to generate fog faster.
 
 
 ## Credits
@@ -147,7 +156,7 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 
 * [2D Lost Garden Zelda Style Tiles](http://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-to-32x32-with-additions) by Daniel Cook, Jetrel, Saphy, Zabin, and Bertram
 * [Snow Emitter](https://github.com/ansimuz/snow-emitter) by ansimuz (for the base code that this plugin's snow and rain generator is based on)
-* [JavaScript port of Perlin noise](http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html) by Kas Thomas
+* [JavaScript port](http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html) of Ken Perlin's [Java implementation](http://cs.nyu.edu/~perlin/noise) of Perlin noise by Kas Thomas
 
 
 ## Disclaimer
