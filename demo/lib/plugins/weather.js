@@ -102,6 +102,39 @@ ig.module(
                     }
                 }
             }
+
+            // ----- Begin debug -----
+            if(ig.game.atmosphere.debug) {
+                var x = 0,
+                    y = 190;
+
+                ig.system.context.fillStyle = 'rgba(0, 0, 0, 0.25)';
+                ig.system.context.fillRect(
+                    x += 5,
+                    y += 5,
+                    ig.system.realWidth - 2 * x,
+                    85
+                );
+
+                ig.system.context.font = '11px monospace';
+                ig.system.context.textBaseline = 'top';
+                ig.system.context.fillStyle = '#ffffff';
+
+                ig.system.context.fillText('========== Impact Weather System Add-on ==========', x += 5, y += 5);
+
+                ig.system.context.fillText('Maximum Particle Count: ' + this.particles.max, x, y += 15);
+                ig.system.context.fillText('Current Particle Count: ' + this.particles.curr, x, y += 10);
+
+                ig.system.context.fillStyle = '#ffff00';
+                ig.system.context.fillText('Weather condition: ' + (this.condition === 0 ? 'Clear' : this.condition === 1 ? 'Rain' : this.condition === 2 ? 'Snow' : this.condition === 3 ? 'Fog' : '<invalid weather condition>'), x, y += 15);
+
+                ig.system.context.fillStyle = '#ffffff';
+                if(this.condition === 3) {
+                    ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
+                    ig.system.context.fillText('Fog block iterations: ' + (ig.system.width / size) + ' * ' + (ig.system.height / size) + ' = ' + ((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
+                }
+            }
+            // ----- End debug -----
         } // End draw
         //---------------------------------------------------------------------
     });
@@ -151,8 +184,8 @@ ig.module(
             ig.system.context.strokeStyle = 'rgba(200, 200, 200, 0.6)';
             ig.system.context.lineWidth = this.weight;
             ig.system.context.beginPath();
-            ig.system.context.moveTo(this.pos.x, this.pos.y);
-            ig.system.context.lineTo(this.pos.x + this.vel.x * 0.05, this.pos.y + this.vel.y * 0.02);
+                ig.system.context.moveTo(this.pos.x, this.pos.y);
+                ig.system.context.lineTo(this.pos.x + this.vel.x * 0.05, this.pos.y + this.vel.y * 0.02);
             ig.system.context.closePath();
             ig.system.context.stroke();
         },

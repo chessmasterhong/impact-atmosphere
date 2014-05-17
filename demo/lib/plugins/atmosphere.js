@@ -201,9 +201,9 @@ ig.module(
                     190
                 );
 
-                ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.font = '11px monospace';
                 ig.system.context.textBaseline = 'top';
+                ig.system.context.fillStyle = '#ffffff';
 
                 ig.system.context.fillText('========== Impact Atmospheric System Plugin ==========', x += 5, y += 5);
 
