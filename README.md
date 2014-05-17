@@ -24,9 +24,9 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 
 ## Basic Usage
 
-1. Download and place the file `impact-day-night.js` in your `lib/plugins/` directory.
+1. Download and place the file `atmosphere.js` in your `lib/plugins/` directory.
 
-2. Add `'plugins.impact-day-night'` to the `.requires( ... )` section of your main game.
+2. Add `'plugins.atmosphere'` to the `.requires( ... )` section of your main game.
 
 3. In the `init` method of your main game, add **one** (and only one) of the following:
 
@@ -60,7 +60,7 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 
 6. That's it! Start up your game and enjoy!
 
-*If you are still unclear about the usage, see the demo for additional details.*
+*If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main.js) file in the demo for additional details.*
 
 
 ## Demonstration
