@@ -1,6 +1,6 @@
-# Impact Day/Night and Seasonal Cycle Plugin
+# Impact Atmospheric System Plugin
 
-A plugin for the [Impact game engine](http://impactjs.com) that simulates day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.
+A plugin for the [Impact game engine](http://impactjs.com) that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.
 
 
 ## Features
@@ -17,6 +17,8 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates day/ni
 * Seasonal Cycle System
     * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
     * Current season detection based on current date and time relative to year
+* Weather System (add-on)
+    * Weather conditions (clear, rain, snow)
 
 
 ## Basic Usage
@@ -138,6 +140,7 @@ All you need to do is place the Impact game engine source code (sorry, batteries
 ### Additional resources
 
 * [2D Lost Garden Zelda Style Tiles](http://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-to-32x32-with-additions) by Daniel Cook, Jetrel, Saphy, Zabin, and Bertram
+* [Snow Emitter](https://github.com/ansimuz/snow-emitter) by ansimuz (for the base code that this plugin's snow and rain generator is based on)
 
 
 ## Disclaimer
