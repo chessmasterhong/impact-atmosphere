@@ -2,6 +2,24 @@
 <html>
     <head>
         <title>Impact Atmospheric System Plugin Demo</title>
+
+        <style type="text/css">
+            #container {
+                padding-top: 10px;
+            }
+
+            #canvas {
+                float: left;
+                margin-right: 10px;
+            }
+
+            @media print, screen and (max-width: 1200px) {
+                #canvas {
+                    float: none;
+                }
+            }
+        </style>
+
         <script src="lib/impact/impact.js"></script>
         <script src="lib/game/main.js"></script>
     </head>
@@ -10,42 +28,50 @@
         <p>A plugin for the <a href="http://impactjs.com">Impact game engine</a> that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.</p>
         <p><strong>Source code: <a href="https://github.com/chessmasterhong/impact-atmosphere">https://github.com/chessmasterhong/impact-atmosphere</a></strong></p>
 
-        <canvas id="canvas"></canvas>
+        <div id="container">
+            <canvas id="canvas"></canvas>
 
-        <p><em>(to show/hide debug messages, left click the canvas)</em></p>
+            <p>Instructions: Click on a button below to see the respective changes in the canvas.</p>
 
-        <p>Timescale:
-            <button id="ts_0.1x">0.1x</button>
-            <button id="ts_0.5x">0.5x</button>
-            <button id="ts_1x">1x (default)</button>
-            <button id="ts_60x">60x</button>
-            <button id="ts_3600x">3600x</button>
-            <button id="ts_86400x">86400x</button>
-            <button id="ts_2592000x">2592000x</button>
-        </p>
+            <p>Timescale:
+                <button id="ts_0.1x">0.1x</button>
+                <button id="ts_0.5x">0.5x</button>
+                <button id="ts_1x"><strong>1x</strong></button>
+                <button id="ts_60x">60x</button>
+                <button id="ts_3600x">3600x</button>
+                <button id="ts_86400x">86400x</button>
+                <button id="ts_2592000x">2592000x</button>
+            </p>
 
-        <p>Update Rate:
-            <button id="ur_0.1">0.1 second</button>
-            <button id="ur_1">1 second</button>
-            <button id="ur_10">10 seconds</button>
-            <button id="ur_60">60 seconds (default)</button>
-        </p>
+            <p>Update Rate:
+                <button id="ur_0.1">0.1 second</button>
+                <button id="ur_1">1 second</button>
+                <button id="ur_10">10 seconds</button>
+                <button id="ur_60"><strong>60 seconds</strong></button>
+            </p>
 
-        <p>Weather Condition:
-            <button id="wc_clear">Clear (default)</button>
-            <button id="wc_rain">Rain</button>
-            <button id="wc_snow">Snow</button>
-            <button id="wc_fog">Fog (EXPERIMENTAL!!)</button>
-        </p>
+            <p>Weather Condition:
+                <button id="wc_clear"><strong>Clear</strong></button>
+                <button id="wc_rain">Rain</button>
+                <button id="wc_snow">Snow</button>
+                <button id="wc_fog">Fog (EXPERIMENTAL!!)</button>
+            </p>
 
-        <p>Maximum Particle Count:
-            <button id="mp_1">1</button>
-            <button id="mp_10">10</button>
-            <button id="mp_50">50</button>
-            <button id="mp_100">100 (default)</button>
-            <button id="mp_200">200</button>
-            <button id="mp_500">500</button>
-        </p>
+            <p>Maximum Particle Count:
+                <button id="mp_1">1</button>
+                <button id="mp_10">10</button>
+                <button id="mp_50">50</button>
+                <button id="mp_100"><strong>100</strong></button>
+                <button id="mp_200">200</button>
+                <button id="mp_500">500</button>
+            </p>
+
+            <p>
+                Note 1: Bold labeled buttons denotes plugin's default values.<br>
+                Note 2: To show/hide debug messages, left click the canvas.<br>
+                Note 3: If you <em>really</em> want to try the fog weather condition, I would advise having a beefy machine before doing so.<br>
+            </p>
+        </div>
 
         <script>
             document.getElementById('ts_0.1x').onclick     = function() { ig.game.atmosphere.timescale =       0.1; };
