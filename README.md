@@ -107,9 +107,25 @@ To see a working live demonstration of the plugin, visit: [http://chessmasterhon
 
   *Must be a positive number (integer or floating point number) between 0 and 1 (both inclusive).*
 
-  *The greater the number, the darker the nights will be. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
+  *Greater numbers, results in darker nights. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
 
       this.atmosphere.brightness_night = 0.65;
+
+* To configure current weather condition:
+
+  *Must be a positive integer*
+
+  *0 = clear, 1 = rain, 2 = snow, 3 = fog*
+
+      this.atmosphere.condition = 0;    // Clear weather condition
+
+* To configure maximum particle count for weather conditions:
+
+  *Must be a positive integer.*
+
+  *Currently, "particles" refer to raindrops or snow particles.*
+
+      this.atmosphere.particles.max = 100;    // Maximum of 100 particles will be generated before stopping
 
 
 ## Bugs and Known Issues
