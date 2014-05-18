@@ -42,31 +42,31 @@
         <script>
             window.onload = function() {
                 var i, s = [],
-                    ts_sel = 600, ts = [0.1, 0.5, 1, 60, 600, 3600, 86400, 2592000],
-                    ur_sel = 0.5, ur = [0.1, 0.5, 1, 10, 60],
-                    wc_sel =   0, wc = [{v: 0, t: 'Clear'}, {v: 1, t: 'Rain'}, {v: 2, t: 'Snow'}, {v: 3, t: 'Fog (EXPERIMENTAL!!)'}],
-                    mp_sel = 100, mp = [1, 10, 50, 100, 200, 500];
+                    ts_sel = 600, ts_def =   1, ts = [0.1, 0.5, 1, 60, 600, 3600, 86400, 2592000],
+                    ur_sel = 0.5, ur_def =  60, ur = [0.1, 0.5, 1, 10, 60],
+                    wc_sel =   0, wc_def =   0, wc = [{v: 0, t: 'Clear'}, {v: 1, t: 'Rain'}, {v: 2, t: 'Snow'}, {v: 3, t: 'Fog (EXPERIMENTAL!!)'}],
+                    mp_sel = 100, mp_def = 100, mp = [1, 10, 50, 100, 200, 500];
 
                 for(i = 0; i < ts.length; i++) {
-                    document.getElementById('ts').innerHTML += "<input type='radio' name='ts' id='ts_" + i + "' onClick='updateTimescale(this.value)' value='" + ts[i] + "'>" + ts[i] + "x ";
+                    document.getElementById('ts').innerHTML += "<input type='radio' name='ts' id='ts_" + i + "' onClick='updateTimescale(this.value)' value='" + ts[i] + "'>" + (ts[i] === ts_def ? " [ " + ts[i] + "x ] " : ts[i] + "x ");
                     if(ts[i] === ts_sel) s.push('ts_' + i);
                 }
                 for(i = 0; i < ur.length; i++) {
-                    document.getElementById('ur').innerHTML += "<input type='radio' name='ur' id='ur_" + i + "' onClick='updateUpdateRate(this.value)' value='" + ur[i] + "'>" + ur[i] + (ur[i] <= 1 ? " second " : " seconds ");
+                    document.getElementById('ur').innerHTML += "<input type='radio' name='ur' id='ur_" + i + "' onClick='updateUpdateRate(this.value)' value='" + ur[i] + "'>" + (ur[i] === ur_def ? " [ " + ur[i] + (ur[i] <= 1 ? " second ] " : " seconds ] ") : ur[i] + (ur[i] <= 1 ? " second " : " seconds "));
                     if(ur[i] === ur_sel) s.push('ur_' + i);
                 }
                 for(i = 0; i < wc.length; i++) {
-                    document.getElementById('wc').innerHTML += "<input type='radio' name='wc' id='wc_" + i + "' onClick='updateWeather(this.value)' value='" + wc[i].v + "'>" + wc[i].t + " ";
+                    document.getElementById('wc').innerHTML += "<input type='radio' name='wc' id='wc_" + i + "' onClick='updateWeather(this.value)' value='" + wc[i].v + "'>" + (wc[i].v === wc_def ? " [ " + wc[i].t + " ] " : wc[i].t + " ");
                     if(wc[i].v === wc_sel) s.push('wc_' + i);
                 }
                 for(i = 0; i < mp.length; i++) {
-                    document.getElementById('mp').innerHTML += "<input type='radio' name='mp' id='mp_" + i + "' onClick='updateMaxParticles(this.value)' value='" + mp[i] + "'>" + mp[i] + " ";
+                    document.getElementById('mp').innerHTML += "<input type='radio' name='mp' id='mp_" + i + "' onClick='updateMaxParticles(this.value)' value='" + mp[i] + "'>" + (mp[i] === mp_def ? " [ " + mp[i] + " ] " : mp[i] + " ");
                     if(mp[i] === mp_sel) s.push('mp_' + i);
                 }
 
                 for(i = 0; i < s.length; i++)
                     document.getElementById(s[i]).checked = true;
-            }
+            };
 
             function updateTimescale(v) { ig.game.atmosphere.timescale = parseFloat(v); };
             function updateUpdateRate(v) { ig.game.atmosphere.updateUpdateRate(parseFloat(v)); };

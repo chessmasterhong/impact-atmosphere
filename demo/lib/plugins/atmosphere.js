@@ -277,7 +277,7 @@ ig.module(
                 ig.system.context.fillText('========== Impact Atmospheric System Plugin ==========', x += 5, y += 5);
 
                 ig.system.context.fillText('Timescale: ' + this.timescale + 'x real time', x, y += 15);
-                ig.system.context.fillText('Update rate: ' + this.update_rate + ' seconds', x, y += 10);
+                ig.system.context.fillText('Update rate: ' + this.update_rate + (this.update_rate <= 1 ? ' second' : ' seconds'), x, y += 10);
 
                 ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')', x, y += 15);
 
