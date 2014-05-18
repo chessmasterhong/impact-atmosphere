@@ -348,25 +348,25 @@ ig.module(
             var julianCycle        = Math.round((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)),
                 solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
                 solar_mean_anomaly = (357.5291 + 0.98560028 * (solar_noon - 2451545)) % 360,
-                equation_of_center = (1.9148 * Math.sin(this.toRadians(solar_mean_anomaly))) +
-                                     (0.0200 * Math.sin(this.toRadians(2 * solar_mean_anomaly))) +
-                                     (0.0003 * Math.sin(this.toRadians(3 * solar_mean_anomaly))),
+                equation_of_center = (1.9148 * Math.sin(toRadians(solar_mean_anomaly))) +
+                                     (0.0200 * Math.sin(toRadians(2 * solar_mean_anomaly))) +
+                                     (0.0003 * Math.sin(toRadians(3 * solar_mean_anomaly))),
                 ecliptic_longitude = (solar_mean_anomaly + 102.9372 + equation_of_center + 180) % 360,
                 solar_transit      = solar_noon +
-                                     (0.0053 * Math.sin(this.toRadians(solar_mean_anomaly))) -
-                                     (0.0069 * Math.sin(this.toRadians(2 * ecliptic_longitude))),
-                declination_of_sun = this.toDegrees(Math.asin(
-                                       Math.sin(this.toRadians(ecliptic_longitude)) *
-                                       Math.sin(this.toRadians(23.45))
+                                     (0.0053 * Math.sin(toRadians(solar_mean_anomaly))) -
+                                     (0.0069 * Math.sin(toRadians(2 * ecliptic_longitude))),
+                declination_of_sun = toDegrees(Math.asin(
+                                       Math.sin(toRadians(ecliptic_longitude)) *
+                                       Math.sin(toRadians(23.45))
                                      )),
-                hour_angle         = this.toDegrees(Math.acos(
-                                       (Math.sin(this.toRadians(-0.83)) - Math.sin(this.toRadians(geoCoords.latitude)) * Math.sin(this.toRadians(declination_of_sun))) /
-                                       (Math.cos(this.toRadians(geoCoords.latitude)) * Math.cos(this.toRadians(declination_of_sun)))
+                hour_angle         = toDegrees(Math.acos(
+                                       (Math.sin(toRadians(-0.83)) - Math.sin(toRadians(geoCoords.latitude)) * Math.sin(toRadians(declination_of_sun))) /
+                                       (Math.cos(toRadians(geoCoords.latitude)) * Math.cos(toRadians(declination_of_sun)))
                                      )),
                 julian_hour_angle  = 2451545 + 0.0009 + ((hour_angle - geoCoords.longitude) / 360) + julianCycle,
                 sunset             = julian_hour_angle +
-                                     (0.0053 * Math.sin(this.toRadians(solar_mean_anomaly))) -
-                                     (0.0069 * Math.sin(this.toRadians(2 * ecliptic_longitude))),
+                                     (0.0053 * Math.sin(toRadians(solar_mean_anomaly))) -
+                                     (0.0069 * Math.sin(toRadians(2 * ecliptic_longitude))),
                 sunrise            = solar_transit - (sunset - solar_transit);
 
             // ** Manual time offset correction applied **
@@ -515,21 +515,17 @@ ig.module(
                 hibernal_solstice: jDate_hibernal_solstice
             };
         }, // End computeSeasons
-
-        //---------------------------------------------------------------------
-        // Utility Functions
-
-        // Convert degrees to radians
-        toRadians: function(deg) {
-            return deg * Math.PI / 180;
-        },
-
-        // Convert radians to degrees
-        toDegrees: function(rad) {
-            return rad * 180 / Math.PI;
-        }
-
-        // End utility functions
-        //---------------------------------------------------------------------
     });
+
+    //-------------------------------------------------------------------------
+    // Utility Functions
+
+    // Convert degrees to radians
+    var toRadians = function(deg) { return deg * Math.PI / 180; };
+
+    // Convert radians to degrees
+    var toDegrees = function(rad) { return rad * 180 / Math.PI; };
+
+    // End utility functions
+    //-------------------------------------------------------------------------
 });
