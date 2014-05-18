@@ -13,9 +13,14 @@
                 margin-right: 10px;
             }
 
+            input {
+                margin-left: 10px;
+            }
+
             @media print, screen and (max-width: 1200px) {
                 #canvas {
                     float: none;
+                    margin: 0;
                 }
             }
         </style>
@@ -23,7 +28,7 @@
         <script src="lib/impact/impact.js"></script>
         <script src="lib/game/main.js"></script>
     </head>
-    <body>
+    <body onload="reset()">
         <h1>Impact Atmospheric System Plugin Demo</h1>
         <p>A plugin for the <a href="http://impactjs.com">Impact game engine</a> that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.</p>
         <p><strong>Source code: <a href="https://github.com/chessmasterhong/impact-atmosphere">https://github.com/chessmasterhong/impact-atmosphere</a></strong></p>
@@ -31,73 +36,58 @@
         <div id="container">
             <canvas id="canvas"></canvas>
 
-            <p>Instructions: Click on a button below to see the respective changes in the canvas.</p>
+            <p>Instructions: Select a radio option below to see the respective changes in the canvas.</p>
 
-            <p>Timescale:
-                <button id="ts_0.1x">0.1x</button>
-                <button id="ts_0.5x">0.5x</button>
-                <button id="ts_1x"><strong>1x</strong></button>
-                <button id="ts_60x">60x</button>
-                <button id="ts_3600x">3600x</button>
-                <button id="ts_86400x">86400x</button>
-                <button id="ts_2592000x">2592000x</button>
-            </p>
+            <form id="config">
+                <p>Timescale:
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="0.1">0.1x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="0.5">0.5x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="1">[ 1x ]</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="60">60x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="1" checked>600x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="3600">3600x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="86400">86400x</input>
+                    <input type="radio" name="ts" onClick="updateTimescale(this.value)" value="2592000">2592000x</input>
+                </p>
 
-            <p>Update Rate:
-                <button id="ur_0.1">0.1 second</button>
-                <button id="ur_1">1 second</button>
-                <button id="ur_10">10 seconds</button>
-                <button id="ur_60"><strong>60 seconds</strong></button>
-            </p>
+                <p>Update Rate:
+                    <input type="radio" name="ur" onClick="updateUpdateRate(this.value)" value="0.1">0.1 second</input>
+                    <input type="radio" name="ur" onClick="updateUpdateRate(this.value)" value="0.5" checked>0.5 second</input>
+                    <input type="radio" name="ur" onClick="updateUpdateRate(this.value)" value="1">1 second</input>
+                    <input type="radio" name="ur" onClick="updateUpdateRate(this.value)" value="10">10 seconds</input>
+                    <input type="radio" name="ur" onClick="updateUpdateRate(this.value)" value="60">[ 60 seconds ]</input>
+                </p>
 
-            <p>Weather Condition:
-                <button id="wc_clear"><strong>Clear</strong></button>
-                <button id="wc_rain">Rain</button>
-                <button id="wc_snow">Snow</button>
-                <button id="wc_fog">Fog (EXPERIMENTAL!!)</button>
-            </p>
+                <p>Weather Condition:
+                    <input type="radio" name="wc" onClick="updateWeather(this.value)" value="0" checked>[ Clear ]</input>
+                    <input type="radio" name="wc" onClick="updateWeather(this.value)" value="1">Rain</input>
+                    <input type="radio" name="wc" onClick="updateWeather(this.value)" value="2">Snow</input>
+                    <input type="radio" name="wc" onClick="updateWeather(this.value)" value="3">Fog (EXPERIMENTAL!!)</input>
+                </p>
 
-            <p>Maximum Particle Count:
-                <button id="mp_1">1</button>
-                <button id="mp_10">10</button>
-                <button id="mp_50">50</button>
-                <button id="mp_100"><strong>100</strong></button>
-                <button id="mp_200">200</button>
-                <button id="mp_500">500</button>
-            </p>
+                <p>Maximum Particle Count:
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="1">1</input>
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="10">10</input>
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="50">50</input>
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="100" checked>[ 100 ]</input>
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="200">200</input>
+                    <input type="radio" name="mp" onClick="updateMaxParticles(this.value)" value="500">500</input>
+                </p>
+            </form>
 
             <p>
-                Note 1: Bold labeled buttons denotes plugin's default values.<br>
+                Note 1: Bracketed radio labels denotes plugin's default values.<br>
                 Note 2: To show/hide debug messages, left click the canvas.<br>
                 Note 3: If you <em>really</em> want to try the fog weather condition, I would advise having a beefy machine before doing so.<br>
             </p>
         </div>
 
         <script>
-            document.getElementById('ts_0.1x').onclick     = function() { ig.game.atmosphere.timescale =       0.1; };
-            document.getElementById('ts_0.5x').onclick     = function() { ig.game.atmosphere.timescale =       0.5; };
-            document.getElementById('ts_1x').onclick       = function() { ig.game.atmosphere.timescale =       1;   };
-            document.getElementById('ts_60x').onclick      = function() { ig.game.atmosphere.timescale =      60;   };
-            document.getElementById('ts_3600x').onclick    = function() { ig.game.atmosphere.timescale =    3600;   };
-            document.getElementById('ts_86400x').onclick   = function() { ig.game.atmosphere.timescale =   86400;   };
-            document.getElementById('ts_2592000x').onclick = function() { ig.game.atmosphere.timescale = 2592000;   };
-
-            document.getElementById('ur_0.1').onclick = function() { ig.game.atmosphere.updateUpdateRate( 0.1); };
-            document.getElementById('ur_1').onclick   = function() { ig.game.atmosphere.updateUpdateRate( 1  ); };
-            document.getElementById('ur_10').onclick  = function() { ig.game.atmosphere.updateUpdateRate(10  ); };
-            document.getElementById('ur_60').onclick  = function() { ig.game.atmosphere.updateUpdateRate(60  ); };
-
-            document.getElementById('wc_clear').onclick = function() { ig.game.weather.condition = 0; };
-            document.getElementById('wc_rain').onclick  = function() { ig.game.weather.condition = 1; };
-            document.getElementById('wc_snow').onclick  = function() { ig.game.weather.condition = 2; };
-            document.getElementById('wc_fog').onclick   = function() { ig.game.weather.condition = 3; };
-
-            document.getElementById('mp_1').onclick    = function() { ig.game.weather.particles.max =   1; };
-            document.getElementById('mp_10').onclick   = function() { ig.game.weather.particles.max =  10; };
-            document.getElementById('mp_50').onclick   = function() { ig.game.weather.particles.max =  50; };
-            document.getElementById('mp_100').onclick  = function() { ig.game.weather.particles.max = 100; };
-            document.getElementById('mp_200').onclick  = function() { ig.game.weather.particles.max = 200; };
-            document.getElementById('mp_500').onclick  = function() { ig.game.weather.particles.max = 500; };
+            function reset() { document.getElementById('config').reset(); };
+            function updateTimescale(timescale) { ig.game.atmosphere.timescale = parseInt(timescale); };
+            function updateUpdateRate(update_rate) { ig.game.atmosphere.updateUpdateRate(parseInt(update_rate)); };
+            function updateWeather(weather) { ig.game.weather.condition = parseInt(weather); };
+            function updateMaxParticles(max_particles) { ig.game.weather.particles.max = parseInt(max_particles); };
         </script>
     </body>
 </html>
