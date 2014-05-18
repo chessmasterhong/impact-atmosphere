@@ -86,8 +86,8 @@
             function reset() { document.getElementById('config').reset(); };
             function updateTimescale(timescale) { ig.game.atmosphere.timescale = parseFloat(timescale); };
             function updateUpdateRate(update_rate) { ig.game.atmosphere.updateUpdateRate(parseFloat(update_rate)); };
-            function updateWeather(weather) { ig.game.weather.condition = parseFloat(weather); };
-            function updateMaxParticles(max_particles) { ig.game.weather.particles.max = parseFloat(max_particles); };
+            function updateWeather(weather) { ig.game.atmosphere.condition = parseInt(weather); };
+            function updateMaxParticles(max_particles) { ig.game.atmosphere.particles.max = parseInt(max_particles); };
         </script>
     </body>
 </html>
