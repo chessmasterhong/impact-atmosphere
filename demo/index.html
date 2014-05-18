@@ -6,6 +6,10 @@
         <script src="lib/game/main.js"></script>
     </head>
     <body>
+        <h1>Impact Atmospheric System Plugin Demo</h1>
+        <p>A plugin for the <a href="http://impactjs.com">Impact game engine</a> that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.</p>
+        <p><strong>Source code: <a href="https://github.com/chessmasterhong/impact-atmosphere">https://github.com/chessmasterhong/impact-atmosphere</a></strong></p>
+
         <canvas id="canvas"></canvas>
 
         <p><em>(to show/hide debug messages, left click the canvas)</em></p>
@@ -28,10 +32,19 @@
         </p>
 
         <p>Weather Condition:
-            <button id="w_clear">Clear (default)</button>
-            <button id="w_rain">Rain</button>
-            <button id="w_snow">Snow</button>
-            <button id="w_fog">Fog (EXPERIMENTAL!!)</button>
+            <button id="wc_clear">Clear (default)</button>
+            <button id="wc_rain">Rain</button>
+            <button id="wc_snow">Snow</button>
+            <button id="wc_fog">Fog (EXPERIMENTAL!!)</button>
+        </p>
+
+        <p>Maximum Particle Count:
+            <button id="mp_1">1</button>
+            <button id="mp_10">10</button>
+            <button id="mp_50">50</button>
+            <button id="mp_100">100 (default)</button>
+            <button id="mp_200">200</button>
+            <button id="mp_500">500</button>
         </p>
 
         <script>
@@ -48,10 +61,17 @@
             document.getElementById('ur_10').onclick  = function() { ig.game.atmosphere.updateUpdateRate(10  ); };
             document.getElementById('ur_60').onclick  = function() { ig.game.atmosphere.updateUpdateRate(60  ); };
 
-            document.getElementById('w_clear').onclick = function() { ig.game.weather.condition = 0; };
-            document.getElementById('w_rain').onclick  = function() { ig.game.weather.condition = 1; };
-            document.getElementById('w_snow').onclick  = function() { ig.game.weather.condition = 2; };
-            document.getElementById('w_fog').onclick   = function() { ig.game.weather.condition = 3; };
+            document.getElementById('wc_clear').onclick = function() { ig.game.weather.condition = 0; };
+            document.getElementById('wc_rain').onclick  = function() { ig.game.weather.condition = 1; };
+            document.getElementById('wc_snow').onclick  = function() { ig.game.weather.condition = 2; };
+            document.getElementById('wc_fog').onclick   = function() { ig.game.weather.condition = 3; };
+
+            document.getElementById('mp_1').onclick    = function() { ig.game.weather.particles.max =   1; };
+            document.getElementById('mp_10').onclick   = function() { ig.game.weather.particles.max =  10; };
+            document.getElementById('mp_50').onclick   = function() { ig.game.weather.particles.max =  50; };
+            document.getElementById('mp_100').onclick  = function() { ig.game.weather.particles.max = 100; };
+            document.getElementById('mp_200').onclick  = function() { ig.game.weather.particles.max = 200; };
+            document.getElementById('mp_500').onclick  = function() { ig.game.weather.particles.max = 500; };
         </script>
     </body>
 </html>
