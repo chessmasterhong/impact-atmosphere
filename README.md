@@ -67,7 +67,7 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 
 Located in the `demo` directory is a demonstration of the plugin. I also use this as my development testing grounds, so it should be up-to-date.
 
-All you need to do is place the Impact game engine source code (sorry, batteries not included) into the `lib/impact/` directory of the `demo` directory. Then, start up your game. Everything should be preconfigured for you already.
+To see a working live demonstration of the plugin, visit: [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere/](http://chessmasterhong.bitbucket.org/projects/impact-atmosphere/)
 
 
 ## Configuration
