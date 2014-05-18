@@ -176,7 +176,8 @@ ig.module(
                     ig.game.spawnEntity(
                         EntityRain,
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y
+                        ig.game.screen.y,
+                        {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
                     );
                 } else
                     this.nextParticle.set(0);
@@ -188,7 +189,8 @@ ig.module(
                     ig.game.spawnEntity(
                         EntitySnow,
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y
+                        ig.game.screen.y,
+                        {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
                     );
                 } else
                     this.nextParticle.set(0);
@@ -463,61 +465,63 @@ ig.module(
             //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
         }, // End computeSunriset
 
-        // Compute the solstices, equinoxes, and current season based on specified specified date
-        //
-        // NOTE: This algorithm has no creditable source (or at least that I can find); it was
-        //       something I made up. I was trying to find some form of mathematical equation to
-        //       compute solstices and equinoxes but with no luck. So, I used various tiny bits of
-        //       information gathered from various sources along with general knowledge and
-        //       constructed my own algorithm. I then compared the final results against some
-        //       precomputed tables of solstices and equinoxes, with some degree of inaccuracy.
-        //
-        // General Algorithm Outline:
-        //      0. Information gathering and assumptions
-        //          a. Assume day length (sunrise - sunset) can be computed for arbitrary days.
-        //          b. Assume vernal equinox occurs between March 20 and March 23.
-        //             Assume estival solstice occurs between June 20 and June 23.
-        //             Assume autumnal equinox occurs between September 20 and September 23.
-        //             Assume hibernal solstice occurs between December 20 and December 23.
-        //      1. Computation of vernal equinox
-        //          a. For each potential day of vernal equinox, compute day length.
-        //          b. Of all potential days of vernal equinox, take the day where day length is
-        //             closest to 12 hours. This day is the vernal equinox.
-        //             This is because:
-        //                 vernal equinox: day length = night length
-        //                 day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
-        //      2. Computation of estival solstice
-        //          a. For each potential day of estival solstice, compute day length.
-        //          b. Of all potential days of estival solstice, take the day where day length is
-        //             greatest. This day is the estival solstice.
-        //             This is because:
-        //                 estival solstice: longest day
-        //                 longest day = greatest day length
-        //      3. Computation of autumnal equinox
-        //          a. For each potential day of autumnal equinox, compute day length.
-        //          b. Of all potential days of autumnal equinox, take the day where day length is
-        //             closest to 12 hours. This day is the autumnal equinox.
-        //             This is because:
-        //                 autumnal equinox: day length = night length
-        //                 day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
-        //      4. Computation of hibernal solstice
-        //          a. For each potential day of hibernal solstice, compute day length.
-        //          b. Of all potential days of hibernal solstice, take the day where day length is
-        //             least value. This day is the hibernal solstice.
-        //             This is because:
-        //                 hibernal solstice: shortest day
-        //                 shortest day = least day length
-        //      5. Computation of current season
-        //         Once solstices and equinoxes are determined, take current date (and time) and
-        //         compare it against solstices and equinoxes.
-        //          a. If current date falls between vernal equinox (inclusive) and estival
-        //             solstice (exclusive), current date is in vernal season (Spring).
-        //          b. If current date falls between estival solstice (inclusive) and autumnal
-        //             equinox (exclusive), current date is in estival season (Summer).
-        //          c. If current date falls between autumnal equinox (inclusive) and hibernal
-        //             solstice (exclusive), current date is in autumnal season (Autumn).
-        //          d. If current date falls between hibernal solstice (inclusive) and vernal
-        //             equinox (exclusive), current date is in hibernal season (Winter).
+        /**
+         *  Compute the solstices, equinoxes, and current season based on specified specified date
+         *
+         *  NOTE: This algorithm has no creditable source (or at least that I can find); it was
+         *        something I made up. I was trying to find some form of mathematical equation to
+         *        compute solstices and equinoxes but with no luck. So, I used various tiny bits of
+         *        information gathered from various sources along with general knowledge and
+         *        constructed my own algorithm. I then compared the final results against some
+         *        precomputed tables of solstices and equinoxes, with some degree of inaccuracy.
+         *
+         *  General Algorithm Outline:
+         *      0. Information gathering and assumptions
+         *          a. Assume day length (sunrise - sunset) can be computed for arbitrary days.
+         *          b. Assume vernal equinox occurs between March 20 and March 23.
+         *             Assume estival solstice occurs between June 20 and June 23.
+         *             Assume autumnal equinox occurs between September 20 and September 23.
+         *             Assume hibernal solstice occurs between December 20 and December 23.
+         *      1. Computation of vernal equinox
+         *          a. For each potential day of vernal equinox, compute day length.
+         *          b. Of all potential days of vernal equinox, take the day where day length is
+         *             closest to 12 hours. This day is the vernal equinox.
+         *             This is because:
+         *                  vernal equinox: day length = night length
+         *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+         *      2. Computation of estival solstice
+         *          a. For each potential day of estival solstice, compute day length.
+         *          b. Of all potential days of estival solstice, take the day where day length is
+         *             greatest. This day is the estival solstice.
+         *             This is because:
+         *                  estival solstice: longest day
+         *                  longest day = greatest day length
+         *      3. Computation of autumnal equinox
+         *          a. For each potential day of autumnal equinox, compute day length.
+         *          b. Of all potential days of autumnal equinox, take the day where day length is
+         *             closest to 12 hours. This day is the autumnal equinox.
+         *             This is because:
+         *                  autumnal equinox: day length = night length
+         *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+         *      4. Computation of hibernal solstice
+         *          a. For each potential day of hibernal solstice, compute day length.
+         *          b. Of all potential days of hibernal solstice, take the day where day length is
+         *             least value. This day is the hibernal solstice.
+         *             This is because:
+         *                  hibernal solstice: shortest day
+         *                  shortest day = least day length
+         *      5. Computation of current season
+         *         Once solstices and equinoxes are determined, take current date (and time) and
+         *         compare it against solstices and equinoxes.
+         *          a. If current date falls between vernal equinox (inclusive) and estival
+         *             solstice (exclusive), current date is in vernal season (Spring).
+         *          b. If current date falls between estival solstice (inclusive) and autumnal
+         *             equinox (exclusive), current date is in estival season (Summer).
+         *          c. If current date falls between autumnal equinox (inclusive) and hibernal
+         *             solstice (exclusive), current date is in autumnal season (Autumn).
+         *          d. If current date falls between hibernal solstice (inclusive) and vernal
+         *             equinox (exclusive), current date is in hibernal season (Winter).
+         */
         computeSeasons: function(gDate, geoCoords) {
             // Estimated bound for solstice and equinox dates
             // TODO: Account for arbitrary latitudes (for polar day and polar night)
@@ -594,13 +598,16 @@ ig.module(
                 hibernal_solstice: jDate_hibernal_solstice
             };
         }, // End computeSeasons
-    });
+    }); // End ig.Atmosphere
+    //#########################################################################
 
-    // Perlin Noise Generator
-    //
-    // My modifications: Minor code adaptation for use in ImpactJS. Algorithm remains unmodified.
-    // Ken Perlin's original Java implementation: http://cs.nyu.edu/~perlin/noise
-    // Kas Thomas's JavaScript port: http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
+    /**
+     *  Perlin Noise Generator
+     *  -----
+     *  My modifications: Minor code adaptation for use in ImpactJS. Algorithm remains unmodified.
+     *  Ken Perlin's original Java implementation: http://cs.nyu.edu/~perlin/noise
+     *  Kas Thomas's JavaScript port: http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
+     */
     var PerlinNoise = {
         noise: function(x, y, z) {
             var p = new Array(512);
@@ -659,7 +666,8 @@ ig.module(
         scale: function(n) { return (1 + n) / 2; }
     }; // End PerlinNoise
 
-    //-------------------------------------------------------------------------
+
+    //#########################################################################
     // Particles
 
     // Rain particle
@@ -680,8 +688,7 @@ ig.module(
             this.vel.x *= Math.random() + 0.5; // Range: 0.5 - 1.5
             this.vel.y *= Math.random() + 1;   // Range: 1.0 - 2.0 (rain should not "fall" upwards...)
 
-            // Randomize raindrop weight
-            this.weight = Math.random() + 0.5; // Range: 0.5 - 1.5
+            this.weight = Math.abs(this.weight);
         },
 
         update: function() {
@@ -733,8 +740,7 @@ ig.module(
             this.vel.x *= Math.random() * 2 - 1; // Range: -1.0 - 1.0
             this.vel.y *= Math.abs(Math.random() * 2 - 1); // Range: 0.0 - 1.0 (skewed towards 0) (snow should not "fall" upwards...)
 
-            // Randomize snow particle size
-            this.radius = Math.random() * 0.5 + 1 // Range: 1.0 - 1.5
+            this.radius = Math.abs(this.radius);
         },
 
         update: function() {
@@ -773,9 +779,10 @@ ig.module(
     }); // End EntitySnow
 
     // End particles
-    //-------------------------------------------------------------------------
+    //#########################################################################
 
-    //-------------------------------------------------------------------------
+
+    //#########################################################################
     // Utility Functions
 
     // Convert degrees to radians
@@ -785,5 +792,5 @@ ig.module(
     var toDegrees = function(rad) { return rad * 180 / Math.PI; };
 
     // End utility functions
-    //-------------------------------------------------------------------------
+    //#########################################################################
 });
