@@ -17,9 +17,16 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 * Seasonal Cycle System
     * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
     * Current season detection based on current date and time relative to year
-* Weather System (add-on)
+* Weather System
     * Weather conditions (clear, rain, snow, fog)
     * Configurable maximum particles (snow particles, raindrops)
+
+
+## Demonstration
+
+Visit [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere](http://chessmasterhong.bitbucket.org/projects/impact-atmosphere) for a working live demonstration of the plugin. *The version of the demo at this link may not reflect the latest changes of the plugin.*
+
+If you would rather set it up yourself, located in the `demo` directory is a pre-configured setup of the plugin. I also use this as my development testing grounds, so it should be up-to-date. All you need is the Impact game engine source code (sorry, batteries not included).
 
 
 ## Basic Usage
@@ -61,13 +68,6 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 6. That's it! Start up your game and enjoy!
 
 If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main.js) file in the `demo/lib/game/` directory for additional details.
-
-
-## Demonstration
-
-Located in the `demo` directory is a pre-configured setup of the plugin. I also use this as my development testing grounds, so it should be up-to-date. All you need is the Impact game engine source code (sorry, batteries not included).
-
-To see a working live demonstration of the plugin, visit: [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere](http://chessmasterhong.bitbucket.org/projects/impact-atmosphere). *The version of the demo at this link may not reflect the latest changes of the plugin.*
 
 
 ## Configuration
