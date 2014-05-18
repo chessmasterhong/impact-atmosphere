@@ -84,10 +84,10 @@
 
         <script>
             function reset() { document.getElementById('config').reset(); };
-            function updateTimescale(timescale) { ig.game.atmosphere.timescale = parseInt(timescale); };
-            function updateUpdateRate(update_rate) { ig.game.atmosphere.updateUpdateRate(parseInt(update_rate)); };
-            function updateWeather(weather) { ig.game.weather.condition = parseInt(weather); };
-            function updateMaxParticles(max_particles) { ig.game.weather.particles.max = parseInt(max_particles); };
+            function updateTimescale(timescale) { ig.game.atmosphere.timescale = parseFloat(timescale); };
+            function updateUpdateRate(update_rate) { ig.game.atmosphere.updateUpdateRate(parseFloat(update_rate)); };
+            function updateWeather(weather) { ig.game.weather.condition = parseFloat(weather); };
+            function updateMaxParticles(max_particles) { ig.game.weather.particles.max = parseFloat(max_particles); };
         </script>
     </body>
 </html>
