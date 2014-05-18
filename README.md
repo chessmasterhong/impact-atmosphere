@@ -60,14 +60,14 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
 
 6. That's it! Start up your game and enjoy!
 
-*If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main.js) file in the demo for additional details.*
+If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main.js) file in the `demo/lib/game/` directory for additional details.
 
 
 ## Demonstration
 
-Located in the `demo` directory is a demonstration of the plugin. I also use this as my development testing grounds, so it should be up-to-date.
+Located in the `demo` directory is a pre-configured setup of the plugin. I also use this as my development testing grounds, so it should be up-to-date. All you need is the Impact game engine source code (sorry, batteries not included).
 
-To see a working live demonstration of the plugin, visit: [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere/](http://chessmasterhong.bitbucket.org/projects/impact-atmosphere/)
+To see a working live demonstration of the plugin, visit: [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere](http://chessmasterhong.bitbucket.org/projects/impact-atmosphere). *The version of the demo at this link may not reflect the latest changes of the plugin.*
 
 
 ## Configuration
@@ -113,7 +113,7 @@ To see a working live demonstration of the plugin, visit: [http://chessmasterhon
 
 * To configure current weather condition:
 
-  *Must be a positive integer*
+  *Must be a positive integer.*
 
   *0 = clear, 1 = rain, 2 = snow, 3 = fog*
 
@@ -123,7 +123,7 @@ To see a working live demonstration of the plugin, visit: [http://chessmasterhon
 
   *Must be a positive integer.*
 
-  *Currently, "particles" refer to raindrops or snow particles.*
+  *Currently, the term "particles" refer only to raindrops or snow pieces.*
 
       this.atmosphere.particles.max = 100;    // Maximum of 100 particles will be generated before stopping
 
