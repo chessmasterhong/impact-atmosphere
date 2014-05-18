@@ -135,8 +135,7 @@ ig.module(
             //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
             //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
-            this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
-            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
+            this.updateGeoCoords(this.geo_coords.latitude, this.geo_coords.longitude);
         }, // End init
         //---------------------------------------------------------------------
 
@@ -366,8 +365,14 @@ ig.module(
         }, // End updateDateTime
 
         updateUpdateRate: function(new_update_rate) {
-            this.update_rate = new_update_rate;
-            this.updateTimer = new ig.Timer(new_update_rate);
+            this.update_rate = parseFloat(new_update_rate);
+            this.updateTimer = new ig.Timer(this.update_rate);
+        },
+
+        updateGeoCoords: function(lat, lng) {
+            this.geo_coords = {latitude: parseFloat(lat), longitude: parseFloat(lng)};
+            this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
+            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
         },
 
         // Convert Gregorian Date to Julian Date
