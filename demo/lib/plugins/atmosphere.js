@@ -77,56 +77,11 @@ ig.module(
         //---------------------------------------------------------------------
         // Init
         init: function(datetime, update_rate, timescale) {
-            // ----- Begin sanity checks -----
-            if(typeof datetime !== 'undefined') {
-                if(!(datetime instanceof Date) && typeof datetime.getFullYear === 'undefined') {
-                    console.warn('datetime \'' + datetime + '\' not a valid Date object. Attempting to create Date object from datetime.');
-                    datetime = new Date(datetime);
-
-                    if(typeof datetime.getFullYear() === 'number') {
-                        console.warn('Failed to create Date object. Defaulting datetime to current date and time.');
-                        datetime = new Date(datetime);
-                    }
-                }
-            } else {
-                //console.warn('datetime not provided. Defaulting datetime to current date and time.');
-                datetime = new Date();
-            }
-
-            if(typeof update_rate !== 'undefined') {
-                if(typeof update_rate === 'number') {
-                    if(update_rate <= 0) {
-                        console.warn('update_rate \'' + update_rate + '\' not a positive integer. Assuming update_rate absolute value.');
-                        update_rate = Math.abs(update_rate);
-                    }
-                } else {
-                    console.warn('update_rate \'' + update_rate + '\' not a number. Typecasting update_rate to integer.');
-                    update_rate = Number(update_rate);
-                }
-            } else {
-                //console.warn('update_rate not provided. Defaulting update_rate to 60.');
-                update_rate = this.update_rate;
-            }
-
-            if(typeof timescale !== 'undefined') {
-                if(typeof timescale === 'number') {
-                    if(timescale <= 0) {
-                        console.warn('timescale \'' + timescale + '\' not a positive integer. Assuming timescale absolute value.');
-                        timescale = Math.abs(timescale);
-                    }
-                } else {
-                    console.warn('timescale \'' + timescale + '\' not a number. Typecasting timescale to integer.');
-                    timescale = Number(timescale);
-                }
-            } else {
-                //console.warn('timescale not provided. Defaulting timescale to 1.');
-                timescale = this.timescale;
-            }
-            // ----- End sanity checks -----
-
+            // Initialize plugin variables
             this.setDateTime(datetime);
+            this.updateTimescale(timescale);
             this.updateUpdateRate(update_rate);
-            this.timescale = timescale;
+            this.updateGeoCoords(this.geo_coords.latitude, this.geo_coords.longitude);
 
             //console.log('========== Impact Atmospheric System Plugin initialized ==========');
             //console.log('Update rate: ' + update_rate + ' seconds');
@@ -134,8 +89,6 @@ ig.module(
             //console.log('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')');
             //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
             //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
-
-            this.updateGeoCoords(this.geo_coords.latitude, this.geo_coords.longitude);
         }, // End init
         //---------------------------------------------------------------------
 
@@ -317,6 +270,22 @@ ig.module(
 
         // Set/Store date and time
         setDateTime: function(datetime) {
+            // Sanity check
+            if(typeof datetime !== 'undefined') {
+                if(!(datetime instanceof Date) && typeof datetime.getFullYear === 'undefined') {
+                    console.warn('datetime \'' + datetime + '\' not a valid Date object. Attempting to create Date object from datetime.');
+                    datetime = new Date(datetime);
+
+                    if(typeof datetime.getFullYear() === 'number') {
+                        console.warn('Failed to create Date object. Defaulting datetime to current date and time.');
+                        datetime = new Date(datetime);
+                    }
+                }
+            } else {
+                //console.warn('datetime not provided. Defaulting datetime to current date and time.');
+                datetime = new Date();
+            }
+
             this.gregorianDate = {
                 year       : datetime.getFullYear(),
                 month      : datetime.getMonth() + 1,
@@ -364,18 +333,60 @@ ig.module(
                 this.season_state = 2;
         }, // End updateDateTime
 
-        updateUpdateRate: function(new_update_rate) {
-            this.update_rate = parseFloat(new_update_rate);
-            this.updateTimer = new ig.Timer(this.update_rate);
+        // Updates timescale
+        updateTimescale: function(timescale) {
+            // Sanity check
+            if(typeof timescale !== 'undefined') {
+                if(typeof timescale === 'number') {
+                    if(timescale <= 0) {
+                        console.warn('timescale \'' + timescale + '\' not a positive integer. Assuming timescale absolute value.');
+                        timescale = Math.abs(timescale);
+                    }
+                } else {
+                    console.warn('timescale \'' + timescale + '\' not a number. Typecasting timescale to integer.');
+                    timescale = Number(timescale);
+                }
+            } else {
+                //console.warn('timescale not provided. Defaulting timescale to 1.');
+                timescale = 1;
+            }
+
+            this.timescale = timescale;
         },
 
+        // Updates update rate
+        updateUpdateRate: function(update_rate) {
+            // Sanity check
+            if(typeof update_rate !== 'undefined') {
+                if(typeof update_rate === 'number') {
+                    if(update_rate <= 0) {
+                        console.warn('update_rate \'' + update_rate + '\' not a positive number. Assuming update_rate absolute value.');
+                        update_rate = Math.abs(update_rate);
+                    }
+                } else {
+                    console.warn('update_rate \'' + update_rate + '\' not a number. Typecasting update_rate to number.');
+                    update_rate = parseFloat(update_rate);
+                }
+            } else {
+                //console.warn('update_rate not provided. Defaulting update_rate to 60.');
+                update_rate = 60;
+            }
+
+            this.update_rate = update_rate;
+            this.updateTimer = new ig.Timer(update_rate);
+        },
+
+        // Updates geographical coordinates
         updateGeoCoords: function(lat, lng) {
+            // Sanity check
             var latitude  = parseFloat(lat),
                 longitude = parseFloat(lng);
 
+            // Clamp latitude
             if(latitude < -90)     latitude = -90;
             else if(latitude > 90) latitude =  90;
 
+            // Clamp longitude
             if(longitude < -180)     longitude = -180;
             else if(longitude > 180) longitude =  180;
 
