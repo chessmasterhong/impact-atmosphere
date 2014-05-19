@@ -94,14 +94,13 @@ If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main
 
 * To configure the geographical coordinates the plugin should use in its computations:
 
-  *Must be a number (integer or floating point number).*
+  *Must be a number (integer or floating point number). Attempts to convert to number if not.*
 
-  *Latitude : North = positive, South = negative*
+  *Latitude : North = positive, South = negative, between -90 degrees (inclusive) to +90 degrees (inclusive)*
 
-  *Longitude: East  = positive, West  = negative*
+  *Longitude: East  = positive, West  = negative, between -180 degrees (inclusive) to +180 degrees (inclusive)*
 
-      this.atmosphere.geo_coords.latitude = 40.7789;      // 40.7789 degrees North
-      this.atmosphere.geo_coords.longitude = -73.9675;    // 73.9675 degrees West
+      this.atmosphere.updateGeoCoords(40.7789, -73.9675);      // 40.7789 degrees North, 73.9675 degrees West
 
 * To configure the "brightness" of nights:
 
@@ -113,7 +112,7 @@ If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main
 
 * To configure current weather condition:
 
-  *Must be a positive integer.*
+  *Must be a positive integer of one of the following values:*
 
   *0 = clear, 1 = rain, 2 = snow, 3 = fog*
 

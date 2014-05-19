@@ -370,7 +370,16 @@ ig.module(
         },
 
         updateGeoCoords: function(lat, lng) {
-            this.geo_coords = {latitude: parseFloat(lat), longitude: parseFloat(lng)};
+            var latitude  = parseFloat(lat),
+                longitude = parseFloat(lng);
+
+            if(latitude < -90)     latitude = -90;
+            else if(latitude > 90) latitude =  90;
+
+            if(longitude < -180)     longitude = -180;
+            else if(longitude > 180) longitude =  180;
+
+            this.geo_coords = {latitude: latitude, longitude: longitude};
             this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
             this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
         },
