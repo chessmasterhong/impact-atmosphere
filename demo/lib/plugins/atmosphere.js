@@ -119,34 +119,8 @@ ig.module(
             if(this.condition && typeof this.nextParticle === 'undefined')
                 this.nextParticle = new ig.Timer();
 
-            // Generate particles based on weather condition
-            if(this.condition === 1) {
-                // Rain
-                if(this.nextParticle.delta() >= 0 && this.particles.curr < this.particles.max) {
-                    this.particles.curr++;
-                    this.nextParticle.set(1 / ig.system.height);
-                    ig.game.spawnEntity(
-                        EntityRain,
-                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y,
-                        {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
-                    );
-                } else
-                    this.nextParticle.set(0);
-            } else if(this.condition === 2) {
-                // Snow
-                if(this.nextParticle.delta() >= 0 && this.particles.curr < this.particles.max) {
-                    this.particles.curr++;
-                    this.nextParticle.set(1 / (this.particles.max - this.particles.curr));
-                    ig.game.spawnEntity(
-                        EntitySnow,
-                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y,
-                        {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
-                    );
-                } else
-                    this.nextParticle.set(0);
-            } else {
+            if(this.condition === 0 || this.particles.curr > this.particles.max) {
+                // Clear particles
                 if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
                     var r = ig.game.getEntitiesByType(EntityRain)[0];
                     if(typeof r !== 'undefined') {
@@ -162,6 +136,33 @@ ig.module(
 
                     this.nextParticle.set(2 / this.particles.curr);
                 }
+            // Generate particles based on weather condition
+            } else if(this.condition === 1) {
+                // Rain
+                if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
+                    this.particles.curr++;
+                    this.nextParticle.set(1 / ig.system.height);
+                    ig.game.spawnEntity(
+                        EntityRain,
+                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
+                        ig.game.screen.y,
+                        {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
+                    );
+                } else
+                    this.nextParticle.set(0);
+            } else if(this.condition === 2) {
+                // Snow
+                if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
+                    this.particles.curr++;
+                    this.nextParticle.set(1 / (this.particles.max - this.particles.curr));
+                    ig.game.spawnEntity(
+                        EntitySnow,
+                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
+                        ig.game.screen.y,
+                        {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
+                    );
+                } else
+                    this.nextParticle.set(0);
             }
         }, // End update
         //---------------------------------------------------------------------
