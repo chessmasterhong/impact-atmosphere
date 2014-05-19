@@ -76,7 +76,7 @@
 
             function updateGeoCoordsLat(v) { ig.game.atmosphere.updateGeoCoords(parseFloat(v), document.getElementById('gc_lng').value); };
             function updateGeoCoordsLng(v) { ig.game.atmosphere.updateGeoCoords(document.getElementById('gc_lat').value, parseFloat(v)); };
-            function updateTimescale(v) { ig.game.atmosphere.timescale = parseFloat(v); };
+            function updateTimescale(v) { ig.game.atmosphere.updateTimescale(parseFloat(v)); };
             function updateUpdateRate(v) { ig.game.atmosphere.updateUpdateRate(parseFloat(v)); };
             function updateWeather(v) { ig.game.atmosphere.condition = parseInt(v); };
             function updateMaxParticles(v) { ig.game.atmosphere.particles.max = parseInt(v); };

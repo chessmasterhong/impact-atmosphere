@@ -29,7 +29,7 @@ Visit [http://chessmasterhong.bitbucket.org/projects/impact-atmosphere](http://c
 If you would rather set it up yourself, located in the `demo` directory is a pre-configured setup of the plugin. I also use this as my development testing grounds, so it should be up-to-date. All you need is the Impact game engine source code (sorry, batteries not included).
 
 
-## Basic Usage
+## Installation and Setup
 
 1. Download and place the file `atmosphere.js` in your `lib/plugins/` directory.
 
@@ -70,15 +70,72 @@ If you would rather set it up yourself, located in the `demo` directory is a pre
 If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main.js) file in the `demo/lib/game/` directory for additional details.
 
 
+## Usage
+
+Once you set up the plugin to work in your game, you can read from the plugin's properties. From here, your options vary greatly depending on your game; I shall leave it up to your creativity.
+
+Say, for example, that your game is a farming game that requires seasonal cycles and weather to determine the state of your plants. You can easily check the plugin's current season and weather condition.
+
+Or maybe your game is a role-playing game that requires current date/time to have timed events or day/night cycles to determine what enemies should appear at a certain time of the day. You can do that too!
+
+Below lists the available properties and their description:
+
+* To get current timescale:
+
+      this.atmosphere.timescale;    // Returns a positive number (integer or float)
+
+* To get current update rate:
+
+      this.atmosphere.update_rate;    // Returns a positive number (integer or float)
+
+* To get current geographical coordinates:
+
+      this.atmosphere.geo_coords.latitude;     // Returns a number (integer or float) between -90 (inclusive) and +90 (inclusive)
+      this.atmosphere.geo_coords.longitude;    // Returns a number (integer or float) between -180 (inclusive) and +180 (inclusive)
+
+* To get sunrise or sunset time:
+
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.date);    // Returns a JavaScript Date object
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.date);     // Returns a JavaScript Date object
+
+* To get sunrise/sunset duration:
+
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.duration);    // Returns a JavaScript Date object
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.duration);     // Returns a JavaScript Date object
+
+* To get solstice or equinox date and time:
+
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.vernal_equinox);       // Returns a JavaScript Date object
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.estival_solstice);     // Returns a JavaScript Date object
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.autumnal_equinox);     // Returns a JavaScript Date object
+      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.hibernal_solstice);    // Returns a JavaScript Date object
+
+* To get current season:
+
+      this.atmosphere.season_state;    // Returns a positive integer (0 = Spring/Vernal, 1 = Summer/Estival, 3 = Autumn/Autumnal, 4 = Winter/Hibernal)
+
+* To get current weather condition:
+
+      this.atmosphere.condition;    // Returns a positive integer (0 = clear, 1 = rain, 2 = snow, 3 = fog)
+
+* To get maximum particle count:
+
+      this.atmosphere.particles.max;    // Returns a positive integer
+
+* To get current particle count:
+
+      this.atmosphere.particles.curr;    // Returns a positive integer
+
+
 ## Configuration
 
-*For reference, the values listed below are the plugin's default values.*
+For reference, the values listed below are the plugin's default values.
 
 * To configure the plugin's current date and time:
 
     *Must be a JavaScript Date object. Attempts to convert into Date object if not.*
 
-        this.atmosphere.datetime = new Date;    // Start plugin from current date and time
+        this.atmosphere.setDateTime(new Date);    // Start plugin from current date and time
 
 * To configure the time in seconds the plugin should update at:
 
@@ -90,7 +147,7 @@ If you are still unclear about the usage, see the [`main.js`](demo/lib/game/main
 
   *Must be a positive number (integer or floating point number). Attempts to convert to positive number if not.*
 
-      this.atmosphere.timescale = 1;    // 1 second plugin time = 1 second real time
+      this.atmosphere.updateTimescale(1);    // 1 second plugin time = 1 second real time
 
 * To configure the geographical coordinates the plugin should use in its computations:
 
