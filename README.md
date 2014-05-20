@@ -186,7 +186,7 @@ For reference, the values listed below are the plugin's default values.
 
 ## Bugs and Known Issues
 
-See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/issues?labels=help+wanted%2Cbug&page=1&state=open) for a list of current bugs and issues.
+See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/issues?labels=bug&page=1&state=open) for a list of current bugs and issues.
 
 
 ## TODO
