@@ -186,30 +186,12 @@ For reference, the values listed below are the plugin's default values.
 
 ## Bugs and Known Issues
 
-* General
-    * Plugin may not have correct calculations for other time zones. Current calculations assume Eastern Standard Time (UTC-0500) and Eastern Daylight Time (UTC-0400).
-    * Plugin breaks (fails in its computations) when the latitude becomes too large (as it approaches the North and South Poles, specifically around the Arctic and Antarctic Circles).
-* Day/Night Cycle System
-    * *(none at the moment)*
-* Seasonal Cycle System
-    * *(none at the moment)*
-* Weather System
-    * Current method of generating fog is *very* slow and is considered experimental.
+See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/issues?labels=help+wanted%2Cbug&page=1&state=open) for a list of current bugs and issues.
 
 
 ## TODO
 
-* General
-    * Fix calculations and add support for arbitrary timezones.
-    * Fix calculations and add support for arbitrary latitudes.
-* Day/Night Cycle System
-    * Compute sunrise and sunset duration based on season and geographical coordinates.
-    * Improve accuracy of ambient brightness and colors during sunrise and sunset. Current calculations assume linear brightness relative to sunrise/sunset duration. (Maybe consider looking at [Rayleigh scattering](http://en.wikipedia.org/wiki/Rayleigh_scattering) and [Mie scattering](http://en.wikipedia.org/wiki/Mie_scattering)?).
-* Seasonal Cycle System
-    * Account for polar days and polar nights as latitude approaches North and South Poles.
-* Weather System
-    * Additional weather conditions (hail, sleet, cloudy, lightning).
-    * Improve method to generate fog faster.
+See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/issues?labels=enhancement&page=1&state=open) for a potential list of stuff to do.
 
 
 ## Credits
