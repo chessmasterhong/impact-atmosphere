@@ -49,7 +49,7 @@ ig.module(
 
         // Set weather condition
         // 0 = clear, 1 = rain, 2 = snow, 3 = fog (EXPERIMENTAL!!)
-        condition: 0,
+        weather_condition: 0,
 
         // "Brightness" of nights
         // Greater values yields darker nights
@@ -82,6 +82,8 @@ ig.module(
             this.updateTimescale(timescale);
             this.updateUpdateRate(update_rate);
             this.updateGeoCoords(this.geo_coords.latitude, this.geo_coords.longitude);
+
+            this.nextParticle = new ig.Timer();
 
             //console.log('========== Impact Atmospheric System Plugin initialized ==========');
             //console.log('Update rate: ' + update_rate + ' seconds');
@@ -116,10 +118,7 @@ ig.module(
                 }
             }
 
-            if(this.condition && typeof this.nextParticle === 'undefined')
-                this.nextParticle = new ig.Timer();
-
-            if(this.condition === 0 || this.particles.curr > this.particles.max) {
+            if(this.weather_condition === 0 || this.particles.curr > this.particles.max) {
                 // Clear particles
                 if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
                     var r = ig.game.getEntitiesByType(EntityRain)[0];
@@ -137,32 +136,34 @@ ig.module(
                     this.nextParticle.set(2 / this.particles.curr);
                 }
             // Generate particles based on weather condition
-            } else if(this.condition === 1) {
-                // Rain
-                if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
-                    this.particles.curr++;
-                    this.nextParticle.set(1 / ig.system.height);
-                    ig.game.spawnEntity(
-                        EntityRain,
-                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y,
-                        {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
-                    );
-                } else
-                    this.nextParticle.set(0);
-            } else if(this.condition === 2) {
-                // Snow
-                if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
-                    this.particles.curr++;
-                    this.nextParticle.set(1 / (this.particles.max - this.particles.curr));
-                    ig.game.spawnEntity(
-                        EntitySnow,
-                        Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
-                        ig.game.screen.y,
-                        {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
-                    );
-                } else
-                    this.nextParticle.set(0);
+            } else {
+                if(this.weather_condition === 1) {
+                    // Rain
+                    if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
+                        this.particles.curr++;
+                        this.nextParticle.set(1 / ig.system.height);
+                        ig.game.spawnEntity(
+                            EntityRain,
+                            Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
+                            ig.game.screen.y,
+                            {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
+                        );
+                    } else if(this.particles.curr >= this.particles.max)
+                        this.nextParticle.set(0);
+                } else if(this.weather_condition === 2) {
+                    // Snow
+                    if(this.particles.curr < this.particles.max && this.nextParticle.delta() >= 0) {
+                        this.particles.curr++;
+                        this.nextParticle.set(1 / (this.particles.max - this.particles.curr));
+                        ig.game.spawnEntity(
+                            EntitySnow,
+                            Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
+                            ig.game.screen.y,
+                            {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
+                        );
+                    } else if(this.particles.curr >= this.particles.max)
+                        this.nextParticle.set(0);
+                }
             }
         }, // End update
         //---------------------------------------------------------------------
@@ -198,13 +199,13 @@ ig.module(
 
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-            if(this.condition === 3) {
+            if(this.weather_condition === 4) {
                 // Fog
-                var r, g, b, size = 4;
+                var r, g, b, size = 5;
                 for(var x = ig.game.screen.x; x < ig.game.screen.x + ig.system.width; x += size) {
                     for(var y = ig.game.screen.y; y < ig.game.screen.y + ig.system.height; y += size) {
                         r = g = b = Math.round(255 * PerlinNoise.noise(size * x / ig.system.width, size * y / ig.system.height, 0.6));
-                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.3)';
+                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.4)';
                         ig.system.context.fillRect(x, y, size, size);
                     }
                 }
@@ -254,15 +255,15 @@ ig.module(
                 ig.system.context.fillText('Winter : ' + this.convertJulianToGregorian(this.season.hibernal_solstice).toString() + ' | ' + this.season.hibernal_solstice.toFixed(8) + ' JD', x, y += 10);
 
                 ig.system.context.fillStyle = '#ffff00';
-                ig.system.context.fillText('Weather condition: ' + (this.condition === 0 ? 'Clear' : this.condition === 1 ? 'Rain' : this.condition === 2 ? 'Snow' : this.condition === 3 ? 'Fog' : '<invalid weather condition>'), x, y += 15);
+                ig.system.context.fillText('Weather condition: ' + (this.weather_condition === 0 ? 'Clear' : this.weather_condition === 1 ? 'Rain' : this.weather_condition === 2 ? 'Snow' : this.weather_condition === 3 ? 'Fog' : '<invalid weather condition>'), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Maximum Particle Count: ' + this.particles.max, x, y += 15);
                 ig.system.context.fillText('Current Particle Count: ' + this.particles.curr, x, y += 10);
 
-                if(this.condition === 3) {
+                if(this.weather_condition === 3) {
                     ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
-                    ig.system.context.fillText('Fog block iterations: ' + (ig.system.width / size) + ' * ' + (ig.system.height / size) + ' = ' + ((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
+                    ig.system.context.fillText('Fog block iterations: ' + Math.ceil(ig.system.width / size) + ' * ' + Math.ceil(ig.system.height / size) + ' = ' + Math.ceil((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
                 }
             }
             // ----- End debug -----
