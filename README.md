@@ -82,49 +82,49 @@ Below lists the available properties and their description:
 
 * To get current timescale:
 
-      this.atmosphere.timescale;    // Returns a positive number (integer or float)
+        this.atmosphere.timescale;    // Returns a positive number (integer or float)
 
 * To get current update rate:
 
-      this.atmosphere.update_rate;    // Returns a positive number (integer or float)
+        this.atmosphere.update_rate;    // Returns a positive number (integer or float)
 
 * To get current geographical coordinates:
 
-      this.atmosphere.geo_coords.latitude;     // Returns a number (integer or float) between -90 (inclusive) and +90 (inclusive)
-      this.atmosphere.geo_coords.longitude;    // Returns a number (integer or float) between -180 (inclusive) and +180 (inclusive)
+        this.atmosphere.geo_coords.latitude;     // Returns a number (integer or float) between -90 (inclusive) and +90 (inclusive)
+        this.atmosphere.geo_coords.longitude;    // Returns a number (integer or float) between -180 (inclusive) and +180 (inclusive)
 
 * To get sunrise or sunset time:
 
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.date);    // Returns a JavaScript Date object
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.date);     // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.date);    // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.date);     // Returns a JavaScript Date object
 
 * To get sunrise/sunset duration:
 
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.duration);    // Returns a JavaScript Date object
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.duration);     // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.sunrise.duration);    // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.sunset.duration);     // Returns a JavaScript Date object
 
 * To get solstice or equinox date and time:
 
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.vernal_equinox);       // Returns a JavaScript Date object
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.estival_solstice);     // Returns a JavaScript Date object
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.autumnal_equinox);     // Returns a JavaScript Date object
-      this.atmosphere.convertJulianToGregorian(this.atmosphere.season.hibernal_solstice);    // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.season.vernal_equinox);       // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.season.estival_solstice);     // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.season.autumnal_equinox);     // Returns a JavaScript Date object
+        this.atmosphere.convertJulianToGregorian(this.atmosphere.season.hibernal_solstice);    // Returns a JavaScript Date object
 
 * To get current season:
 
-      this.atmosphere.season_state;    // Returns a positive integer (0 = Spring/Vernal, 1 = Summer/Estival, 3 = Autumn/Autumnal, 4 = Winter/Hibernal)
+        this.atmosphere.season_state;    // Returns a positive integer (0 = Spring/Vernal, 1 = Summer/Estival, 3 = Autumn/Autumnal, 4 = Winter/Hibernal)
 
 * To get current weather condition:
 
-      this.atmosphere.condition;    // Returns a positive integer (0 = clear, 1 = rain, 2 = snow, 3 = fog)
+        this.atmosphere.condition;    // Returns a positive integer (0 = clear, 1 = rain, 2 = snow, 3 = fog)
 
 * To get maximum particle count:
 
-      this.atmosphere.particles.max;    // Returns a positive integer
+        this.atmosphere.particles.max;    // Returns a positive integer
 
 * To get current particle count:
 
-      this.atmosphere.particles.curr;    // Returns a positive integer
+        this.atmosphere.particles.curr;    // Returns a positive integer
 
 
 ## Configuration
