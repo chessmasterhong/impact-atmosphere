@@ -5,12 +5,12 @@
         <title>Impact Atmospheric System Plugin Demo</title>
 
         <style>
-            #container { padding-top: 10px; white-space: nowrap;}
-            #canvas { float: left; margin-right: 10px; }
-            input { margin-left: 10px; }
+            #canvas { float: left; margin-right: 10px;  }
+            #config { padding-top: 10px; white-space: nowrap; }
+            input[type="radio"] { margin-left: 10px; }
             #gc_lat, #gc_lng { text-align: right; width: 55px; }
             @media print, screen and (max-width: 1160px) {
-                #canvas { float: none; margin: 0;}
+                #canvas { float: none; }
             }
         </style>
 
@@ -20,12 +20,12 @@
     <body>
         <h1>Impact Atmospheric System Plugin Demo</h1>
         <p>A plugin for the <a href="http://impactjs.com">Impact game engine</a> that simulates an atmospheric weather system, day/night cycles, and seasonal cycles based on configurable date, time, and geographical coordinates.</p>
-        <small>This version of the demo may not reflect the latest changes of the plugin. For the latest development and updates, visit <a href="https://github.com/chessmasterhong/impact-atmosphere">https://github.com/chessmasterhong/impact-atmosphere</a>.</small>
+        <p><small>This version of the demo may not reflect the most recent changes of the plugin. For the latest development updates and source code, visit <a href="https://github.com/chessmasterhong/impact-atmosphere">https://github.com/chessmasterhong/impact-atmosphere</a>.</small></p>
 
-        <div id="container">
-            <canvas id="canvas"></canvas>
+        <canvas id="canvas"></canvas>
 
-            <p><strong>Instructions: Select a radio option below to see the respective changes to the plugin in the canvas.</strong></p>
+        <div id="config">
+            <strong>Instructions: Select a radio option below to see the respective changes to the plugin in the canvas.</strong>
 
             <p id="gc">Geographical Coordinates: (Latitude:<input type="text" name="lat" id="gc_lat" onchange="updateGeoCoordsLat(this.value)">, Longitude:<input type="text" name="lng" id="gc_lng" onchange="updateGeoCoordsLng(this.value)">)</p>
             <p id="ts">Timescale:</p>
@@ -33,12 +33,12 @@
             <p id="wc">Weather Condition:</p>
             <p id="mp">Maximum Particle Count:</p>
 
-            <small>
+            <br><p><small>
                 Note 1: Bracketed radio labels denotes plugin's default values.<br>
                 Note 2: To show/hide debug messages, left click the canvas.<br>
-                Note 4: If you <em>really</em> want to try the fog weather condition, I would suggest running it on a beefy machine.<br>
-                Note 5: This plugin is under development. See <a href="https://github.com/chessmasterhong/impact-atmosphere#bugs-and-known-issues">here</a> for a list of known bugs and issues.
-            </small>
+                Note 3: If you <em>really</em> want to try the fog weather condition, I would suggest running it on a beefy machine.<br>
+                Note 4: This plugin is under development. See <a href="https://github.com/chessmasterhong/impact-atmosphere#bugs-and-known-issues">here</a> for a list of known bugs and issues.
+            </small></p>
         </div>
 
         <script>
