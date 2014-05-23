@@ -206,7 +206,7 @@ ig.module(
 
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-            if(this.weather_condition === 4) {
+            if(this.weather_condition.fog) {
                 // Fog
                 var r, g, b, size = 5;
                 for(var x = ig.game.screen.x; x < ig.game.screen.x + ig.system.width; x += size) {
@@ -261,14 +261,22 @@ ig.module(
                 ig.system.context.fillText('Autumn : ' + this.convertJulianToGregorian(this.season.autumnal_equinox).toString() + ' | ' + this.season.autumnal_equinox.toFixed(8) + ' JD', x, y += 10);
                 ig.system.context.fillText('Winter : ' + this.convertJulianToGregorian(this.season.hibernal_solstice).toString() + ' | ' + this.season.hibernal_solstice.toFixed(8) + ' JD', x, y += 10);
 
+                var wc = 'Clear';
+                if(this.weather_condition.rain || this.weather_condition.snow || this.weather_condition.fog) {
+                    wc = '';
+                    if(this.weather_condition.rain) wc += 'Rain ';
+                    if(this.weather_condition.snow) wc += 'Snow ';
+                    if(this.weather_condition.fog)  wc += 'Fog ';
+                }
+
                 ig.system.context.fillStyle = '#ffff00';
-                ig.system.context.fillText('Weather condition: ' + (this.weather_condition === 0 ? 'Clear' : this.weather_condition === 1 ? 'Rain' : this.weather_condition === 2 ? 'Snow' : this.weather_condition === 3 ? 'Fog' : '<invalid weather condition>'), x, y += 15);
+                ig.system.context.fillText('Weather condition: ' + wc, x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Maximum Particle Count: ' + this.particles.max, x, y += 15);
                 ig.system.context.fillText('Current Particle Count: ' + this.particles.curr, x, y += 10);
 
-                if(this.weather_condition === 3) {
+                if(this.weather_condition.fog) {
                     ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
                     ig.system.context.fillText('Fog block iterations: ' + Math.ceil(ig.system.width / size) + ' * ' + Math.ceil(ig.system.height / size) + ' = ' + Math.ceil((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
                 }
