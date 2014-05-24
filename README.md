@@ -116,7 +116,9 @@ Below lists the available properties and their description:
 
 * To get current weather condition:
 
-        this.atmosphere.condition;    // Returns a positive integer (0 = clear, 1 = rain, 2 = snow, 3 = fog)
+        this.atmosphere.weather_condition.rain;    // Returns a boolean
+        this.atmosphere.weather_condition.snow;    // Returns a boolean
+        this.atmosphere.weather_condition.fog;     // Returns a boolean
 
 * To get maximum particle count:
 
@@ -169,11 +171,11 @@ For reference, the values listed below are the plugin's default values.
 
 * To configure current weather condition:
 
-  *Must be a positive integer of one of the following values:*
+  *Must be a boolean (true/false, not 0/1).*
 
-  *0 = clear, 1 = rain, 2 = snow, 3 = fog*
-
-      this.atmosphere.condition = 0;    // Clear weather condition
+      this.atmosphere.weather_condition.rain = false;    // No rain
+      this.atmosphere.weather_condition.snow = false;    // No snow
+      this.atmosphere.weather_condition.fog = false;     // No fog
 
 * To configure maximum particle count for weather conditions:
 
