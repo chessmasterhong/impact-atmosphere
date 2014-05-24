@@ -18,6 +18,8 @@
  *      http://calendars.wikia.com/wiki/Julian_day_number
  *      http://users.electromagnetic.net/bu/astro/sunrise-set.php
  *      http://www.esrl.noaa.gov/gmd/grad/solcalc
+ *      http://planetpixelemporium.com/tutorialpages/light.html
+ *      http://digital-lighting.150m.com/ch04lev1sec1.html
  */
 
 
@@ -184,12 +186,12 @@ ig.module(
                 b = 0,
                 a = 0;
 
+            // Compute rgba based on time of day
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
                 // Sun is up
                 if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
                     this.sun_state = 1;
-                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
@@ -197,7 +199,6 @@ ig.module(
                     g = Math.floor(126 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     b = Math.floor(91  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     a = this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
-                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
@@ -205,7 +206,6 @@ ig.module(
                     // Sun has set
                     this.sun_state = 3;
                     a = this.brightness_night;
-                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
@@ -213,10 +213,10 @@ ig.module(
                     g = 126 - Math.floor(126 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     b = 91  - Math.floor(91  * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     a = this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
-                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
             }
 
+            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
             if(this.weather_condition.fog) {
