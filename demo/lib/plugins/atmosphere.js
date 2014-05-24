@@ -253,6 +253,8 @@ ig.module(
                 ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString() + ' | ' + jDate_curr.toFixed(8) + ' JD', x, y += 15);
                 ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid sun state>'), x, y += 15);
 
+                ig.system.context.fillText('Ambient illumination color: (r: ' + r.toFixed(4) + ', g: ' + g.toFixed(4) + ', b: ' + b.toFixed(4) + ', a: ' + a.toFixed(4) + ')', x, y += 15);
+
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString() + ' | ' + this.solar.sunrise.date.toFixed(8) + ' JD', x, y += 15);
                 ig.system.context.fillText('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString() + ' | ' + this.solar.sunset.date.toFixed(8) + ' JD', x, y += 10);
