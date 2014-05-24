@@ -178,29 +178,36 @@ ig.module(
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
-            var jDate_curr = this.convertGregorianToJulian(this.gregorianDate);
+            var jDate_curr = this.convertGregorianToJulian(this.gregorianDate),
+                r = 0,
+                g = 0,
+                b = 0,
+                a = 0;
 
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
                 // Sun is up
                 if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
                     this.sun_state = 1;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, 0)';
+                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)) + ')';
+                    a = this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
+                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
                 if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + this.brightness_night + ')';
+                    a = this.brightness_night;
+                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    ig.system.context.fillStyle = 'rgba(0, 0, 0, ' + (this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)) + ')';
+                    a = this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                    ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
             }
 
