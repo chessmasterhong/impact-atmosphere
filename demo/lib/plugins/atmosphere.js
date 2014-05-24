@@ -209,6 +209,9 @@ ig.module(
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
+                    r = 182 - Math.floor(182 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    g = 126 - Math.floor(126 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    b = 91  - Math.floor(91  * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     a = this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                     ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
