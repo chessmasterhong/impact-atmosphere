@@ -193,6 +193,9 @@ ig.module(
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
+                    r = Math.floor(182 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    g = Math.floor(126 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    b = Math.floor(91  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     a = this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                     ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
                 }
