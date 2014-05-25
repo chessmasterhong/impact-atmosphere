@@ -62,6 +62,9 @@ ig.module(
         // 0 = no change compared to day brightness, 1 = pitch black
         brightness_night: 0.65,
 
+        sunrise_color: {r: 182, g: 126, b: 81},
+        sunset_color : {r: 182, g: 126, b: 81},
+
         solar: {
             sunrise: {date: 0, duration: 60},
             sunset : {date: 0, duration: 60},
@@ -195,9 +198,9 @@ ig.module(
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
-                    r = Math.floor(182 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    g = Math.floor(126 * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    b = Math.floor(91  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    r = Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    g = Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    b = Math.floor(this.sunrise_color.b  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     a = this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
@@ -209,9 +212,9 @@ ig.module(
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    r = 182 - Math.floor(182 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    g = 126 - Math.floor(126 * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    b = 91  - Math.floor(91  * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     a = this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
