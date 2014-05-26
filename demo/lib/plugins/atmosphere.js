@@ -60,8 +60,12 @@ ig.module(
         // "Brightness" of nights
         // Greater values yields darker nights
         // 0 = no change compared to day brightness, 1 = pitch black
-        brightness_night: 0.65,
+        //brightness_night: 0.65,
 
+        // Ambient illumination color
+        //   RGB tint overlay
+        day_color    : {r:   0, g:   0, b:  0, a: 0   },
+        night_color  : {r:   0, g:   0, b:  0, a: 0.65},
         sunrise_color: {r: 182, g: 126, b: 81},
         sunset_color : {r: 182, g: 126, b: 81},
 
@@ -201,21 +205,21 @@ ig.module(
                     r = Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     g = Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
                     b = Math.floor(this.sunrise_color.b  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    a = this.brightness_night - this.brightness_night * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
+                    a = this.night_color.a - this.night_color.a * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
                 if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
-                    a = this.brightness_night;
+                    a = this.night_color.a;
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
                     r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    a = this.brightness_night * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                    a = this.night_color.a * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
 
