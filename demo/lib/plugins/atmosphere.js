@@ -188,10 +188,7 @@ ig.module(
         // Draw
         draw: function() {
             var jDate_curr = this.convertGregorianToJulian(this.gregorianDate),
-                r = 0,
-                g = 0,
-                b = 0,
-                a = 0;
+                r, g, b, a;
 
             // Compute rgba based on time of day
             if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
@@ -199,6 +196,10 @@ ig.module(
                 if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
                     this.sun_state = 1;
+                    r = this.day_color.r;
+                    g = this.day_color.g;
+                    b = this.day_color.b;
+                    a = this.day_color.a;
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
@@ -212,6 +213,9 @@ ig.module(
                 if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
+                    r = this.night_color.r;
+                    g = this.night_color.g;
+                    b = this.night_color.b;
                     a = this.night_color.a;
                 } else {
                     // Sun is setting
