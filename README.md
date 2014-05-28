@@ -161,13 +161,29 @@ For reference, the values listed below are the plugin's default values.
 
       this.atmosphere.updateGeoCoords(40.7789, -73.9675);      // 40.7789 degrees North, 73.9675 degrees West
 
-* To configure the "brightness" of nights:
+* To configure the ambient color of days, nights, sunrises, and sunsets:
 
-  *Must be a positive number (integer or floating point number) between 0 and 1 (both inclusive).*
+  *"r" (red), "g" (green), "b" (blue) must be a positive integer between 0 and 1 (both inclusive).*
 
-  *Greater numbers, results in darker nights. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.*
+  *"a" (alpha) must be a number (integer or floating point number) between 0 and 1 (both inclusive).*
 
-      this.atmosphere.brightness_night = 0.65;
+      this.atmosphere.day_color.r = 0;
+      this.atmosphere.day_color.g = 0;
+      this.atmosphere.day_color.b = 0;
+      this.atmosphere.day_color.a = 0;
+
+      this.atmosphere.night_color.r = 0;
+      this.atmosphere.night_color.g = 0;
+      this.atmosphere.night_color.b = 0;
+      this.atmosphere.night_color.a = 0.65;    // Greater values, results in more darker nights. Exactly zero (0) yields no change compared to day brightness, whereas exactly one (1) yields pitch black.
+
+      this.atmosphere.sunrise_color.r = 182;    // -+
+      this.atmosphere.sunrise_color.g = 126;    //  +- Creates a light orange transition effect
+      this.atmosphere.sunrise_color.b = 81;     // -+
+
+      this.atmosphere.sunset_color.r = 182;    // -+
+      this.atmosphere.sunset_color.g = 126;    //  +- Creates a light orange transition effect
+      this.atmosphere.sunset_color.b = 81;     // -+
 
 * To configure current weather condition:
 
