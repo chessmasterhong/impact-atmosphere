@@ -223,6 +223,8 @@ See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/iss
 * [http://calendars.wikia.com/wiki/Julian_day_number](http://calendars.wikia.com/wiki/Julian_day_number)
 * [http://users.electromagnetic.net/bu/astro/sunrise-set.php](http://users.electromagnetic.net/bu/astro/sunrise-set.php)
 * [http://www.esrl.noaa.gov/gmd/grad/solcalc](http://www.esrl.noaa.gov/gmd/grad/solcalc)
+* [http://planetpixelemporium.com/tutorialpages/light.html](http://planetpixelemporium.com/tutorialpages/light.html)
+* [http://digital-lighting.150m.com/ch04lev1sec1.html](http://digital-lighting.150m.com/ch04lev1sec1.html)
 
 ### Additional resources
 
