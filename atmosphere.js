@@ -61,8 +61,8 @@ ig.module(
         weather_condition: {
             rain     : false,
             snow     : false,
-            fog      : false
-            //lightning: false
+            fog      : false,
+            lightning: false
         },
 
         // Probability of lightning flash per update rate
@@ -206,19 +206,21 @@ ig.module(
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
-            if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
-                // Trigger lightning
-                if(Math.random() < this.lightning_rate)
-                    this.lightning_active = ig.system.tick;
-            } else if(this.lightning_active > 0) {
-                // Compute ambient brightness due to lightning flash
-                ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightning_active) + ')';
-                ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
+            if(this.weather_condition.lightning) {
+                if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
+                    // Trigger lightning
+                    if(Math.random() < this.lightning_rate)
+                        this.lightning_active = ig.system.tick;
+                } else if(this.lightning_active > 0) {
+                    // Compute ambient brightness due to lightning flash
+                    ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightning_active) + ')';
+                    ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-                this.lightning_active += ig.system.tick;
+                    this.lightning_active += ig.system.tick;
 
-                if(this.lightning_active > 1)
-                    this.lightning_active = 0;
+                    if(this.lightning_active > 1)
+                        this.lightning_active = 0;
+                }
             }
 
             var jDate_curr = this.convertGregorianToJulian(this.gregorianDate),
