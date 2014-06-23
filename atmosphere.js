@@ -304,7 +304,13 @@ ig.module(
 
                 ig.system.context.fillStyle = '#ffff00';
                 ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(jDate_curr).toString() + ' | ' + jDate_curr.toFixed(8) + ' JD', x, y += 15);
-                ig.system.context.fillText('Sun state: The sun ' + (this.sun_state === 0 ? 'is rising' : this.sun_state === 1 ? 'has risen' : this.sun_state === 2 ? 'is setting' : this.sun_state === 3 ? 'has set' : '<invalid sun state>'), x, y += 15);
+                ig.system.context.fillText('Sun state: The sun ' + (
+                    this.sun_state === 0 ? 'is rising' :
+                    this.sun_state === 1 ? 'has risen' :
+                    this.sun_state === 2 ? 'is setting' :
+                    this.sun_state === 3 ? 'has set' :
+                    '<invalid sun state>'
+                ), x, y += 15);
 
                 ig.system.context.fillText('Ambient illumination color: (r: ' + r.toFixed(4) + ', g: ' + g.toFixed(4) + ', b: ' + b.toFixed(4) + ', a: ' + a.toFixed(4) + ')', x, y += 15);
 
@@ -315,7 +321,13 @@ ig.module(
                 ig.system.context.fillText('Next sunriset update: ' + this.convertJulianToGregorian(this.solar.next_update).toString(), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffff00';
-                ig.system.context.fillText('Season state: ' + (this.season_state === 0 ? 'Spring/Vernal' : this.season_state === 1 ? 'Summer/Estival' : this.season_state === 2 ? 'Autumn/Autumnal' : this.season_state === 3 ? 'Winter/Hibernal' : '<invalid season state>'), x, y += 15);
+                ig.system.context.fillText('Season state: ' + (
+                    this.season_state === 0 ? 'Spring/Vernal' :
+                    this.season_state === 1 ? 'Summer/Estival' :
+                    this.season_state === 2 ? 'Autumn/Autumnal' :
+                    this.season_state === 3 ? 'Winter/Hibernal' :
+                    '<invalid season state>'
+                ), x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Spring : ' + this.convertJulianToGregorian(this.season.vernal_equinox).toString() + ' | ' + this.season.vernal_equinox.toFixed(8) + ' JD', x, y += 15);
@@ -328,6 +340,7 @@ ig.module(
                     wc = '';
                     if(this.weather_condition.rain) wc += 'Rain ';
                     if(this.weather_condition.snow) wc += 'Snow ';
+                    if(this.weather_condition.lightning) wc += 'Lightning ';
                     if(this.weather_condition.fog)  wc += 'Fog ';
                 }
 
