@@ -237,3 +237,11 @@ See the [Issue Tracker](https://github.com/chessmasterhong/impact-atmosphere/iss
 
 I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to *roughly* simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage the use of this plugin for sensitive projects or research. Instead, please consult more creditable, well-tested sources for such purposes.
 
+
+## Licence
+
+The plugin's source code is released under the [MIT Licence](LICENCE).
+
+All artwork is available under separate licences. For their licencing details,
+visit the respective link under the Additional Resources section of the README.
+
