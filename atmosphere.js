@@ -36,6 +36,10 @@ ig.module(
     "use strict";
 
     ig.Atmosphere = ig.Game.extend({
+
+        //######################################################################
+        // PLUGIN CONFIGURATION
+
         debug: true,
 
         // Time speed multiplier
@@ -55,15 +59,17 @@ ig.module(
         // Set weather condition
         // 0 = clear, 1 = rain, 2 = snow, 3 = fog (EXPERIMENTAL!!)
         weather_condition: {
-            rain: false,
-            snow: false,
-            fog : false
+            rain     : false,
+            snow     : false,
+            fog      : false
+            //lightning: false
         },
 
-        // "Brightness" of nights
-        // Greater values yields darker nights
-        // 0 = no change compared to day brightness, 1 = pitch black
-        //brightness_night: 0.65,
+        // Probability of lightning flash per update rate
+        //   Adjust this based on the update rate and personal preference
+        //   Higher update rates should have higher lightning rates (increase lightning trigger chance over large time intervals)
+        //   Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
+        lightning_rate: 0.025,
 
         // Ambient illumination color
         //   RGB tint overlay
@@ -89,6 +95,16 @@ ig.module(
             max : 100, // Maximum number of particles to generate before stopping
             curr: 0    // Keep track of current number of particles
         },
+
+        // End of plugin configuration
+        //######################################################################
+
+
+        // Do not mess with the stuff below
+
+        // Determines current duration into lightning flash effect
+        lightning_active: 0,
+
 
         //---------------------------------------------------------------------
         // Init
@@ -190,6 +206,21 @@ ig.module(
         //---------------------------------------------------------------------
         // Draw
         draw: function() {
+            if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
+                // Trigger lightning
+                if(Math.random() < this.lightning_rate)
+                    this.lightning_active = ig.system.tick;
+            } else if(this.lightning_active > 0) {
+                // Compute ambient brightness due to lightning flash
+                ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightning_active) + ')';
+                ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
+
+                this.lightning_active += ig.system.tick;
+
+                if(this.lightning_active > 1)
+                    this.lightning_active = 0;
+            }
+
             var jDate_curr = this.convertGregorianToJulian(this.gregorianDate),
                 r, g, b, a;
 
