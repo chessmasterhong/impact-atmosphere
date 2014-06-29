@@ -10,7 +10,7 @@
  *  license, visit http://opensource.org/licenses/MIT.
  *
  *  A plugin for the Impact game engine that simulates an atmospheric weather
- *  system, day/night cycles and seasonal cycles based on configurable date,
+ *  system, day/night cycles, and seasonal cycles based on configurable date,
  *  time, and geographical coordinates.
  *
  *  Based on:
@@ -33,7 +33,7 @@ ig.module(
     'impact.game'
 )
 .defines(function() {
-    "use strict";
+    'use strict';
 
     ig.Atmosphere = ig.Game.extend({
 
@@ -162,8 +162,9 @@ ig.module(
                         ig.game.screen.y,
                         {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
                     );
-                } else if(this.particles.curr >= this.particles.max)
+                } else if(this.particles.curr >= this.particles.max) {
                     this.nextParticle.set(0);
+                }
             } else {
                 if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
                     var r = ig.game.getEntitiesByType(EntityRain)[0];
@@ -187,8 +188,9 @@ ig.module(
                         ig.game.screen.y,
                         {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
                     );
-                } else if(this.particles.curr >= this.particles.max)
+                } else if(this.particles.curr >= this.particles.max) {
                     this.nextParticle.set(0);
+                }
             } else {
                 if(this.particles.curr > 0 && this.nextParticle.delta() >= 0) {
                     var s = ig.game.getEntitiesByType(EntitySnow)[0];
@@ -209,8 +211,9 @@ ig.module(
             if(this.weather_condition.lightning) {
                 if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
                     // Trigger lightning
-                    if(Math.random() < this.lightning_rate)
+                    if(Math.random() < this.lightning_rate) {
                         this.lightning_active = ig.system.tick;
+                    }
                 } else if(this.lightning_active > 0) {
                     // Compute ambient brightness due to lightning flash
                     ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightning_active) + ')';
@@ -218,8 +221,9 @@ ig.module(
 
                     this.lightning_active += ig.system.tick;
 
-                    if(this.lightning_active > 1)
+                    if(this.lightning_active > 1) {
                         this.lightning_active = 0;
+                    }
                 }
             }
 
@@ -269,11 +273,11 @@ ig.module(
             if(this.weather_condition.fog) {
                 // Fog
                 var r, g, b, size = 5;
-                for(var x = ig.game.screen.x; x < ig.game.screen.x + ig.system.width; x += size) {
-                    for(var y = ig.game.screen.y; y < ig.game.screen.y + ig.system.height; y += size) {
-                        r = g = b = Math.round(255 * PerlinNoise.noise(size * x / ig.system.width, size * y / ig.system.height, 0.6));
+                for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
+                    for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
+                        r = g = b = Math.round(255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6));
                         ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.4)';
-                        ig.system.context.fillRect(x, y, size, size);
+                        ig.system.context.fillRect(i, j, size, size);
                     }
                 }
             }
@@ -338,10 +342,10 @@ ig.module(
                 var wc = 'Clear';
                 if(this.weather_condition.rain || this.weather_condition.snow || this.weather_condition.fog) {
                     wc = '';
-                    if(this.weather_condition.rain) wc += 'Rain ';
-                    if(this.weather_condition.snow) wc += 'Snow ';
-                    if(this.weather_condition.lightning) wc += 'Lightning ';
-                    if(this.weather_condition.fog)  wc += 'Fog ';
+                    if(this.weather_condition.rain)      { wc += 'Rain ';      }
+                    if(this.weather_condition.snow)      { wc += 'Snow ';      }
+                    if(this.weather_condition.lightning) { wc += 'Lightning '; }
+                    if(this.weather_condition.fog)       { wc += 'Fog ';       }
                 }
 
                 ig.system.context.fillStyle = '#ffff00';
@@ -415,14 +419,15 @@ ig.module(
             ));
 
             var jDate = this.convertGregorianToJulian(this.gregorianDate);
-            if(jDate < this.season.vernal_equinox || jDate >= this.season.hibernal_solstice)
+            if(jDate < this.season.vernal_equinox || jDate >= this.season.hibernal_solstice) {
                 this.season_state = 3;
-            else if(jDate < this.season.estival_solstice)
+            } else if(jDate < this.season.estival_solstice) {
                 this.season_state = 0;
-            else if(jDate < this.season.autumnal_equinox)
+            } else if(jDate < this.season.autumnal_equinox) {
                 this.season_state = 1;
-            else if(jDate < this.season.hibernal_solstice)
+            } else if(jDate < this.season.hibernal_solstice) {
                 this.season_state = 2;
+            }
         }, // End updateDateTime
 
         // Updates timescale
@@ -475,12 +480,12 @@ ig.module(
                 longitude = parseFloat(lng);
 
             // Clamp latitude
-            if(latitude < -90)     latitude = -90;
-            else if(latitude > 90) latitude =  90;
+            if(latitude < -90)     { latitude = -90; }
+            else if(latitude > 90) { latitude =  90; }
 
             // Clamp longitude
-            if(longitude < -180)     longitude = -180;
-            else if(longitude > 180) longitude =  180;
+            if(longitude < -180)     { longitude = -180; }
+            else if(longitude > 180) { longitude =  180; }
 
             this.geo_coords = {latitude: latitude, longitude: longitude};
             this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
@@ -699,14 +704,15 @@ ig.module(
 
             // Determine current season based on current date relative to solstices and equinoxs
             var jDate = this.convertGregorianToJulian(gDate);
-            if(jDate < jDate_vernal_equinox || jDate >= jDate_hibernal_solstice)
+            if(jDate < jDate_vernal_equinox || jDate >= jDate_hibernal_solstice) {
                 this.season_state = 3;
-            else if(jDate < jDate_estival_solstice)
+            } else if(jDate < jDate_estival_solstice) {
                 this.season_state = 0;
-            else if(jDate < jDate_autumnal_equinox)
+            } else if(jDate < jDate_autumnal_equinox) {
                 this.season_state = 1;
-            else if(jDate < jDate_hibernal_solstice)
+            } else if(jDate < jDate_hibernal_solstice) {
                 this.season_state = 2;
+            }
 
             return {
                 vernal_equinox   : jDate_vernal_equinox,
@@ -743,8 +749,9 @@ ig.module(
                 254,138,236,205,93,222,114,67,29, 24,72,243,141,128,195,78,66,215, 61,156,180
             ];
 
-            for(var i = 0; i < 256; i++)
+            for(var i = 0; i < 256; i++) {
                 p[256+i] = p[i] = permutation[i];
+            }
 
                 var X = Math.floor(x) & 255,
                     Y = Math.floor(y) & 255,
@@ -816,10 +823,11 @@ ig.module(
             if(this.pos.y > ig.game.screen.y + ig.system.height || this.lifetimeTimer.delta() >= 0) {
                this.pos.y = ig.game.screen.y;
                this.lifetimeTimer.set(Math.random() * this.lifetime + this.lifetime / 2);
-            } else if(this.pos.x > ig.game.screen.x + ig.system.width)
+            } else if(this.pos.x > ig.game.screen.x + ig.system.width) {
                 this.pos.x = ig.game.screen.x;
-            else if(this.pos.x < ig.game.screen.x)
+            } else if(this.pos.x < ig.game.screen.x) {
                 this.pos.x = ig.game.screen.x + ig.system.width;
+            }
         },
 
         draw: function() {
@@ -833,7 +841,7 @@ ig.module(
             ig.system.context.stroke();
         },
 
-        handleMovementTrace: function(res) {
+        handleMovementTrace: function() {
             this.pos.x += this.vel.x * ig.system.tick;
             this.pos.y += this.vel.y * ig.system.tick;
         }
@@ -868,10 +876,11 @@ ig.module(
             if(this.pos.y > ig.game.screen.y + ig.system.height || this.lifetimeTimer.delta() >= 0) {
                this.pos.y = ig.game.screen.y;
                this.lifetimeTimer.set(Math.random() * this.lifetime + this.lifetime / 2);
-            } else if(this.pos.x > ig.game.screen.x + ig.system.width)
+            } else if(this.pos.x > ig.game.screen.x + ig.system.width) {
                 this.pos.x = ig.game.screen.x;
-            else if(this.pos.x < ig.game.screen.x)
+            } else if(this.pos.x < ig.game.screen.x) {
                 this.pos.x = ig.game.screen.x + ig.system.width;
+            }
         },
 
         draw: function() {
@@ -889,7 +898,7 @@ ig.module(
             ig.system.context.fill();
         },
 
-        handleMovementTrace: function(res) {
+        handleMovementTrace: function() {
             this.pos.x += this.vel.x * ig.system.tick;
             this.pos.y += this.vel.y * ig.system.tick;
         }
