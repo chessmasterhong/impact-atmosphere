@@ -28,8 +28,8 @@ ig.module(
             this.parent();
 
             // Used to toggle debug display
-            if(ig.input.pressed('click'))
-                this.atmosphere.debug = !this.atmosphere.debug;
+            //if(ig.input.pressed('click'))
+            //    this.atmosphere.debug = !this.atmosphere.debug;
 
             // Call plugin's update method
             // Used to update plugin's computations
