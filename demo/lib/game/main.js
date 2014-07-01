@@ -5,7 +5,8 @@ ig.module(
     'impact.game',
     //'game.levels.demo',
     'game.levels.demo2',
-    'plugins.atmosphere' // Add plugin to .requires section
+    'plugins.atmosphere', // Add plugin to .requires section
+    'plugins.atmosphere-debug' // Add plugin debug to .requires section (optional)
 )
 .defines(function() {
     var MainGame = ig.Game.extend({
@@ -28,8 +29,8 @@ ig.module(
             this.parent();
 
             // Used to toggle debug display
-            //if(ig.input.pressed('click'))
-            //    this.atmosphere.debug = !this.atmosphere.debug;
+            if(ig.input.pressed('click'))
+                this.atmosphere.debug = !this.atmosphere.debug;
 
             // Call plugin's update method
             // Used to update plugin's computations
