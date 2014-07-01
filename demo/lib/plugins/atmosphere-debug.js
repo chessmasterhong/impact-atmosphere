@@ -27,7 +27,7 @@ ig.module(
         draw: function() {
             this.parent();
 
-            if(this.debug) {
+            if(this.debug && typeof this.julianDate !== 'undefined') {
                 var x = 0,
                     y = 0;
 
@@ -99,10 +99,10 @@ ig.module(
                 ig.system.context.fillText('Maximum Particle Count: ' + this.particles.max, x, y += 15);
                 ig.system.context.fillText('Current Particle Count: ' + this.particles.curr, x, y += 10);
 
-                if(this.weather_condition.fog) {
-                    ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
-                    ig.system.context.fillText('Fog block iterations: ' + Math.ceil(ig.system.width / size) + ' * ' + Math.ceil(ig.system.height / size) + ' = ' + Math.ceil((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
-                }
+                //if(this.weather_condition.fog) {
+                //    ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
+                //    ig.system.context.fillText('Fog block iterations: ' + Math.ceil(ig.system.width / size) + ' * ' + Math.ceil(ig.system.height / size) + ' = ' + Math.ceil((ig.system.width * ig.system.height) / (size * size)), x, y += 10);
+                //}
             }
         }
     });
