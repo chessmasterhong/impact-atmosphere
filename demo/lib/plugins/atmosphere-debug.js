@@ -50,19 +50,17 @@ ig.module(
 
                 ig.system.context.fillText('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')', x, y += 15);
 
-                if(typeof this.julianDate !== 'undefined') {
-                    ig.system.context.fillStyle = '#ffff00';
-                    ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(this.julianDate).toString() + ' | ' + this.julianDate.toFixed(8) + ' JD', x, y += 15);
-                    ig.system.context.fillText('Sun state: The sun ' + (
-                        this.sun_state === 0 ? 'is rising' :
-                        this.sun_state === 1 ? 'has risen' :
-                        this.sun_state === 2 ? 'is setting' :
-                        this.sun_state === 3 ? 'has set' :
-                        '<invalid sun state>'
-                    ), x, y += 15);
+                ig.system.context.fillStyle = '#ffff00';
+                ig.system.context.fillText('Current: ' + this.convertJulianToGregorian(this.julianDate).toString() + ' | ' + this.julianDate.toFixed(8) + ' JD', x, y += 15);
+                ig.system.context.fillText('Sun state: The sun ' + (
+                    this.sun_state === 0 ? 'is rising' :
+                    this.sun_state === 1 ? 'has risen' :
+                    this.sun_state === 2 ? 'is setting' :
+                    this.sun_state === 3 ? 'has set' :
+                    '<invalid sun state>'
+                ), x, y += 15);
 
-                    ig.system.context.fillText('Ambient illumination color: (r: ' + this.sky.r.toFixed(4) + ', g: ' + this.sky.g.toFixed(4) + ', b: ' + this.sky.b.toFixed(4) + ', a: ' + this.sky.a.toFixed(4) + ')', x, y += 15);
-                }
+                ig.system.context.fillText('Ambient illumination color: (r: ' + this.sky.r.toFixed(4) + ', g: ' + this.sky.g.toFixed(4) + ', b: ' + this.sky.b.toFixed(4) + ', a: ' + this.sky.a.toFixed(4) + ')', x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
                 ig.system.context.fillText('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString() + ' | ' + this.solar.sunrise.date.toFixed(8) + ' JD', x, y += 15);

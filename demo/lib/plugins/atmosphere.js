@@ -225,49 +225,47 @@ ig.module(
                 }
             }
 
-            if(typeof this.julianDate !== 'undefined') {
-                this.sky = {};
+            this.sky = {};
 
-                // Compute rgba based on time of day
-                if(this.julianDate >= this.solar.sunrise.date && this.julianDate < this.solar.sunset.date) {
-                    // Sun is up
-                    if(this.julianDate >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
-                        // Sun has risen
-                        this.sun_state = 1;
-                        this.sky.r = this.day_color.r;
-                        this.sky.g = this.day_color.g;
-                        this.sky.b = this.day_color.b;
-                        this.sky.a = this.day_color.a;
-                    } else {
-                        // Sun is rising
-                        this.sun_state = 0;
-                        this.sky.r = Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                        this.sky.g = Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                        this.sky.b = Math.floor(this.sunrise_color.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                        this.sky.a = this.night_color.a - this.night_color.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
-                    }
+            // Compute rgba based on time of day
+            if(this.julianDate >= this.solar.sunrise.date && this.julianDate < this.solar.sunset.date) {
+                // Sun is up
+                if(this.julianDate >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
+                    // Sun has risen
+                    this.sun_state = 1;
+                    this.sky.r = this.day_color.r;
+                    this.sky.g = this.day_color.g;
+                    this.sky.b = this.day_color.b;
+                    this.sky.a = this.day_color.a;
                 } else {
-                    // Sun is down, handle new day hour wraparound
-                    if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.next_update)) {
-                        // Sun has set
-                        this.sun_state = 3;
-                        this.sky.r = this.night_color.r;
-                        this.sky.g = this.night_color.g;
-                        this.sky.b = this.night_color.b;
-                        this.sky.a = this.night_color.a;
-                    } else {
-                        // Sun is setting
-                        this.sun_state = 2;
-                        this.sky.r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                        this.sky.g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                        this.sky.b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                        this.sky.a = this.night_color.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
-                    }
+                    // Sun is rising
+                    this.sun_state = 0;
+                    this.sky.r = Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.g = Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.b = Math.floor(this.sunrise_color.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.a = this.night_color.a - this.night_color.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
-
-                ig.system.context.fillStyle = 'rgba(' + this.sky.r + ', ' + this.sky.g + ', ' + this.sky.b + ', ' + this.sky.a + ')';
-                ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
+            } else {
+                // Sun is down, handle new day hour wraparound
+                if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.next_update)) {
+                    // Sun has set
+                    this.sun_state = 3;
+                    this.sky.r = this.night_color.r;
+                    this.sky.g = this.night_color.g;
+                    this.sky.b = this.night_color.b;
+                    this.sky.a = this.night_color.a;
+                } else {
+                    // Sun is setting
+                    this.sun_state = 2;
+                    this.sky.r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.a = this.night_color.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                }
             }
+
+            ig.system.context.fillStyle = 'rgba(' + this.sky.r + ', ' + this.sky.g + ', ' + this.sky.b + ', ' + this.sky.a + ')';
+            ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
             if(this.weather_condition.fog) {
                 // Fog
@@ -310,6 +308,8 @@ ig.module(
                 second     : datetime.getSeconds(),
                 millisecond: datetime.getMilliseconds()
             };
+
+            this.julianDate = this.convertGregorianToJulian(this.gregorianDate);
         }, // End setDateTime
 
         // Get stored date and time
