@@ -225,47 +225,46 @@ ig.module(
                 }
             }
 
-            var jDate_curr = this.convertGregorianToJulian(this.gregorianDate),
-                r, g, b, a;
+            this.sky = {};
 
             // Compute rgba based on time of day
-            if(jDate_curr >= this.solar.sunrise.date && jDate_curr < this.solar.sunset.date) {
+            if(this.julianDate >= this.solar.sunrise.date && this.julianDate < this.solar.sunset.date) {
                 // Sun is up
-                if(jDate_curr >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
+                if(this.julianDate >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
                     this.sun_state = 1;
-                    r = this.day_color.r;
-                    g = this.day_color.g;
-                    b = this.day_color.b;
-                    a = this.day_color.a;
+                    this.sky.r = this.day_color.r;
+                    this.sky.g = this.day_color.g;
+                    this.sky.b = this.day_color.b;
+                    this.sky.a = this.day_color.a;
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
-                    r = Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    g = Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    b = Math.floor(this.sunrise_color.b  * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    a = this.night_color.a - this.night_color.a * (jDate_curr - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
+                    this.sky.r = Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.g = Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.b = Math.floor(this.sunrise_color.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.a = this.night_color.a - this.night_color.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
-                if(jDate_curr >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (jDate_curr % 1 >= 0.5 && jDate_curr < this.solar.next_update)) {
+                if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
-                    r = this.night_color.r;
-                    g = this.night_color.g;
-                    b = this.night_color.b;
-                    a = this.night_color.a;
+                    this.sky.r = this.night_color.r;
+                    this.sky.g = this.night_color.g;
+                    this.sky.b = this.night_color.b;
+                    this.sky.a = this.night_color.a;
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    a = this.night_color.a * (jDate_curr - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                    this.sky.r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.a = this.night_color.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
 
-            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+            ig.system.context.fillStyle = 'rgba(' + this.sky.r + ', ' + this.sky.g + ', ' + this.sky.b + ', ' + this.sky.a + ')';
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
             if(this.weather_condition.fog) {
@@ -336,14 +335,15 @@ ig.module(
                 this.gregorianDate.millisecond + this.update_rate * timescale * 1000
             ));
 
-            var jDate = this.convertGregorianToJulian(this.gregorianDate);
-            if(jDate < this.season.vernal_equinox || jDate >= this.season.hibernal_solstice) {
+            this.julianDate = this.convertGregorianToJulian(this.gregorianDate);
+
+            if(this.julianDate < this.season.vernal_equinox || this.julianDate >= this.season.hibernal_solstice) {
                 this.season_state = 3;
-            } else if(jDate < this.season.estival_solstice) {
+            } else if(this.julianDate < this.season.estival_solstice) {
                 this.season_state = 0;
-            } else if(jDate < this.season.autumnal_equinox) {
+            } else if(this.julianDate < this.season.autumnal_equinox) {
                 this.season_state = 1;
-            } else if(jDate < this.season.hibernal_solstice) {
+            } else if(this.julianDate < this.season.hibernal_solstice) {
                 this.season_state = 2;
             }
         }, // End updateDateTime
