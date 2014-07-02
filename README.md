@@ -18,8 +18,9 @@ A plugin for the [Impact game engine](http://impactjs.com) that simulates an atm
     * Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year
     * Current season detection based on current date and time relative to year
 * Weather System
-    * Weather conditions (clear, rain, snow, fog)
+    * Weather conditions (clear, rain, snow, lightning, fog)
     * Configurable maximum particles (snow particles, raindrops)
+    * Configurable frequency of lightning
 
 
 ## Demonstration
@@ -116,9 +117,14 @@ Below lists the available properties and their description:
 
 * To get current weather condition:
 
-        this.atmosphere.weather_condition.rain;    // Returns a boolean
-        this.atmosphere.weather_condition.snow;    // Returns a boolean
-        this.atmosphere.weather_condition.fog;     // Returns a boolean
+        this.atmosphere.weather_condition.rain;         // Returns a boolean
+        this.atmosphere.weather_condition.snow;         // Returns a boolean
+        this.atmosphere.weather_condition.lightning;    // Returns a boolean
+        this.atmosphere.weather_condition.fog;          // Returns a boolean
+
+* To get the current chance of lightning flashes:
+
+        this.lightning_rate;    // Returns a number (integer or float)
 
 * To get maximum particle count:
 
@@ -189,9 +195,16 @@ For reference, the values listed below are the plugin's default values.
 
   *Must be a boolean (true/false, not 0/1).*
 
-      this.atmosphere.weather_condition.rain = false;    // No rain
-      this.atmosphere.weather_condition.snow = false;    // No snow
-      this.atmosphere.weather_condition.fog = false;     // No fog
+      this.atmosphere.weather_condition.rain = false;         // No rain
+      this.atmosphere.weather_condition.snow = false;         // No snow
+      this.atmosphere.weather_condition.lightning = false;    // No snow
+      this.atmosphere.weather_condition.fog = false;          // No fog
+
+* To configure chance of lightning flashes:
+
+  *Must be a number (integer or floating point number).*
+
+      this.atmosphere.lightning_rate = 0.025;    // 2.5% chance for lightning flash per update rate
 
 * To configure maximum particle count for weather conditions:
 
@@ -242,6 +255,11 @@ I would like to emphasize that although this plugin utilizes computations from v
 
 The plugin's source code is released under the [MIT Licence](LICENCE).
 
-All artwork is available under separate licences. For their licencing details,
-visit the respective link under the Additional Resources section of the README.
+This plugin requires the [Impact game engine](http://impactjs.com). The game
+engine is under the terms of a separate [commercial licence](http://impactjs.com/impact-commercial-software-license-agreement)
+and is not provided with the plugin.
+
+All artworks are available under their own separate licences. For their
+licencing details, visit the respective link under the Additional Resources
+section of the README.
 
