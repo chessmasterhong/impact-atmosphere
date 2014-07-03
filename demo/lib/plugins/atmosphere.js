@@ -176,6 +176,10 @@ ig.module(
 
         //---------------------------------------------------------------------
         // Update
+        /**
+         *  Updates logic-related components of the plugin
+         *  @private
+         */
         update: function() {
             if(this.updateTimer.delta() >= 0) {
                 this.updateTimer.reset();
@@ -255,6 +259,10 @@ ig.module(
 
         //---------------------------------------------------------------------
         // Draw
+        /**
+         *  Updates canvas draw-related components of the plugin
+         *  @private
+         */
         draw: function() {
             if(this.weather_condition.lightning) {
                 if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
@@ -483,7 +491,11 @@ ig.module(
             this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
         },
 
-        // Convert Gregorian Date to Julian Date
+        /**
+         *  Converts Gregorian Date to Julian Date
+         *  @param  {Date}   gDate Specified date in Gregorian date
+         *  @return {Number}       The equivalent Julian Date
+         */
         convertGregorianToJulian: function(gDate) {
             var gYear        = gDate.year,
                 gMonth       = gDate.month,
@@ -508,7 +520,11 @@ ig.module(
                    gMillisecond / 86400000;
         }, // End convertGregorianToJulian
 
-        // Convert Julian Date to Gregorian Date
+        /**
+         *  Converts Julian Date to Gregorian Date
+         *  @param  {Number} jDate Specified date in Julian date
+         *  @return {Date}         The equivalent Gregorian Date
+         */
         convertJulianToGregorian: function(jDate) {
             var f = 4 * (jDate - 1721120) + 3,
                 g = Math.floor(f / 146097),
@@ -741,12 +757,12 @@ ig.module(
     }); // End ig.Atmosphere
     //#########################################################################
 
+
     /**
      *  Perlin Noise Generator
-     *  -----
-     *  My modifications: Minor code adaptation for use in ImpactJS. Algorithm remains unmodified.
-     *  Ken Perlin's original Java implementation: http://cs.nyu.edu/~perlin/noise
-     *  Kas Thomas's JavaScript port: http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
+     *  <br>My modifications: Minor code adaptation for use in ImpactJS. Algorithm remains unmodified.
+     *  <br>Ken Perlin's original Java implementation: http://cs.nyu.edu/~perlin/noise
+     *  <br>Kas Thomas's JavaScript port: http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
      */
     var PerlinNoise = {
         noise: function(x, y, z) {
@@ -811,7 +827,10 @@ ig.module(
     //#########################################################################
     // Particles
 
-    // Rain particle
+    /**
+     *  Rain particle
+     *  @extends {ig.Entity}
+     */
     var EntityRain = ig.Entity.extend({
         vel: {x: 20, y: 400},
         maxVel: {x: 100, y: 400},
@@ -864,7 +883,11 @@ ig.module(
         }
     }); // End EntityRain
 
-    // Snow particle
+    // 
+    /**
+     *  Snow particle
+     *  @extends {ig.Entity}
+     */
     var EntitySnow = ig.Entity.extend({
         vel: {x: 60, y: 80},
         maxVel: {x: 100, y: 100},
@@ -928,10 +951,18 @@ ig.module(
     //#########################################################################
     // Utility Functions
 
-    // Convert degrees to radians
+    /**
+     *  Converts degrees to radians
+     *  @param  {Number} deg The specified degrees
+     *  @return {Number}     The equivalent radians
+     */
     var toRadians = function(deg) { return deg * Math.PI / 180; };
 
-    // Convert radians to degrees
+    /**
+     *  Convert radians to degrees
+     *  @param  {Number} rad The specified radians
+     *  @return {Number}     The equivalent degrees
+     */
     var toDegrees = function(rad) { return rad * 180 / Math.PI; };
 
     // End utility functions
