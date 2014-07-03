@@ -1,18 +1,16 @@
 /**
- *  atmosphere.js
- *  -----
- *  Impact Atmospheric System Plugin
- *  https://github.com/chessmasterhong/impact-atmosphere
+ *  @fileOverview A plugin for the Impact game engine that simulates an
+ *    atmospheric weather system, day/night cycles, and seasonal cycles based on
+ *    configurable date, time, and geographical coordinates.
  *
- *  Kevin Chan (chessmasterhong)
+ *  @author Kevin Chan (chessmasterhong)
  *
- *  This plugin is released under the MIT Licence. To view a copy of this
- *  license, visit http://opensource.org/licenses/MIT.
- *
- *  A plugin for the Impact game engine that simulates an atmospheric weather
- *  system, day/night cycles, and seasonal cycles based on configurable date,
- *  time, and geographical coordinates.
- *
+ *  @license {@link https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE|MIT License}
+ *  
+ *  @see https://github.com/chessmasterhong/impact-atmosphere
+ */
+
+/*
  *  Based on:
  *      http://aa.quae.nl/en/antwoorden/seizoenen.html
  *      http://aa.quae.nl/en/reken/juliaansedag.html
@@ -35,38 +33,64 @@ ig.module(
 .defines(function() {
     'use strict';
 
+    /**
+     *  Impact Atmospheric System Plugin
+     *  @class
+     *  @extends {ig.Game}
+     *  @memberof [ig]
+     */
     ig.Atmosphere = ig.Game.extend({
 
         //######################################################################
         // PLUGIN CONFIGURATION
 
-        // Time speed multiplier
-        //   1 = real time (default), 2 = 2x real time, 0.5 = 0.5x real time, etc.
+        /**
+         *  Time speed multiplier relative to real time
+         *  @type {Number}
+         *  @default
+         */
         timescale: 1,
 
-        // Real time in seconds before auto-updating and recalculating time
-        //   Default: 60 (seconds)
+        /**
+         *  Real time in seconds before auto-updating and recalculating time
+         *  @type {Number}
+         *  @default
+         */
         update_rate: 60,
 
-        // Geographical coordinate system
-        //   Latitude : North = positive, South = negative
-        //   Longitude: East  = positive, West  = negative
-        //   http://ozoneaq.gsfc.nasa.gov/latlon.md
+        /**
+         *  Geographical coordinate system
+         *  @type {Object}
+         *  @property {Number} latitude  - The north-south position <br>(North = positive, South = negative)
+         *  @property {Number} longitude - The east-west position   <br>(East  = positive, West  = negative)
+         *  @default
+         */
+        // http://ozoneaq.gsfc.nasa.gov/latlon.md
         geo_coords: {latitude: 40.7789, longitude: -73.9675},
 
-        // Set weather condition
-        // 0 = clear, 1 = rain, 2 = snow, 3 = fog (EXPERIMENTAL!!)
+        /**
+         *  Set weather condition
+         *  @type {Object}
+         *  @property {Boolean} fog       - Is fog active?
+         *  @property {Boolean} lightning - Is lightning active?
+         *  @property {Boolean} rain      - Is rain active?
+         *  @property {Boolean} snow      - Is snow active?
+         *  @default
+         */
         weather_condition: {
-            rain     : false,
-            snow     : false,
             fog      : false,
-            lightning: false
+            lightning: false,
+            rain     : false,
+            snow     : false
         },
 
-        // Probability of lightning flash per update rate
-        //   Adjust this based on the update rate and personal preference
-        //   Higher update rates should have higher lightning rates (increase lightning trigger chance over large time intervals)
-        //   Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
+        /**
+         *  Probability of lightning flash per update rate
+         *  <br>- Higher update rates should have higher lightning rates (increase lightning trigger chance over large time intervals)
+         *  <br>- Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
+         *  @type {Number}
+         *  @default
+         */
         lightning_rate: 0.025,
 
         // Ambient illumination color
@@ -76,12 +100,33 @@ ig.module(
         sunrise_color: {r: 182, g: 126, b: 81},
         sunset_color : {r: 182, g: 126, b: 81},
 
+        /**
+         *  Computed solar-based results
+         *  @type {Object}
+         *  @property {Object} sunrise          - Computed sunrise-related results
+         *  @property {Number} sunrise.date     - Date of next sunrise in Julian days
+         *  @property {Number} sunrise.duration - Duration of next sunrise in minutes
+         *  @property {Object} sunset           - Computed sunset-related results
+         *  @property {Number} sunset.date      - Date of next sunset in Julian days
+         *  @property {Number} sunset.duration  - Duration of next sunset in minutes
+         *  @property {Number} next_update      - Date of next solar-based recomputations in Julian days
+         *  @default
+         */
         solar: {
             sunrise: {date: 0, duration: 60},
             sunset : {date: 0, duration: 60},
             next_update: 0
         },
 
+        /**
+         *  Computed season-related results
+         *  @type {Object}
+         *  @property {Number} vernal_equinox    - Date of next vernal (Spring) equinox in Julian days
+         *  @property {Number} estival_solstice  - Date of next estival (Summer) solstice in Julian days
+         *  @property {Number} autumnal_equinox  - Date of next autumnal (Autumn) equinox in Julian days
+         *  @property {Number} hibernal_solstice - Date of next hibernal (Winter) solstice in Julian days
+         *  @default
+         */
         season: {
             vernal_equinox   : 0,
             estival_solstice : 0,
@@ -89,9 +134,16 @@ ig.module(
             hibernal_solstice: 0
         },
 
+        /**
+         *  
+         *  @type {Object}
+         *  @property {Integer} max  - Maximum number of particles to generate before stopping (must be greater than or equal to zero)
+         *  @property {Integer} curr - Keep track of current number of particles (must be greater than or equal to zero)
+         *  @default
+         */
         particles: {
-            max : 100, // Maximum number of particles to generate before stopping
-            curr: 0    // Keep track of current number of particles
+            max : 100,
+            curr: 0
         },
 
         // End of plugin configuration
@@ -507,7 +559,7 @@ ig.module(
             //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
         }, // End computeSunriset
 
-        /**
+        /*
          *  Compute the solstices, equinoxes, and current season based on specified specified date
          *
          *  NOTE: This algorithm has no creditable source (or at least that I can find); it was
