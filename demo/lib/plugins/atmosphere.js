@@ -1,28 +1,10 @@
 /**
  *  @fileOverview A plugin for the Impact game engine that simulates an
- *    atmospheric weather system, day/night cycles, and seasonal cycles based on
- *    configurable date, time, and geographical coordinates.
- *
- *  @author Kevin Chan (chessmasterhong)
- *
+ *    atmospheric weather system, day/night cycles, and seasonal cycles based
+ *    on configurable date, time, and geographical coordinates.
+ *  @author Kevin Chan {@link https://github.com/chessmasterhong|(chessmasterhong)}
  *  @license {@link https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE|MIT License}
- *  
- *  @see https://github.com/chessmasterhong/impact-atmosphere
  */
-
-/*
- *  Based on:
- *      http://aa.quae.nl/en/antwoorden/seizoenen.html
- *      http://aa.quae.nl/en/reken/juliaansedag.html
- *      http://aa.quae.nl/en/reken/zonpositie.html
- *      http://aa.usno.navy.mil/data/docs/JulianDate.php
- *      http://calendars.wikia.com/wiki/Julian_day_number
- *      http://users.electromagnetic.net/bu/astro/sunrise-set.php
- *      http://www.esrl.noaa.gov/gmd/grad/solcalc
- *      http://planetpixelemporium.com/tutorialpages/light.html
- *      http://digital-lighting.150m.com/ch04lev1sec1.html
- */
-
 
 ig.module(
     'plugins.atmosphere'
@@ -48,6 +30,8 @@ ig.module(
          *  Time speed multiplier relative to real time
          *  @type {Number}
          *  @default
+         *  @readonly
+         *  @see Do not modify this value directly. Instead, to update the time scale, see {@link updateTimescale}.
          */
         timescale: 1,
 
@@ -55,15 +39,19 @@ ig.module(
          *  Real time in seconds before auto-updating and recalculating time
          *  @type {Number}
          *  @default
+         *  @readonly
+         *  @see Do not modify this value directly. Instead, to update the update rate, see {@link updateUpdateRate}.
          */
         update_rate: 60,
 
         /**
          *  Geographical coordinate system
          *  @type {Object}
-         *  @property {Number} latitude  - The north-south position <br>(North = positive, South = negative)
-         *  @property {Number} longitude - The east-west position   <br>(East  = positive, West  = negative)
+         *  @property {Number} latitude  The north-south position <br>(North = positive, South = negative)
+         *  @property {Number} longitude The east-west position   <br>(East  = positive, West  = negative)
          *  @default
+         *  @readonly
+         *  @see Do not modify this value directly. Instead, to update the geographical coordinates, see {@link updateGeoCoords}.
          */
         // http://ozoneaq.gsfc.nasa.gov/latlon.md
         geo_coords: {latitude: 40.7789, longitude: -73.9675},
@@ -71,10 +59,10 @@ ig.module(
         /**
          *  Set weather condition
          *  @type {Object}
-         *  @property {Boolean} fog       - Is fog active?
-         *  @property {Boolean} lightning - Is lightning active?
-         *  @property {Boolean} rain      - Is rain active?
-         *  @property {Boolean} snow      - Is snow active?
+         *  @property {Boolean} fog       Is fog active?
+         *  @property {Boolean} lightning Is lightning active?
+         *  @property {Boolean} rain      Is rain active?
+         *  @property {Boolean} snow      Is snow active?
          *  @default
          */
         weather_condition: {
@@ -101,16 +89,17 @@ ig.module(
         sunset_color : {r: 182, g: 126, b: 81},
 
         /**
-         *  Computed solar-based results
+         *  Computed solar-related results
          *  @type {Object}
-         *  @property {Object} sunrise          - Computed sunrise-related results
-         *  @property {Number} sunrise.date     - Date of next sunrise in Julian days
-         *  @property {Number} sunrise.duration - Duration of next sunrise in minutes
-         *  @property {Object} sunset           - Computed sunset-related results
-         *  @property {Number} sunset.date      - Date of next sunset in Julian days
-         *  @property {Number} sunset.duration  - Duration of next sunset in minutes
-         *  @property {Number} next_update      - Date of next solar-based recomputations in Julian days
+         *  @property {Object} sunrise          Computed sunrise-related results
+         *  @property {Number} sunrise.date     Date of next sunrise in Julian days
+         *  @property {Number} sunrise.duration Duration of next sunrise in minutes
+         *  @property {Object} sunset           Computed sunset-related results
+         *  @property {Number} sunset.date      Date of next sunset in Julian days
+         *  @property {Number} sunset.duration  Duration of next sunset in minutes
+         *  @property {Number} next_update      Date of next solar-related recomputations in Julian days
          *  @default
+         *  @readonly
          */
         solar: {
             sunrise: {date: 0, duration: 60},
@@ -121,11 +110,12 @@ ig.module(
         /**
          *  Computed season-related results
          *  @type {Object}
-         *  @property {Number} vernal_equinox    - Date of next vernal (Spring) equinox in Julian days
-         *  @property {Number} estival_solstice  - Date of next estival (Summer) solstice in Julian days
-         *  @property {Number} autumnal_equinox  - Date of next autumnal (Autumn) equinox in Julian days
-         *  @property {Number} hibernal_solstice - Date of next hibernal (Winter) solstice in Julian days
+         *  @property {Number} vernal_equinox    Date of next vernal (Spring) equinox in Julian days
+         *  @property {Number} estival_solstice  Date of next estival (Summer) solstice in Julian days
+         *  @property {Number} autumnal_equinox  Date of next autumnal (Autumn) equinox in Julian days
+         *  @property {Number} hibernal_solstice Date of next hibernal (Winter) solstice in Julian days
          *  @default
+         *  @readonly
          */
         season: {
             vernal_equinox   : 0,
@@ -135,10 +125,9 @@ ig.module(
         },
 
         /**
-         *  
          *  @type {Object}
-         *  @property {Integer} max  - Maximum number of particles to generate before stopping (must be greater than or equal to zero)
-         *  @property {Integer} curr - Keep track of current number of particles (must be greater than or equal to zero)
+         *  @property {Number} max  Maximum number of particles to generate before stopping
+         *  @property {Number} curr Keeps track of current number of particles
          *  @default
          */
         particles: {
@@ -150,14 +139,23 @@ ig.module(
         //######################################################################
 
 
-        // Do not mess with the stuff below
-
-        // Determines current duration into lightning flash effect
+        /**
+         *  Determines current duration into lightning flash effect
+         *  @type {Number}
+         *  @private
+         */
         lightning_active: 0,
 
 
         //---------------------------------------------------------------------
         // Init
+        /**
+         *  Plugin initialization. Called when new instance is created.
+         *  @param {Date}   [datetime=new Date()] Start from specified date and time
+         *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
+         *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
+         *  @private
+         */
         init: function(datetime, update_rate, timescale) {
             // Initialize plugin variables
             this.setDateTime(datetime);
@@ -333,7 +331,10 @@ ig.module(
         }, // End draw
         //---------------------------------------------------------------------
 
-        // Set/Store date and time
+        /**
+         *  Set/Store date and time
+         *  @param {Date} datetime New plugin date and time
+         */
         setDateTime: function(datetime) {
             // Sanity check
             if(typeof datetime !== 'undefined') {
@@ -364,7 +365,10 @@ ig.module(
             this.julianDate = this.convertGregorianToJulian(this.gregorianDate);
         }, // End setDateTime
 
-        // Get stored date and time
+        /**
+         *  Get stored date and time
+         *  @return {Date} Current plugin date and time
+         */
         getDateTime: function() {
             return new Date(
                 this.gregorianDate.year,
@@ -377,7 +381,12 @@ ig.module(
             );
         }, // End getDateTime
 
-        // Update stored date and time
+        /**
+         *  Updates stored date and time and performs post-recomputations, if necessary
+         *  @param {Date}   datetime  Current plugin date and time
+         *  @param {Number} timescale Elapsed time in seconds to advance current date and time by
+         *  @readonly
+         */
         updateDateTime: function(datetime, timescale) {
             this.setDateTime(new Date(
                 this.gregorianDate.year,
@@ -402,7 +411,10 @@ ig.module(
             }
         }, // End updateDateTime
 
-        // Updates timescale
+        /**
+         *  Updates time scale and performs post-recomputations, if necessary
+         *  @param {Number} timescale New plugin time scale
+         */
         updateTimescale: function(timescale) {
             // Sanity check
             if(typeof timescale !== 'undefined') {
@@ -423,7 +435,10 @@ ig.module(
             this.timescale = timescale;
         },
 
-        // Updates update rate
+        /**
+         *  Updates update rate and performs post-recomputations, if necessary
+         *  @param {Number} update_rate New plugin update rate
+         */
         updateUpdateRate: function(update_rate) {
             // Sanity check
             if(typeof update_rate !== 'undefined') {
@@ -445,7 +460,11 @@ ig.module(
             this.updateTimer = new ig.Timer(update_rate);
         },
 
-        // Updates geographical coordinates
+        /**
+         *  Updates geographical coordinates and performs post-recomputations, if necessary
+         *  @param {Number} lat The north-south position
+         *  @param {Number} lng The east-west position
+         */
         updateGeoCoords: function(lat, lng) {
             // Sanity check
             var latitude  = parseFloat(lat),
@@ -518,7 +537,22 @@ ig.module(
             return new Date(Y, M - 1, D, H, N, S, m);
         }, // End convertJulianToGregorian
 
-        // Computes the approximate sunrise and sunset time for specified date and geographical coordinates
+        /**
+         *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
+         *  @param  {Date}   jDate                  Specified date in Gregorian date
+         *  @param  {Object} geoCoords              Geographical coordinate system
+         *  @param  {Number} geoCoords.latitude     The north-south position
+         *  @param  {Number} geoCoords.longitude    The east-west position
+         *  @return {Object} solar                  Computed solar-based results
+         *  @return {Object} solar.sunrise          Computed sunrise-related results
+         *  @return {Number} solar.sunrise.date     Date of next sunrise in Julian days
+         *  @return {Number} solar.sunrise.duration Duration of next sunrise in minutes
+         *  @return {Object} solar.sunset           Computed sunset-related results
+         *  @return {Number} solar.sunset.date      Date of next sunset in Julian days
+         *  @return {Number} solar.sunset.duration  Duration of next sunset in minutes
+         *  @return {Number} solar.next_update      Date of next solar-based recomputations in Julian days
+         *  @private
+         */
         computeSunriset: function(jDate, geoCoords) {
             var julianCycle        = Math.round((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)),
                 solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
@@ -559,64 +593,75 @@ ig.module(
             //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
         }, // End computeSunriset
 
-        /*
+        /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
-         *
-         *  NOTE: This algorithm has no creditable source (or at least that I can find); it was
-         *        something I made up. I was trying to find some form of mathematical equation to
-         *        compute solstices and equinoxes but with no luck. So, I used various tiny bits of
-         *        information gathered from various sources along with general knowledge and
-         *        constructed my own algorithm. I then compared the final results against some
-         *        precomputed tables of solstices and equinoxes, with some degree of inaccuracy.
-         *
-         *  General Algorithm Outline:
-         *      0. Information gathering and assumptions
-         *          a. Assume day length (sunrise - sunset) can be computed for arbitrary days.
-         *          b. Assume vernal equinox occurs between March 20 and March 23.
-         *             Assume estival solstice occurs between June 20 and June 23.
-         *             Assume autumnal equinox occurs between September 20 and September 23.
-         *             Assume hibernal solstice occurs between December 20 and December 23.
-         *      1. Computation of vernal equinox
-         *          a. For each potential day of vernal equinox, compute day length.
-         *          b. Of all potential days of vernal equinox, take the day where day length is
-         *             closest to 12 hours. This day is the vernal equinox.
-         *             This is because:
-         *                  vernal equinox: day length = night length
-         *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
-         *      2. Computation of estival solstice
-         *          a. For each potential day of estival solstice, compute day length.
-         *          b. Of all potential days of estival solstice, take the day where day length is
-         *             greatest. This day is the estival solstice.
-         *             This is because:
-         *                  estival solstice: longest day
-         *                  longest day = greatest day length
-         *      3. Computation of autumnal equinox
-         *          a. For each potential day of autumnal equinox, compute day length.
-         *          b. Of all potential days of autumnal equinox, take the day where day length is
-         *             closest to 12 hours. This day is the autumnal equinox.
-         *             This is because:
-         *                  autumnal equinox: day length = night length
-         *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
-         *      4. Computation of hibernal solstice
-         *          a. For each potential day of hibernal solstice, compute day length.
-         *          b. Of all potential days of hibernal solstice, take the day where day length is
-         *             least value. This day is the hibernal solstice.
-         *             This is because:
-         *                  hibernal solstice: shortest day
-         *                  shortest day = least day length
-         *      5. Computation of current season
-         *         Once solstices and equinoxes are determined, take current date (and time) and
-         *         compare it against solstices and equinoxes.
-         *          a. If current date falls between vernal equinox (inclusive) and estival
-         *             solstice (exclusive), current date is in vernal season (Spring).
-         *          b. If current date falls between estival solstice (inclusive) and autumnal
-         *             equinox (exclusive), current date is in estival season (Summer).
-         *          c. If current date falls between autumnal equinox (inclusive) and hibernal
-         *             solstice (exclusive), current date is in autumnal season (Autumn).
-         *          d. If current date falls between hibernal solstice (inclusive) and vernal
-         *             equinox (exclusive), current date is in hibernal season (Winter).
+         *  @param  {Date}   gDate                    Specified date in Gregorian date
+         *  @param  {Object} geoCoords                Geographical coordinate system
+         *  @param  {Number} geoCoords.latitude       The north-south position
+         *  @param  {Number} geoCoords.longitude      The east-west position
+         *  @return {Object} season                   Computed season-related results
+         *  @return {Number} season.vernal_equinox    Date of vernal (Spring) equinox for the year provided by specified date in Julian days
+         *  @return {Number} season.estival_solstice  Date of estival (Summer) solstice for the year provided by specified date in Julian days
+         *  @return {Number} season.autumnal_equinox  Date of autumnal (Autumn) equinox for the year provided by specified date in Julian days
+         *  @return {Number} season.hibernal_solstice Date of hibernal (Winter) solstice for the year provided by specified date in Julian days
+         *  @private
          */
         computeSeasons: function(gDate, geoCoords) {
+            /*  NOTE: This algorithm has no creditable source (or at least that I can find); it was
+             *        something I made up. I was trying to find some form of mathematical equation to
+             *        compute solstices and equinoxes but with no luck. So, I used various tiny bits of
+             *        information gathered from various sources along with general knowledge and
+             *        constructed my own algorithm. I then compared the final results against some
+             *        precomputed tables of solstices and equinoxes, with some degree of inaccuracy.
+             *
+             *  General Algorithm Outline:
+             *      0. Information gathering and assumptions
+             *          a. Assume day length (sunrise - sunset) can be computed for arbitrary days.
+             *          b. Assume vernal equinox occurs between March 20 and March 23.
+             *             Assume estival solstice occurs between June 20 and June 23.
+             *             Assume autumnal equinox occurs between September 20 and September 23.
+             *             Assume hibernal solstice occurs between December 20 and December 23.
+             *      1. Computation of vernal equinox
+             *          a. For each potential day of vernal equinox, compute day length.
+             *          b. Of all potential days of vernal equinox, take the day where day length is
+             *             closest to 12 hours. This day is the vernal equinox.
+             *             This is because:
+             *                  vernal equinox: day length = night length
+             *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+             *      2. Computation of estival solstice
+             *          a. For each potential day of estival solstice, compute day length.
+             *          b. Of all potential days of estival solstice, take the day where day length is
+             *             greatest. This day is the estival solstice.
+             *             This is because:
+             *                  estival solstice: longest day
+             *                  longest day = greatest day length
+             *      3. Computation of autumnal equinox
+             *          a. For each potential day of autumnal equinox, compute day length.
+             *          b. Of all potential days of autumnal equinox, take the day where day length is
+             *             closest to 12 hours. This day is the autumnal equinox.
+             *             This is because:
+             *                  autumnal equinox: day length = night length
+             *                  day length - night length = 12 hours - 12 hours = 0 (or as close to 0 as possible)
+             *      4. Computation of hibernal solstice
+             *          a. For each potential day of hibernal solstice, compute day length.
+             *          b. Of all potential days of hibernal solstice, take the day where day length is
+             *             least value. This day is the hibernal solstice.
+             *             This is because:
+             *                  hibernal solstice: shortest day
+             *                  shortest day = least day length
+             *      5. Computation of current season
+             *         Once solstices and equinoxes are determined, take current date (and time) and
+             *         compare it against solstices and equinoxes.
+             *          a. If current date falls between vernal equinox (inclusive) and estival
+             *             solstice (exclusive), current date is in vernal season (Spring).
+             *          b. If current date falls between estival solstice (inclusive) and autumnal
+             *             equinox (exclusive), current date is in estival season (Summer).
+             *          c. If current date falls between autumnal equinox (inclusive) and hibernal
+             *             solstice (exclusive), current date is in autumnal season (Autumn).
+             *          d. If current date falls between hibernal solstice (inclusive) and vernal
+             *             equinox (exclusive), current date is in hibernal season (Winter).
+             */
+
             // Estimated bound for solstice and equinox dates
             // TODO: Account for arbitrary latitudes (for polar day and polar night)
             var jDate_vernal_min   = this.convertGregorianToJulian({year: gDate.year, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
