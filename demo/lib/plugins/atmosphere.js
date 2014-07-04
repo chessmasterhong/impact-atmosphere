@@ -20,6 +20,19 @@ ig.module(
      *  @class
      *  @extends {ig.Game}
      *  @memberof [ig]
+     *
+     *  @example
+     *  // Start plugin from current date and time, updating every 60 seconds, running at 1x real time
+     *  new ig.Atmosphere();
+     *  @example
+     *  // Start plugin from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
+     *  new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37));
+     *  @example
+     *  // Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
+     *  this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);
+     *  @example
+     *  // Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
+     *  this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
      */
     ig.Atmosphere = ig.Game.extend({
 
@@ -59,11 +72,15 @@ ig.module(
         /**
          *  Set weather condition
          *  @type {Object}
-         *  @property {Boolean} fog       Is fog active?
+         *  @property {Boolean} fog       Is fog active? (EXPERIMENTAL!!)
          *  @property {Boolean} lightning Is lightning active?
          *  @property {Boolean} rain      Is rain active?
          *  @property {Boolean} snow      Is snow active?
          *  @default
+         *
+         *  @example
+         *  // Let it snow!
+         *  ig.Atmosphere.weather_condition.snow = true;
          */
         weather_condition: {
             fog      : false,
@@ -78,6 +95,10 @@ ig.module(
          *  <br>- Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
          *  @type {Number}
          *  @default
+         *
+         *  @example
+         *  // 2.675% chance for lightning flash per update rate
+         *  ig.Atmosphere.lightning_rate = 0.02675;
          */
         lightning_rate: 0.025,
 
@@ -341,7 +362,14 @@ ig.module(
 
         /**
          *  Set/Store date and time
-         *  @param {Date} datetime New plugin date and time
+         *  @param {Date} [datetime=new Date()] New plugin date and time
+         *
+         *  @example
+         *  // Set plugin current date and time to today
+         *  ig.Atmosphere.setDateTime(new Date());
+         *  @example
+         *  // Set plugin current date and time to April 14, 2014 5:23:37 PM
+         *  ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));
          */
         setDateTime: function(datetime) {
             // Sanity check
@@ -394,6 +422,7 @@ ig.module(
          *  @param {Date}   datetime  Current plugin date and time
          *  @param {Number} timescale Elapsed time in seconds to advance current date and time by
          *  @readonly
+         *  @private
          */
         updateDateTime: function(datetime, timescale) {
             this.setDateTime(new Date(
@@ -421,7 +450,14 @@ ig.module(
 
         /**
          *  Updates time scale and performs post-recomputations, if necessary
-         *  @param {Number} timescale New plugin time scale
+         *  @param {Number} [timescale=1] New plugin time scale
+         *
+         *  @example
+         *  // 1 second real time = 0.5 second plugin time
+         *  ig.Atmosphere.updateTimescale(0.5);
+         *  @example
+         *  // 1 second real time = 10 second plugin time
+         *  ig.Atmosphere.updateTimescale(10);
          */
         updateTimescale: function(timescale) {
             // Sanity check
@@ -445,7 +481,11 @@ ig.module(
 
         /**
          *  Updates update rate and performs post-recomputations, if necessary
-         *  @param {Number} update_rate New plugin update rate
+         *  @param {Number} [update_rate=60] New plugin update rate
+         *
+         *  @example
+         *  // Update plugin every 30 seconds
+         *  ig.Atmosphere.updateUpdateRate(30);
          */
         updateUpdateRate: function(update_rate) {
             // Sanity check
@@ -472,6 +512,10 @@ ig.module(
          *  Updates geographical coordinates and performs post-recomputations, if necessary
          *  @param {Number} lat The north-south position
          *  @param {Number} lng The east-west position
+         *
+         *  @example
+         *  // Set new plugin coordinates to 40.7789 degrees North, 73.9675 degrees West
+         *  ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);
          */
         updateGeoCoords: function(lat, lng) {
             // Sanity check
