@@ -6,6 +6,10 @@
  *  @license {@link https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE|MIT License}
  */
 
+
+/**
+ *  @namespace ig
+ */
 ig.module(
     'plugins.atmosphere'
 )
@@ -19,7 +23,10 @@ ig.module(
      *  Impact Atmospheric System Plugin
      *  @class
      *  @extends {ig.Game}
-     *  @memberof [ig]
+     *  @memberof ig
+     *  @param {Date}   [datetime=new Date()] Start from specified date and time
+     *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
+     *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
      *
      *  @example
      *  // Start plugin from current date and time, updating every 60 seconds, running at 1x real time
@@ -29,10 +36,10 @@ ig.module(
      *  new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37));
      *  @example
      *  // Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
-     *  this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);
+     *  new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);
      *  @example
      *  // Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
-     *  this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
+     *  new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);
      */
     ig.Atmosphere = ig.Game.extend({
 
@@ -41,6 +48,7 @@ ig.module(
 
         /**
          *  Time speed multiplier relative to real time
+         *  @name ig.Atmosphere#timescale
          *  @type {Number}
          *  @default
          *  @readonly
@@ -50,6 +58,7 @@ ig.module(
 
         /**
          *  Real time in seconds before auto-updating and recalculating time
+         *  @name ig.Atmosphere#update_rate
          *  @type {Number}
          *  @default
          *  @readonly
@@ -59,9 +68,10 @@ ig.module(
 
         /**
          *  Geographical coordinate system
+         *  @name ig.Atmosphere#geo_coords
          *  @type {Object}
-         *  @property {Number} latitude  The north-south position <br>(North = positive, South = negative)
-         *  @property {Number} longitude The east-west position   <br>(East  = positive, West  = negative)
+         *  @property {Number} latitude  The north-south position (North = positive, South = negative)
+         *  @property {Number} longitude The east-west position (East  = positive, West  = negative)
          *  @default
          *  @readonly
          *  @see Do not modify this value directly. Instead, to update the geographical coordinates, see {@link updateGeoCoords}.
@@ -71,6 +81,7 @@ ig.module(
 
         /**
          *  Set weather condition
+         *  @name ig.Atmosphere#weather_condition
          *  @type {Object}
          *  @property {Boolean} fog       Is fog active? (EXPERIMENTAL!!)
          *  @property {Boolean} lightning Is lightning active?
@@ -93,6 +104,7 @@ ig.module(
          *  Probability of lightning flash per update rate
          *  <br>- Higher update rates should have higher lightning rates (increase lightning trigger chance over large time intervals)
          *  <br>- Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
+         *  @name ig.Atmosphere#lightning_rate
          *  @type {Number}
          *  @default
          *
@@ -111,6 +123,7 @@ ig.module(
 
         /**
          *  Computed solar-related results
+         *  @name ig.Atmosphere#solar
          *  @type {Object}
          *  @property {Object} sunrise          Computed sunrise-related results
          *  @property {Number} sunrise.date     Date of next sunrise in Julian days
@@ -130,6 +143,7 @@ ig.module(
 
         /**
          *  Computed season-related results
+         *  @name ig.Atmosphere#season
          *  @type {Object}
          *  @property {Number} vernal_equinox    Date of next vernal (Spring) equinox in Julian days
          *  @property {Number} estival_solstice  Date of next estival (Summer) solstice in Julian days
@@ -147,6 +161,7 @@ ig.module(
 
         /**
          *  @type {Object}
+         *  @name ig.Atmosphere#particles
          *  @property {Number} max  Maximum number of particles to generate before stopping
          *  @property {Number} curr Keeps track of current number of particles
          *  @default
@@ -162,6 +177,7 @@ ig.module(
 
         /**
          *  Determines current duration into lightning flash effect
+         *  @name ig.Atmosphere#lightning_active
          *  @type {Number}
          *  @private
          */
@@ -172,6 +188,7 @@ ig.module(
         // Init
         /**
          *  Plugin initialization. Called when new instance is created.
+         *  @method ig.Atmosphere#init
          *  @param {Date}   [datetime=new Date()] Start from specified date and time
          *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
          *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
@@ -199,6 +216,7 @@ ig.module(
         // Update
         /**
          *  Updates logic-related components of the plugin
+         *  @method ig.Atmosphere#update
          *  @private
          */
         update: function() {
@@ -282,6 +300,7 @@ ig.module(
         // Draw
         /**
          *  Updates canvas draw-related components of the plugin
+         *  @method ig.Atmosphere#draw
          *  @private
          */
         draw: function() {
@@ -362,6 +381,7 @@ ig.module(
 
         /**
          *  Set/Store date and time
+         *  @method ig.Atmosphere#setDateTime
          *  @param {Date} [datetime=new Date()] New plugin date and time
          *
          *  @example
@@ -403,6 +423,7 @@ ig.module(
 
         /**
          *  Get stored date and time
+         *  @method ig.Atmosphere#getDateTime
          *  @return {Date} Current plugin date and time
          */
         getDateTime: function() {
@@ -419,6 +440,7 @@ ig.module(
 
         /**
          *  Updates stored date and time and performs post-recomputations, if necessary
+         *  @method ig.Atmosphere#updateDateTime
          *  @param {Date}   datetime  Current plugin date and time
          *  @param {Number} timescale Elapsed time in seconds to advance current date and time by
          *  @readonly
@@ -450,6 +472,7 @@ ig.module(
 
         /**
          *  Updates time scale and performs post-recomputations, if necessary
+         *  @method ig.Atmosphere#updateTimescale
          *  @param {Number} [timescale=1] New plugin time scale
          *
          *  @example
@@ -481,6 +504,7 @@ ig.module(
 
         /**
          *  Updates update rate and performs post-recomputations, if necessary
+         *  @method ig.Atmosphere#updateUpdateRate
          *  @param {Number} [update_rate=60] New plugin update rate
          *
          *  @example
@@ -510,6 +534,7 @@ ig.module(
 
         /**
          *  Updates geographical coordinates and performs post-recomputations, if necessary
+         *  @method ig.Atmosphere#updateGeoCoords
          *  @param {Number} lat The north-south position
          *  @param {Number} lng The east-west position
          *
@@ -537,6 +562,7 @@ ig.module(
 
         /**
          *  Converts Gregorian Date to Julian Date
+         *  @method ig.Atmosphere#convertGregorianToJulian
          *  @param  {Date}   gDate Specified date in Gregorian date
          *  @return {Number}       The equivalent Julian Date
          */
@@ -566,6 +592,7 @@ ig.module(
 
         /**
          *  Converts Julian Date to Gregorian Date
+         *  @method ig.Atmosphere#convertJulianToGregorian
          *  @param  {Number} jDate Specified date in Julian date
          *  @return {Date}         The equivalent Gregorian Date
          */
@@ -599,6 +626,7 @@ ig.module(
 
         /**
          *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
+         *  @method ig.Atmosphere#computeSunriset
          *  @param  {Date}   jDate                  Specified date in Gregorian date
          *  @param  {Object} geoCoords              Geographical coordinate system
          *  @param  {Number} geoCoords.latitude     The north-south position
@@ -655,6 +683,7 @@ ig.module(
 
         /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
+         *  @method ig.Atmosphere#computeSeasons
          *  @param  {Date}   gDate                    Specified date in Gregorian date
          *  @param  {Object} geoCoords                Geographical coordinate system
          *  @param  {Number} geoCoords.latitude       The north-south position
