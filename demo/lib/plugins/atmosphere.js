@@ -370,9 +370,9 @@ ig.module(
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    this.sky.r = this.sunrise_color.r - Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.g = this.sunrise_color.g - Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.b = this.sunrise_color.b - Math.floor(this.sunrise_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.r = this.sunset_color.r - Math.floor(this.sunset_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.g = this.sunset_color.g - Math.floor(this.sunset_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.b = this.sunset_color.b - Math.floor(this.sunset_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
                     this.sky.a = this.night_color.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
