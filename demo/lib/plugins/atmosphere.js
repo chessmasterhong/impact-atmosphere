@@ -43,9 +43,6 @@ ig.module(
      */
     ig.Atmosphere = ig.Game.extend({
 
-        //######################################################################
-        // PLUGIN CONFIGURATION
-
         /**
          *  Time speed multiplier relative to real time
          *  @name ig.Atmosphere#timescale
@@ -121,10 +118,12 @@ ig.module(
 
         // Ambient illumination color
         //   RGB tint overlay
-        day_color    : {r:   0, g:   0, b:  0, a: 0   },
-        night_color  : {r:   0, g:   0, b:  0, a: 0.65},
-        sunrise_color: {r: 182, g: 126, b: 81},
-        sunset_color : {r: 182, g: 126, b: 81},
+        sky_color: {
+            day    : {r:   0, g:   0, b:  0, a: 0   },
+            night  : {r:   0, g:   0, b:  0, a: 0.65},
+            sunrise: {r: 182, g: 126, b: 81},
+            sunset : {r: 182, g: 126, b: 81}
+        },
 
         /**
          *  Solar-related components
@@ -185,10 +184,6 @@ ig.module(
             max : 100,
             curr: 0
         },
-
-        // End of plugin configuration
-        //######################################################################
-
 
         /**
          *  Determines current duration into lightning flash effect
@@ -346,34 +341,34 @@ ig.module(
                 if(this.julianDate >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
                     this.sun_state = 1;
-                    this.sky.r = this.day_color.r;
-                    this.sky.g = this.day_color.g;
-                    this.sky.b = this.day_color.b;
-                    this.sky.a = this.day_color.a;
+                    this.sky.r = this.sky_color.day.r;
+                    this.sky.g = this.sky_color.day.g;
+                    this.sky.b = this.sky_color.day.b;
+                    this.sky.a = this.sky_color.day.a;
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
-                    this.sky.r = Math.floor(this.sunrise_color.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    this.sky.g = Math.floor(this.sunrise_color.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    this.sky.b = Math.floor(this.sunrise_color.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    this.sky.a = this.night_color.a - this.night_color.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
+                    this.sky.r = Math.floor(this.sky_color.sunrise.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.g = Math.floor(this.sky_color.sunrise.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.b = Math.floor(this.sky_color.sunrise.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.a = this.sky_color.night.a - this.sky_color.night.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
                 if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.next_update)) {
                     // Sun has set
                     this.sun_state = 3;
-                    this.sky.r = this.night_color.r;
-                    this.sky.g = this.night_color.g;
-                    this.sky.b = this.night_color.b;
-                    this.sky.a = this.night_color.a;
+                    this.sky.r = this.sky_color.night.r;
+                    this.sky.g = this.sky_color.night.g;
+                    this.sky.b = this.sky_color.night.b;
+                    this.sky.a = this.sky_color.night.a;
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    this.sky.r = this.sunset_color.r - Math.floor(this.sunset_color.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.g = this.sunset_color.g - Math.floor(this.sunset_color.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.b = this.sunset_color.b - Math.floor(this.sunset_color.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.a = this.night_color.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                    this.sky.r = this.sky_color.sunset.r - Math.floor(this.sky_color.sunset.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.g = this.sky_color.sunset.g - Math.floor(this.sky_color.sunset.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.b = this.sky_color.sunset.b - Math.floor(this.sky_color.sunset.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.a = this.sky_color.night.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
 
