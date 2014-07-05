@@ -20,10 +20,10 @@ ig.module(
     'use strict';
 
     /**
-     *  Impact Atmospheric System Plugin
+     *  Starts a new atmospheric system.
      *  @class
-     *  @extends {ig.Game}
      *  @memberof ig
+     *  @extends ig.Game
      *  @param {Date}   [datetime=new Date()] Start from specified date and time
      *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
      *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
@@ -52,7 +52,7 @@ ig.module(
          *  @type {Number}
          *  @default
          *  @readonly
-         *  @see Do not modify this value directly. Instead, to update the time scale, see {@link updateTimescale}.
+         *  @see Do not modify this value directly. Instead, to update the time scale, use {@link updateTimescale}.
          */
         timescale: 1,
 
@@ -62,19 +62,24 @@ ig.module(
          *  @type {Number}
          *  @default
          *  @readonly
-         *  @see Do not modify this value directly. Instead, to update the update rate, see {@link updateUpdateRate}.
+         *  @see Do not modify this value directly. Instead, to update the update rate, use {@link updateUpdateRate}.
          */
         update_rate: 60,
 
         /**
-         *  Geographical coordinate system
-         *  @name ig.Atmosphere#geo_coords
-         *  @type {Object}
+         *  Geographical Coordinates
+         *  @typedef {Object} GeoCoords
          *  @property {Number} latitude  The north-south position (North = positive, South = negative)
          *  @property {Number} longitude The east-west position (East  = positive, West  = negative)
+         */
+
+        /**
+         *  Geographical coordinate system
+         *  @name ig.Atmosphere#geo_coords
+         *  @type {GeoCoords}
          *  @default
          *  @readonly
-         *  @see Do not modify this value directly. Instead, to update the geographical coordinates, see {@link updateGeoCoords}.
+         *  @see Do not modify this value directly. Instead, to update the geographical coordinates, use {@link updateGeoCoords}.
          */
         // http://ozoneaq.gsfc.nasa.gov/latlon.md
         geo_coords: {latitude: 40.7789, longitude: -73.9675},
@@ -122,9 +127,8 @@ ig.module(
         sunset_color : {r: 182, g: 126, b: 81},
 
         /**
-         *  Computed solar-related results
-         *  @name ig.Atmosphere#solar
-         *  @type {Object}
+         *  Solar-related components
+         *  @typedef {Object} Solar
          *  @property {Object} sunrise          Computed sunrise-related results
          *  @property {Number} sunrise.date     Date of next sunrise in Julian days
          *  @property {Number} sunrise.duration Duration of next sunrise in minutes
@@ -132,6 +136,12 @@ ig.module(
          *  @property {Number} sunset.date      Date of next sunset in Julian days
          *  @property {Number} sunset.duration  Duration of next sunset in minutes
          *  @property {Number} next_update      Date of next solar-related recomputations in Julian days
+         */
+
+        /**
+         *  Computed solar-related results
+         *  @name ig.Atmosphere#solar
+         *  @type {Solar}
          *  @default
          *  @readonly
          */
@@ -142,13 +152,18 @@ ig.module(
         },
 
         /**
-         *  Computed season-related results
-         *  @name ig.Atmosphere#season
-         *  @type {Object}
+         *  Season-related components
+         *  @typedef {Object} Season
          *  @property {Number} vernal_equinox    Date of next vernal (Spring) equinox in Julian days
          *  @property {Number} estival_solstice  Date of next estival (Summer) solstice in Julian days
          *  @property {Number} autumnal_equinox  Date of next autumnal (Autumn) equinox in Julian days
          *  @property {Number} hibernal_solstice Date of next hibernal (Winter) solstice in Julian days
+         */
+
+        /**
+         *  Computed season-related results
+         *  @name ig.Atmosphere#season
+         *  @type {Season}
          *  @default
          *  @readonly
          */
@@ -627,18 +642,9 @@ ig.module(
         /**
          *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
          *  @method ig.Atmosphere#computeSunriset
-         *  @param  {Date}   jDate                  Specified date in Gregorian date
-         *  @param  {Object} geoCoords              Geographical coordinate system
-         *  @param  {Number} geoCoords.latitude     The north-south position
-         *  @param  {Number} geoCoords.longitude    The east-west position
-         *  @return {Object} solar                  Computed solar-based results
-         *  @return {Object} solar.sunrise          Computed sunrise-related results
-         *  @return {Number} solar.sunrise.date     Date of next sunrise in Julian days
-         *  @return {Number} solar.sunrise.duration Duration of next sunrise in minutes
-         *  @return {Object} solar.sunset           Computed sunset-related results
-         *  @return {Number} solar.sunset.date      Date of next sunset in Julian days
-         *  @return {Number} solar.sunset.duration  Duration of next sunset in minutes
-         *  @return {Number} solar.next_update      Date of next solar-based recomputations in Julian days
+         *  @param  {Date}      jDate                  Specified date in Gregorian date
+         *  @param  {GeoCoords} geoCoords              Geographical coordinates
+         *  @return {Solar}                            Computed solar-based results
          *  @private
          */
         computeSunriset: function(jDate, geoCoords) {
@@ -684,15 +690,9 @@ ig.module(
         /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
          *  @method ig.Atmosphere#computeSeasons
-         *  @param  {Date}   gDate                    Specified date in Gregorian date
-         *  @param  {Object} geoCoords                Geographical coordinate system
-         *  @param  {Number} geoCoords.latitude       The north-south position
-         *  @param  {Number} geoCoords.longitude      The east-west position
-         *  @return {Object} season                   Computed season-related results
-         *  @return {Number} season.vernal_equinox    Date of vernal (Spring) equinox for the year provided by specified date in Julian days
-         *  @return {Number} season.estival_solstice  Date of estival (Summer) solstice for the year provided by specified date in Julian days
-         *  @return {Number} season.autumnal_equinox  Date of autumnal (Autumn) equinox for the year provided by specified date in Julian days
-         *  @return {Number} season.hibernal_solstice Date of hibernal (Winter) solstice for the year provided by specified date in Julian days
+         *  @param  {Date}      gDate                    Specified date in Gregorian date
+         *  @param  {GeoCoords} geoCoords                Geographical coordinates
+         *  @return {Season}                             Computed season-related results
          *  @private
          */
         computeSeasons: function(gDate, geoCoords) {
@@ -902,7 +902,7 @@ ig.module(
 
     /**
      *  Rain particle
-     *  @extends {ig.Entity}
+     *  @extends ig.Entity
      */
     var EntityRain = ig.Entity.extend({
         vel: {x: 20, y: 400},
