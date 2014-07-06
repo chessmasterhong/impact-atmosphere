@@ -116,8 +116,35 @@ ig.module(
          */
         lightning_rate: 0.025,
 
-        // Ambient illumination color
-        //   RGB tint overlay
+        /**
+         *  Sky color-related components
+         *  @typedef {Object} SkyColor
+         *  @property {Object} day       Peak daytime color
+         *  @property {Number} day.r     Red value of the RGBA color space for daytime
+         *  @property {Number} day.g     Green value of the RGBA color space for daytime
+         *  @property {Number} day.b     Blue value of the RGBA color space for daytime
+         *  @property {Number} day.a     Alpha channel of the RGBA color space for daytime
+         *  @property {Object} night     Peak nighttime color
+         *  @property {Number} night.r   Red value of the RGBA color space for nighttime
+         *  @property {Number} night.g   Green value of the RGBA color space for nighttime
+         *  @property {Number} night.b   Blue value of the RGBA color space for nighttime
+         *  @property {Number} night.a   Alpha channel of the RGBA color space for nighttime
+         *  @property {Object} sunrise   Peak sunrise color
+         *  @property {Number} sunrise.r Red value of the RGB color space for sunrise
+         *  @property {Number} sunrise.g Green value of the RGB color space for sunrise
+         *  @property {Number} sunrise.b Blue value of the RGB color space for sunrise
+         *  @property {Object} sunset    Peak sunset color
+         *  @property {Number} sunset.r  Red value of the RGB color space for sunset
+         *  @property {Number} sunset.g  Green value of the RGB color space for sunset
+         *  @property {Number} sunset.b  Blue value of the RGB color space for sunset
+         */
+
+        /**
+         *  Ambient illumination color
+         *  @name ig.Atmosphere#sky_color
+         *  @type {SkyColor}
+         *  @default
+         */
         sky_color: {
             day    : {r:   0, g:   0, b:  0, a: 0   },
             night  : {r:   0, g:   0, b:  0, a: 0.65},
