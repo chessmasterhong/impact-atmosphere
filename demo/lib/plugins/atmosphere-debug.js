@@ -1,13 +1,7 @@
 /**
- *  atmosphere-debug.js
- *  -----
- *  Impact Atmospheric System Plugin - Debug Module
- *  https://github.com/chessmasterhong/impact-atmosphere
- *
- *  Kevin Chan (chessmasterhong)
- *
- *  This plugin module is released under the MIT Licence. To view a copy of this
- *  license, visit http://opensource.org/licenses/MIT.
+ *  @fileOverview Debug module for the Impact Atmospheric System Plugins.
+ *  @author Kevin Chan {@link https://github.com/chessmasterhong|(chessmasterhong)}
+ *  @license {@link https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE|MIT License}
  */
 
 

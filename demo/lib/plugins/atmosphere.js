@@ -65,7 +65,7 @@ ig.module(
 
         /**
          *  Geographical Coordinates
-         *  @typedef {Object} GeoCoords
+         *  @typedef {Object} GeoCoordObject
          *  @property {Number} latitude  The north-south position (North = positive, South = negative)
          *  @property {Number} longitude The east-west position (East  = positive, West  = negative)
          */
@@ -73,7 +73,7 @@ ig.module(
         /**
          *  Geographical coordinate system
          *  @name ig.Atmosphere#geo_coords
-         *  @type {GeoCoords}
+         *  @type {GeoCoordObject}
          *  @default
          *  @readonly
          *  @see Do not modify this value directly. Instead, to update the geographical coordinates, use {@link updateGeoCoords}.
@@ -118,7 +118,7 @@ ig.module(
 
         /**
          *  Sky color-related components
-         *  @typedef {Object} SkyColor
+         *  @typedef {Object} SkyColorObject
          *  @property {Object} day       Peak daytime color
          *  @property {Number} day.r     Red value of the RGBA color space for daytime
          *  @property {Number} day.g     Green value of the RGBA color space for daytime
@@ -142,7 +142,7 @@ ig.module(
         /**
          *  Ambient illumination color
          *  @name ig.Atmosphere#sky_color
-         *  @type {SkyColor}
+         *  @type {SkyColorObject}
          *  @default
          */
         sky_color: {
@@ -154,7 +154,7 @@ ig.module(
 
         /**
          *  Solar-related components
-         *  @typedef {Object} Solar
+         *  @typedef {Object} SolarObject
          *  @property {Object} sunrise          Computed sunrise-related results
          *  @property {Number} sunrise.date     Date of next sunrise in Julian days
          *  @property {Number} sunrise.duration Duration of next sunrise in minutes
@@ -167,7 +167,7 @@ ig.module(
         /**
          *  Computed solar-related results
          *  @name ig.Atmosphere#solar
-         *  @type {Solar}
+         *  @type {SolarObject}
          *  @default
          *  @readonly
          */
@@ -179,7 +179,7 @@ ig.module(
 
         /**
          *  Season-related components
-         *  @typedef {Object} Season
+         *  @typedef {Object} SeasonObject
          *  @property {Number} vernal_equinox    Date of next vernal (Spring) equinox in Julian days
          *  @property {Number} estival_solstice  Date of next estival (Summer) solstice in Julian days
          *  @property {Number} autumnal_equinox  Date of next autumnal (Autumn) equinox in Julian days
@@ -189,7 +189,7 @@ ig.module(
         /**
          *  Computed season-related results
          *  @name ig.Atmosphere#season
-         *  @type {Season}
+         *  @type {SeasonObject}
          *  @default
          *  @readonly
          */
@@ -664,9 +664,9 @@ ig.module(
         /**
          *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
          *  @method ig.Atmosphere#computeSunriset
-         *  @param  {Date}      jDate                  Specified date in Gregorian date
-         *  @param  {GeoCoords} geoCoords              Geographical coordinates
-         *  @return {Solar}                            Computed solar-based results
+         *  @param  {Date}           jDate     Specified date in Gregorian date
+         *  @param  {GeoCoordObject} geoCoords Geographical coordinates
+         *  @return {SolarObject}              Computed solar-based results
          *  @private
          */
         computeSunriset: function(jDate, geoCoords) {
@@ -712,9 +712,9 @@ ig.module(
         /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
          *  @method ig.Atmosphere#computeSeasons
-         *  @param  {Date}      gDate                    Specified date in Gregorian date
-         *  @param  {GeoCoords} geoCoords                Geographical coordinates
-         *  @return {Season}                             Computed season-related results
+         *  @param  {Date}           gDate     Specified date in Gregorian date
+         *  @param  {GeoCoordObject} geoCoords Geographical coordinates
+         *  @return {SeasonObject}             Computed season-related results
          *  @private
          */
         computeSeasons: function(gDate, geoCoords) {
