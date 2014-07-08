@@ -90,8 +90,8 @@ ig.module(
                 ig.system.context.fillText('Weather condition: ' + wc, x, y += 15);
 
                 ig.system.context.fillStyle = '#ffffff';
-                ig.system.context.fillText('Maximum Particle Count: ' + this.particles.max, x, y += 15);
-                ig.system.context.fillText('Current Particle Count: ' + this.particles.curr, x, y += 10);
+                ig.system.context.fillText('Maximum Particle Count: ' + this.particles_max, x, y += 15);
+                ig.system.context.fillText('Current Particle Count: ' + this.particles_curr, x, y += 10);
 
                 //if(this.weather_condition.fog) {
                 //    ig.system.context.fillText('Fog block size: ' + size + 'px * ' + size + 'px', x, y += 15);
