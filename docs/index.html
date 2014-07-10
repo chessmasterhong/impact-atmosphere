@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Index</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Index</h1>
+
+    
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Impact Atmospheric System Plugin</h1><p>A plugin for the <a href="http://impactjs.com">Impact game engine</a> that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.</p>
+<h2>Features</h2><ul>
+<li>General<ul>
+<li>Configurable time speed multiplier to cycle through day and night faster or slower</li>
+<li>Configurable update rate to update plugin more or less frequently</li>
+<li>Configurable initial plugin date and time</li>
+<li>Configurable geographical coordinates</li>
+<li>Configurable brightness/darkness of nights (for those who like brighter/darker nights)</li>
+</ul>
+</li>
+<li>Day/Night Cycle System<ul>
+<li>Variable length of day and night based on day of year and geographical coordinates</li>
+<li>Dynamic ambient brightness during sunrise and sunset</li>
+</ul>
+</li>
+<li>Seasonal Cycle System<ul>
+<li>Variable solstice (Summer/Estival, Winter/Hibernal) and equinox (Spring/Vernal, Autumn/Autumnal) based on year</li>
+<li>Current season detection based on current date and time relative to year</li>
+</ul>
+</li>
+<li>Weather System<ul>
+<li>Weather conditions (clear, rain, snow, lightning, fog)</li>
+<li>Configurable maximum particles (snow particles, raindrops)</li>
+<li>Configurable frequency of lightning</li>
+</ul>
+</li>
+</ul>
+<h2>Demonstration</h2><p>Visit <a href="http://chessmasterhong.bitbucket.org/projects/impact-atmosphere">http://chessmasterhong.bitbucket.org/projects/impact-atmosphere</a> for a working live demonstration of the plugin. <em>The version of the demo at this link may not reflect the latest changes of the plugin.</em></p>
+<p>If you would rather set it up yourself, located in the <code>demo</code> directory is a pre-configured setup of the plugin. I also use this as my development testing grounds, so it should be up-to-date. All you need is the Impact game engine source code (sorry, batteries not included).</p>
+<h2>Installation and Setup</h2><ol>
+<li><p>Download and place the file <code>atmosphere.js</code> in your <code>lib/plugins/</code> directory.</p>
+</li>
+<li><p>Add <code>'plugins.atmosphere'</code> to the <code>.requires( ... )</code> section of your main game.</p>
+</li>
+<li><p>In the <code>init</code> method of your main game, add <strong>one</strong> (and only one) of the following:</p>
+<p> a. To use <strong>all default</strong> settings:</p>
+<pre class="prettyprint source"><code> // Start from current date and time, updating every 60 seconds, running at 1x real time
+ this.atmosphere = new ig.Atmosphere();</code></pre><p> b. To specify a custom <strong>date and time</strong>, but leave the other arguments to default:</p>
+<pre class="prettyprint source"><code> // Start from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
+ this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37));</code></pre><p> c. To specify a custom <strong>date and time</strong> and <strong>update rate</strong>, but leave the other arguments to default:</p>
+<pre class="prettyprint source"><code> // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
+ this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);</code></pre><p> d. To specify a custom <strong>date and time</strong>, <strong>update rate</strong>, and <strong>timescale</strong>:</p>
+<pre class="prettyprint source"><code> // Start from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
+ this.atmosphere = new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</code></pre></li>
+<li><p>In the <code>update</code> method of your main game, add the following:</p>
+<pre class="prettyprint source"><code> this.atmosphere.update();</code></pre></li>
+<li><p>In the <code>draw</code> method of your main game, add the following:</p>
+<pre class="prettyprint source"><code> this.atmosphere.draw();</code></pre></li>
+<li><p>That's it! Start up your game and enjoy!</p>
+</li>
+</ol>
+<p>If you are still unclear about the usage, see the <a href="demo/lib/game/main.js"><code>main.js</code></a> file in the <code>demo/lib/game/</code> directory for additional details.</p>
+<h2>Bugs and Known Issues</h2><p>See the <a href="https://github.com/chessmasterhong/impact-atmosphere/issues?labels=bug&amp;page=1&amp;state=open">Issue Tracker</a> for a list of current bugs and issues.</p>
+<h2>TODO</h2><p>See the <a href="https://github.com/chessmasterhong/impact-atmosphere/issues?labels=enhancement&amp;page=1&amp;state=open">Issue Tracker</a> for a potential list of stuff to do.</p>
+<h2>Credits</h2><h3>Based on</h3><ul>
+<li><a href="http://aa.quae.nl/en/antwoorden/seizoenen.html">http://aa.quae.nl/en/antwoorden/seizoenen.html</a></li>
+<li><a href="http://aa.quae.nl/en/reken/juliaansedag.html">http://aa.quae.nl/en/reken/juliaansedag.html</a></li>
+<li><a href="http://aa.quae.nl/en/reken/zonpositie.html">http://aa.quae.nl/en/reken/zonpositie.html</a></li>
+<li><a href="http://aa.usno.navy.mil/data/docs/JulianDate.php">http://aa.usno.navy.mil/data/docs/JulianDate.php</a></li>
+<li><a href="http://calendars.wikia.com/wiki/Julian_day_number">http://calendars.wikia.com/wiki/Julian_day_number</a></li>
+<li><a href="http://users.electromagnetic.net/bu/astro/sunrise-set.php">http://users.electromagnetic.net/bu/astro/sunrise-set.php</a></li>
+<li><a href="http://www.esrl.noaa.gov/gmd/grad/solcalc">http://www.esrl.noaa.gov/gmd/grad/solcalc</a></li>
+<li><a href="http://planetpixelemporium.com/tutorialpages/light.html">http://planetpixelemporium.com/tutorialpages/light.html</a></li>
+<li><a href="http://digital-lighting.150m.com/ch04lev1sec1.html">http://digital-lighting.150m.com/ch04lev1sec1.html</a></li>
+</ul>
+<h3>Additional resources</h3><ul>
+<li><a href="http://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-to-32x32-with-additions">2D Lost Garden Zelda Style Tiles</a> by Daniel Cook, Jetrel, Saphy, Zabin, and Bertram</li>
+<li><a href="https://github.com/ansimuz/snow-emitter">Snow Emitter</a> by ansimuz (for the base code that this plugin's snow and rain generator is based on)</li>
+<li><a href="http://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html">JavaScript port</a> of Ken Perlin's <a href="http://cs.nyu.edu/~perlin/noise">Java implementation</a> of Perlin noise by Kas Thomas</li>
+</ul>
+<h2>Disclaimer</h2><p>I would like to emphasize that although this plugin utilizes computations from various creditable sources, its implementation is rather naive and has not been thoroughly tested for accuracy or validity. In addition, it may potentially contain computational inconsistencies or errors. The original purpose and intent was to <em>roughly</em> simulate a realistic atmospheric system for a potential game. As a result, I strongly discourage the use of this plugin for sensitive projects or research. Instead, please consult more creditable, well-tested sources for such purposes.</p>
+<h2>Licence</h2><p>The plugin's source code is released under the <a href="LICENCE">MIT Licence</a>.</p>
+<p>This plugin requires the <a href="http://impactjs.com">Impact game engine</a>. The game
+engine is under the terms of a separate <a href="http://impactjs.com/impact-commercial-software-license-agreement">commercial licence</a>
+and is not provided with the plugin.</p>
+<p>All artworks are available under their own separate licences. For their
+licencing details, visit the respective link under the Additional Resources
+section of the README.</p></article>
+    </section>
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        atmosphere.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+            <div class="description">A plugin for the Impact game engine that simulates an
+   atmospheric weather system, day/night cycles, and seasonal cycles based
+   on configurable date, time, and geographical coordinates.</div>
+        
+
+        
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Kevin Chan <a href="https://github.com/chessmasterhong">(chessmasterhong)</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license"><ul class="dummy"><li><a href="https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE">MIT License</a></li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="atmosphere.js.html">atmosphere.js</a>, <a href="atmosphere.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        atmosphere-debug.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+            <div class="description">Debug module for the Impact Atmospheric System Plugin.</div>
+        
+
+        
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Kevin Chan <a href="https://github.com/chessmasterhong">(chessmasterhong)</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license"><ul class="dummy"><li><a href="https://github.com/chessmasterhong/impact-atmosphere/blob/master/LICENCE">MIT License</a></li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="atmosphere-debug.js.html">atmosphere-debug.js</a>, <a href="atmosphere-debug.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ig.Atmosphere.html">Atmosphere</a></li></ul><h3>Namespaces</h3><ul><li><a href="ig.html">ig</a></li></ul><h3>Global</h3><ul><li><a href="global.html#particles_curr">particles_curr</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed Jul 09 2014 21:41:19 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
