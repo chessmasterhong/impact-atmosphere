@@ -202,14 +202,15 @@ ig.module(
 
         /**
          *  Maximum number of particles to generate during particle-based weather conditions before stopping
+         *  @name ig.Atmosphere#particles_max
          *  @type {Number}
-         *  @name ig.Atmosphere#particles
          *  @default
          */
         particles_max : 100,
 
         /**
          *  Current number of particles generated during particle-based weather conditions
+         *  @name ig.Atmosphere#particles_curr
          *  @type {Number}
          *  @readonly
          */
