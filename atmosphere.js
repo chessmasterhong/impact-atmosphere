@@ -379,9 +379,9 @@ ig.module(
                 } else {
                     // Sun is rising
                     this.sun_state = 0;
-                    this.sky.r = Math.floor(this.sky_color.sunrise.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    this.sky.g = Math.floor(this.sky_color.sunrise.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
-                    this.sky.b = Math.floor(this.sky_color.sunrise.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440));
+                    this.sky.r = (this.sky_color.sunrise.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
+                    this.sky.g = (this.sky_color.sunrise.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
+                    this.sky.b = (this.sky_color.sunrise.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
                     this.sky.a = this.sky_color.night.a - this.sky_color.night.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
@@ -396,9 +396,9 @@ ig.module(
                 } else {
                     // Sun is setting
                     this.sun_state = 2;
-                    this.sky.r = this.sky_color.sunset.r - Math.floor(this.sky_color.sunset.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.g = this.sky_color.sunset.g - Math.floor(this.sky_color.sunset.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
-                    this.sky.b = this.sky_color.sunset.b - Math.floor(this.sky_color.sunset.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440));
+                    this.sky.r = this.sky_color.sunset.r - (this.sky_color.sunset.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
+                    this.sky.g = this.sky_color.sunset.g - (this.sky_color.sunset.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
+                    this.sky.b = this.sky_color.sunset.b - (this.sky_color.sunset.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
                     this.sky.a = this.sky_color.night.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
@@ -411,7 +411,7 @@ ig.module(
                 var r, g, b, size = 5;
                 for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
                     for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
-                        r = g = b = Math.round(255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6));
+                        r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
                         ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.4)';
                         ig.system.context.fillRect(i, j, size, size);
                     }
@@ -588,13 +588,9 @@ ig.module(
             var latitude  = parseFloat(lat),
                 longitude = parseFloat(lng);
 
-            // Clamp latitude
-            if(latitude < -90)     { latitude = -90; }
-            else if(latitude > 90) { latitude =  90; }
-
-            // Clamp longitude
-            if(longitude < -180)     { longitude = -180; }
-            else if(longitude > 180) { longitude =  180; }
+            // Clamp latitude and longitude
+            latitude.limit(-90, 90);
+            longitude.limit(-180, 180);
 
             this.geo_coords = {latitude: latitude, longitude: longitude};
             this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
@@ -615,15 +611,15 @@ ig.module(
                 gMinute      = gDate.minute,
                 gSecond      = gDate.second,
                 gMillisecond = gDate.millisecond,
-                a = Math.floor((gMonth - 3) / 12),
+                a = ((gMonth - 3) / 12).floor(),
                 b = gYear + a,
-                c = Math.floor(b / 100),
+                c = (b / 100).floor(),
                 d = b % 100,
                 e = gMonth - 12 * a - 3;
 
-            return Math.floor(146097 * c / 4) +
-                   Math.floor(36525 * d / 100) +
-                   Math.floor((153 * e + 2) / 5) +
+            return (146097 * c / 4).floor() +
+                   (36525 * d / 100).floor() +
+                   ((153 * e + 2) / 5).floor() +
                    gDay + 1721119 +
                    (gHour - 12) / 24 +
                    gMinute / 1440 +
@@ -639,12 +635,12 @@ ig.module(
          */
         convertJulianToGregorian: function(jDate) {
             var f = 4 * (jDate - 1721120) + 3,
-                g = Math.floor(f / 146097),
-                h = 100 * Math.floor((f % 146097) / 4) + 99,
-                i = Math.floor(h / 36525),
-                j = 5 * Math.floor((h % 36525) / 100) + 2,
-                k = Math.floor(j / 153),
-                l = Math.floor((k + 2) / 12),
+                g = (f / 146097).floor(),
+                h = 100 * ((f % 146097) / 4).floor() + 99,
+                i = (h / 36525).floor(),
+                j = 5 * ((h % 36525) / 100).floor() + 2,
+                k = (j / 153),
+                l = ((k + 2) / 12).floor(),
                 t = jDate % 1,
                 u = 1 / 24,
                 v = 1 / 1440,
@@ -652,11 +648,11 @@ ig.module(
 
             var Y = 100 * g + i + l,
                 M = k - 12 * l + 3,
-                D = Math.floor((j % 153) / 5), // Math.floor((j % 153) / 5) + 1
-                H = Math.floor(t / u) + 12,
-                N = Math.floor((t % u) / v),
-                S = Math.floor((t % v) / w),
-                m = Math.floor((t % w) / (1 / 86400000));
+                D = ((j % 153) / 5).floor(), // Math.floor((j % 153) / 5) + 1
+                H = (t / u).floor() + 12,
+                N = ((t % u) / v).floor(),
+                S = ((t % v) / w).floor(),
+                m = ((t % w) / (1 / 86400000)).floor();
 
             // ** Manual time offset correction applied **
             // Possible timezone issue?
@@ -674,7 +670,7 @@ ig.module(
          *  @private
          */
         computeSunriset: function(jDate, geoCoords) {
-            var julianCycle        = Math.round((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)),
+            var julianCycle        = ((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)).round(),
                 solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
                 solar_mean_anomaly = (357.5291 + 0.98560028 * (solar_noon - 2451545)) % 360,
                 equation_of_center = (1.9148 * Math.sin((solar_mean_anomaly).toRad())) +
@@ -704,7 +700,7 @@ ig.module(
                 sunrise: { date: sunrise - this.solar.sunrise.duration / 1440 - 0.125, duration: this.solar.sunrise.duration },
                 sunset : { date: sunset - this.solar.sunset.duration / 1440 - 0.125,   duration: this.solar.sunset.duration  },
 
-                next_update: Math.floor(jDate) + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1) // 0.7063657403923571 JD = 4:57:10
+                next_update: jDate.floor() + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1) // 0.7063657403923571 JD = 4:57:10
             };
 
             //console.log('----- computeSunriset() -----');
@@ -885,13 +881,13 @@ ig.module(
                 p[256+i] = p[i] = permutation[i];
             }
 
-                var X = Math.floor(x) & 255,
-                    Y = Math.floor(y) & 255,
-                    Z = Math.floor(z) & 255;
+                var X = x.floor() & 255,
+                    Y = y.floor() & 255,
+                    Z = z.floor() & 255;
 
-                x -= Math.floor(x);
-                y -= Math.floor(y);
-                z -= Math.floor(z);
+                x -= x.floor();
+                y -= y.floor();
+                z -= z.floor();
 
                 var u = this.fade(x),
                     v = this.fade(y),
