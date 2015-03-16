@@ -408,14 +408,25 @@ ig.module(
 
             if(this.weather_condition.fog) {
                 // Fog
-                var r, g, b, size = 5;
-                for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
-                    for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
-                        r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
-                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.4)';
-                        ig.system.context.fillRect(i, j, size, size);
+                if(!this.fog) {
+                    ig.system.context.clearRect(0, 0, ig.system.width, ig.system.height);
+
+                    var r, g, b, size = 5;
+                    for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
+                        for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
+                            r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
+                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.25)';
+                            ig.system.context.fillRect(i, j, size, size);
+                        }
                     }
+
+                    this.fog = new Image();
+                    this.fog.src = ig.system.context.canvas.toDataURL('image/png');
+                } else {
+                    ig.system.context.drawImage(this.fog, 0, 0);
                 }
+            } else if(this.fog) {
+                delete this.fog;
             }
         }, // End draw
         //---------------------------------------------------------------------
@@ -978,7 +989,7 @@ ig.module(
         }
     }); // End EntityRain
 
-    // 
+    //
     /**
      *  Snow particle
      *  @extends {ig.Entity}
