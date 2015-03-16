@@ -85,7 +85,7 @@ ig.module(
          *  Set weather condition
          *  @name ig.Atmosphere#weather_condition
          *  @type {Object}
-         *  @property {Boolean} fog       Is fog active? (EXPERIMENTAL!!)
+         *  @property {Boolean} fog       Is fog active?
          *  @property {Boolean} lightning Is lightning active?
          *  @property {Boolean} rain      Is rain active?
          *  @property {Boolean} snow      Is snow active?
