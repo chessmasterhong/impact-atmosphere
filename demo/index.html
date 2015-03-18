@@ -25,7 +25,7 @@
         <canvas id="canvas"></canvas>
 
         <div id="config">
-            <strong>Instructions: Select a radio option below to see the respective changes to the plugin in the canvas.</strong>
+            <strong>Instructions: Select the option(s) below to see the respective changes to the plugin in the canvas.</strong>
 
             <p id="gc">Geographical Coordinates: (Latitude:<input type="text" name="lat" id="gc_lat" onchange="updateGeoCoordsLat(this.value)">, Longitude:<input type="text" name="lng" id="gc_lng" onchange="updateGeoCoordsLng(this.value)">)</p>
             <p id="ts">Timescale:</p>
@@ -34,16 +34,18 @@
             <p id="mp">Maximum Particle Count:</p>
 
             <br><p><small>
-                Note 1: Bracketed options denotes plugin's default values.<br>
+                Note 1: Bracketed options denotes plugin"s default values.<br>
                 Note 2: To show/hide debug messages, left click the canvas.<br>
                 Note 3: This plugin is under development. See <a href="https://github.com/chessmasterhong/impact-atmosphere#bugs-and-known-issues">here</a> for a list of known bugs and issues.
             </small></p>
         </div>
 
         <script>
+            /* jshint camelcase: false, strict: false, unused: false */
+
             window.onload = function() {
                 var i, s = [],
-                    gc_def = {lat: 40.7789, lng: -73.9675},
+                    gc_def = { lat: 40.7789, lng: -73.9675 },
                     ts_sel = 600, ts_def =   1, ts = [0.1, 0.5, 1, 60, 600, 3600, 86400, 2592000],
                     ur_sel = 0.5, ur_def =  60, ur = [0.1, 0.5, 1, 10, 60],
                     wc_sel =  '', wc_def =  '', wc = ['Rain', 'Snow', 'Lightning', 'Fog'],
@@ -53,23 +55,22 @@
                 document.getElementById('gc_lng').value = gc_def.lng;
 
                 for(i = 0; i < ts.length; i++) {
-                    document.getElementById('ts').innerHTML += "<input type='radio' name='ts' id='ts_" + i + "' onClick='updateTimescale(this.value)' value='" + ts[i] + "'> " + (ts[i] === ts_def ? " [ " + ts[i] + "x ] " : ts[i] + "x ");
+                    document.getElementById('ts').innerHTML += '<input type="radio" name="ts" id="ts_' + i + '" onClick="updateTimescale(this.value)" value="' + ts[i] + '"> ' + (ts[i] === ts_def ? ' [ ' + ts[i] + 'x ] ' : ts[i] + 'x ');
                     if(ts[i] === ts_sel) s.push('ts_' + i);
                 }
 
                 for(i = 0; i < ur.length; i++) {
-                    document.getElementById('ur').innerHTML += "<input type='radio' name='ur' id='ur_" + i + "' onClick='updateUpdateRate(this.value)' value='" + ur[i] + "'> " + (ur[i] === ur_def ? " [ " + ur[i] + (ur[i] <= 1 ? " second ] " : " seconds ] ") : ur[i] + (ur[i] <= 1 ? " second " : " seconds "));
+                    document.getElementById('ur').innerHTML += '<input type="radio" name="ur" id="ur_' + i + '" onClick="updateUpdateRate(this.value)" value="' + ur[i] + '"> ' + (ur[i] === ur_def ? ' [ ' + ur[i] + (ur[i] <= 1 ? ' second ] ' : ' seconds ] ') : ur[i] + (ur[i] <= 1 ? ' second ' : ' seconds '));
                     if(ur[i] === ur_sel) s.push('ur_' + i);
                 }
 
                 for(i = 0; i < wc.length; i++) {
-                    //document.getElementById('wc').innerHTML += "<input type='checkbox' name='wc' id='wc_" + i + "' onClick='updateWeather(this.value, this.checked)' value='" + wc[i].toLowerCase() + "'> " + (wc[i].toLowerCase() === wc_def ? " [ " + wc[i] + " ] " : wc[i] + " ");
-                    document.getElementById('wc').innerHTML += "<input type='checkbox' name='wc' id='wc_" + i + "' onClick='updateWeather(this.value, this.checked)' value='" + wc[i].toLowerCase() + "'> " + wc[i];
+                    document.getElementById('wc').innerHTML += '<input type="checkbox" name="wc" id="wc_' + i + '" onClick="updateWeather(this.value, this.checked)" value="' + wc[i].toLowerCase() + '"> ' + wc[i];
                     if(wc[i].toLowerCase() === wc_sel) s.push('wc_' + i);
                 }
 
                 for(i = 0; i < mp.length; i++) {
-                    document.getElementById('mp').innerHTML += "<input type='radio' name='mp' id='mp_" + i + "' onClick='updateMaxParticles(this.value)' value='" + mp[i] + "'> " + (mp[i] === mp_def ? " [ " + mp[i] + " ] " : mp[i] + " ");
+                    document.getElementById('mp').innerHTML += '<input type="radio" name="mp" id="mp_' + i + '" onClick="updateMaxParticles(this.value)" value="' + mp[i] + '"> ' + (mp[i] === mp_def ? ' [ ' + mp[i] + ' ] ' : mp[i] + ' ');
                     if(mp[i] === mp_sel) s.push('mp_' + i);
                 }
 
@@ -77,12 +78,12 @@
                     document.getElementById(s[i]).checked = true;
             };
 
-            function updateGeoCoordsLat(v) { ig.game.atmosphere.updateGeoCoords(parseFloat(v), document.getElementById('gc_lng').value); };
-            function updateGeoCoordsLng(v) { ig.game.atmosphere.updateGeoCoords(document.getElementById('gc_lat').value, parseFloat(v)); };
-            function updateTimescale(v) { ig.game.atmosphere.updateTimescale(parseFloat(v)); };
-            function updateUpdateRate(v) { ig.game.atmosphere.updateUpdateRate(parseFloat(v)); };
-            function updateWeather(v, c) { ig.game.atmosphere.weather_condition[v] = c; };
-            function updateMaxParticles(v) { ig.game.atmosphere.particles.max = parseInt(v); };
+            function updateGeoCoordsLat(v) { ig.game.atmosphere.updateGeoCoords(parseFloat(v), document.getElementById('gc_lng').value); }
+            function updateGeoCoordsLng(v) { ig.game.atmosphere.updateGeoCoords(document.getElementById('gc_lat').value, parseFloat(v)); }
+            function updateTimescale(v) { ig.game.atmosphere.updateTimescale(parseFloat(v)); }
+            function updateUpdateRate(v) { ig.game.atmosphere.updateUpdateRate(parseFloat(v)); }
+            function updateWeather(v, c) { ig.game.atmosphere.weatherCondition[v] = c; }
+            function updateMaxParticles(v) { ig.game.atmosphere.particlesMax = parseInt(v); }
         </script>
     </body>
 </html>
