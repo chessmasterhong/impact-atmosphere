@@ -1,70 +1,136 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html>
 <head>
-	<meta charset="utf-8">
-	<title>Impact Atmosphere Class: Atmosphere</title>
+    <meta charset="utf-8">
+    <title>Impact Atmospheric System Plugin</title>
+    
+    <meta name="description" content="A plugin for the Impact game engine that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates." />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"applicationName":"Impact Atmospheric System Plugin","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"Impact Atmospheric System Plugin","description":"A plugin for the Impact game engine that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.","keyword":""},"linenums":true,"default":{}};
+    </script>
+    
 
-	<!--[if lt IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
-
-	<link type="text/css" rel="stylesheet" href="styles/site.default.css">
-
+    
 </head>
-
 <body>
-<div class="container-fluid">
-	<div class="navbar navbar-fixed-top navbar-inverse">
-		<div class="navbar-inner">
-			<a class="brand" href="index.html">Impact Atmosphere</a>
-			<ul class="nav">
-				
-				<li class="dropdown">
-					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
-						class="caret"></b></a>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">Impact Atmospheric System Plugin</a></h3>
 
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="ig.html">ig</a>
-						</li>
-						
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="ig">
+            <span class="title">
+                <a href="ig.html">ig</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ig.Atmosphere">
+            <span class="title">
+                <a href="ig.Atmosphere.html">ig.Atmosphere</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ig.Atmosphere#geoCoords"><a href="ig.Atmosphere.html#geoCoords">geoCoords</a></li>
+            
+                <li data-name="ig.Atmosphere#lightningRate"><a href="ig.Atmosphere.html#lightningRate">lightningRate</a></li>
+            
+                <li data-name="ig.Atmosphere#particlesCurr"><a href="ig.Atmosphere.html#particlesCurr">particlesCurr</a></li>
+            
+                <li data-name="ig.Atmosphere#particlesMax"><a href="ig.Atmosphere.html#particlesMax">particlesMax</a></li>
+            
+                <li data-name="ig.Atmosphere#season"><a href="ig.Atmosphere.html#season">season</a></li>
+            
+                <li data-name="ig.Atmosphere#skyColor"><a href="ig.Atmosphere.html#skyColor">skyColor</a></li>
+            
+                <li data-name="ig.Atmosphere#solar"><a href="ig.Atmosphere.html#solar">solar</a></li>
+            
+                <li data-name="ig.Atmosphere#timescale"><a href="ig.Atmosphere.html#timescale">timescale</a></li>
+            
+                <li data-name="ig.Atmosphere#updateRate"><a href="ig.Atmosphere.html#updateRate">updateRate</a></li>
+            
+                <li data-name="ig.Atmosphere#weatherCondition"><a href="ig.Atmosphere.html#weatherCondition">weatherCondition</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ig.Atmosphere#convertGregorianToJulian"><a href="ig.Atmosphere.html#convertGregorianToJulian">convertGregorianToJulian</a></li>
+            
+                <li data-name="ig.Atmosphere#convertJulianToGregorian"><a href="ig.Atmosphere.html#convertJulianToGregorian">convertJulianToGregorian</a></li>
+            
+                <li data-name="ig.Atmosphere#getDateTime"><a href="ig.Atmosphere.html#getDateTime">getDateTime</a></li>
+            
+                <li data-name="ig.Atmosphere#setDateTime"><a href="ig.Atmosphere.html#setDateTime">setDateTime</a></li>
+            
+                <li data-name="ig.Atmosphere#updateGeoCoords"><a href="ig.Atmosphere.html#updateGeoCoords">updateGeoCoords</a></li>
+            
+                <li data-name="ig.Atmosphere#updateTimescale"><a href="ig.Atmosphere.html#updateTimescale">updateTimescale</a></li>
+            
+                <li data-name="ig.Atmosphere#updateUpdateRate"><a href="ig.Atmosphere.html#updateUpdateRate">updateUpdateRate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="ig.Atmosphere.html">Class: Atmosphere</h1>
+        
 
-					</ul>
-				</li>
-				
-				<li class="dropdown">
-					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
-						class="caret"></b></a>
-
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="ig.Atmosphere.html">ig.Atmosphere</a>
-						</li>
-						
-
-					</ul>
-				</li>
-				
-			</ul>
-		</div>
-	</div>
-
-	<div class="row-fluid">
-
-		
-		<div class="span8">
-			
-				<div id="main">
-					
 
 
-	<h1 class="page-title">Class: Atmosphere</h1>
 <section>
-
+    
 <header>
     <h2>
         <span class="ancestors"><a href="ig.html">ig</a>.</span>
@@ -72,17 +138,28 @@
     Atmosphere
     </h2>
     
-</header>
+</header>  
 
 <article>
     <div class="container-overview">
     
-
+    
     
         
 <dt>
-    <h4 class="name" id="Atmosphere"><span class="type-signature"></span>new Atmosphere<span class="signature">(<span class="optional">datetime</span>, <span class="optional">update_rate</span>, <span class="optional">timescale</span>)</span><span class="type-signature"></span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="Atmosphere">
+            
+            new ig.Atmosphere<span class="signature">(<span class="optional">datetime</span>, <span class="optional">updateRate</span>, <span class="optional">timescale</span>)</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line44">line 44</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -98,38 +175,33 @@
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-		<th>Argument</th>
-		
-
 		
 		<th>Default</th>
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>datetime</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -138,19 +210,7 @@
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -158,17 +218,26 @@
                 
                 </td>
             
-
-            <td class="description last"><p>Start from specified date and time</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Start from specified date and time</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
-                <td class="name"><code>update_rate</code></td>
+                <td class="name"><code>updateRate</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -177,19 +246,7 @@
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -197,17 +254,26 @@
                 
                 </td>
             
-
-            <td class="description last"><p>Real time in seconds the plugin should update itself</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Real time in seconds the plugin should update itself</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
                 <td class="name"><code>timescale</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -216,19 +282,7 @@
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -236,55 +290,47 @@
                 
                 </td>
             
-
-            <td class="description last"><p>Speed relative to real time at which the plugin should run</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Speed relative to real time at which the plugin should run</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-44">line 44</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
     
@@ -301,52 +347,65 @@
     
         <h5>Examples</h5>
         
-    <pre class="sunlight-highlight-javascript">// Start plugin from current date and time, updating every 60 seconds, running at 1x real time
+
+    
+    <pre class="prettyprint"><code>// Start plugin from current date and time, updating every 60 seconds, running at 1x real time
 new ig.Atmosphere();
-</pre>
+</code></pre>
+    
 
-    <pre class="sunlight-highlight-javascript">// Start plugin from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
+
+    
+    <pre class="prettyprint"><code>// Start plugin from April 14, 2014 5:23:37 PM, updating every 60 seconds, running at 1x real time
 new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37));
-</pre>
+</code></pre>
+    
 
-    <pre class="sunlight-highlight-javascript">// Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
+
+    
+    <pre class="prettyprint"><code>// Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 1x real time
 new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15);
-</pre>
+</code></pre>
+    
 
-    <pre class="sunlight-highlight-javascript">// Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
-new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</pre>
 
+    
+    <pre class="prettyprint"><code>// Start plugin from April 14, 2014 5:23:37 PM, updating every 15 seconds, running at 6x real time
+new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</code></pre>
+    
 
     
 </dd>
 
     
     </div>
-
+    
     
         <h3 class="subsection-title">Extends</h3>
-
+        
         <ul>
             <li>ig.Game</li>
         </ul>
     
-
     
-
     
-
     
-
     
-
+    
+    
+    
+    
+    
     
         <h3 class="subsection-title">Members</h3>
-
+        
         <dl>
             
-<dt class="name" id="geo_coords">
-    <h4><span class="type-signature">&lt;readonly> </span>geo_coords<span class="type-signature"> :<a href="global.html#GeoCoordObject">GeoCoordObject</a></span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="geoCoords"><span class="type-signature ">readonly</span>geoCoords<span class="type-signature type geocoordobject"><a href="global.html#GeoCoordObject">GeoCoordObject</a></span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -355,76 +414,50 @@ new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</pre>
         <p>Geographical coordinate system</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type"><a href="global.html#GeoCoordObject">GeoCoordObject</a></span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-73">line 73</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-	<dt class="tag-see">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li>Do not modify this value directly. Instead, to update the geographical coordinates, use updateGeoCoords.</li>
-			</ul>
-	</dd>
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Do not modify this value directly. Instead, to update the geographical coordinates, use updateGeoCoords.</li>
+        </ul>
+    </dd>
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="lightning_rate">
-    <h4><span class="type-signature"></span>lightning_rate<span class="type-signature"> :Number</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="lightningRate">lightningRate<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -435,76 +468,52 @@ new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</pre>
  <br>- Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Number</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-105">line 105</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">// 2.675% chance for lightning flash per update rate
-ig.Atmosphere.lightning_rate = 0.02675;</pre>
 
+    
+    <pre class="prettyprint"><code>// 2.675% chance for lightning flash per update rate
+ig.Atmosphere.lightningRate = 0.02675;</code></pre>
+    
 
     
 </dd>
 
         
             
-<dt class="name" id="particles_curr">
-    <h4><span class="type-signature">&lt;readonly> </span>particles_curr<span class="type-signature"> :Number</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="particlesCurr"><span class="type-signature ">readonly</span>particlesCurr<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -513,69 +522,43 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Current number of particles generated during particle-based weather conditions</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Number</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-211">line 211</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="particles_max">
-    <h4><span class="type-signature"></span>particles_max<span class="type-signature"> :Number</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="particlesMax">particlesMax<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -584,69 +567,43 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Maximum number of particles to generate during particle-based weather conditions before stopping</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Number</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-203">line 203</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="season">
-    <h4><span class="type-signature">&lt;readonly> </span>season<span class="type-signature"> :<a href="global.html#SeasonObject">SeasonObject</a></span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="season"><span class="type-signature ">readonly</span>season<span class="type-signature type seasonobject"><a href="global.html#SeasonObject">SeasonObject</a></span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -655,69 +612,43 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Computed season-related results</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type"><a href="global.html#SeasonObject">SeasonObject</a></span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-189">line 189</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="sky_color">
-    <h4><span class="type-signature"></span>sky_color<span class="type-signature"> :<a href="global.html#SkyColorObject">SkyColorObject</a></span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="skyColor">skyColor<span class="type-signature type skycolorobject"><a href="global.html#SkyColorObject">SkyColorObject</a></span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -726,69 +657,43 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Ambient illumination color</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type"><a href="global.html#SkyColorObject">SkyColorObject</a></span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-142">line 142</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="solar">
-    <h4><span class="type-signature">&lt;readonly> </span>solar<span class="type-signature"> :<a href="global.html#SolarObject">SolarObject</a></span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="solar"><span class="type-signature ">readonly</span>solar<span class="type-signature type solarobject"><a href="global.html#SolarObject">SolarObject</a></span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -797,69 +702,43 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Computed solar-related results</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type"><a href="global.html#SolarObject">SolarObject</a></span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-167">line 167</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="timescale">
-    <h4><span class="type-signature">&lt;readonly> </span>timescale<span class="type-signature"> :Number</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="timescale"><span class="type-signature ">readonly</span>timescale<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -868,76 +747,50 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Time speed multiplier relative to real time</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Number</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-46">line 46</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-	<dt class="tag-see">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li>Do not modify this value directly. Instead, to update the time scale, use updateTimescale.</li>
-			</ul>
-	</dd>
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Do not modify this value directly. Instead, to update the time scale, use updateTimescale.</li>
+        </ul>
+    </dd>
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="update_rate">
-    <h4><span class="type-signature">&lt;readonly> </span>update_rate<span class="type-signature"> :Number</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="updateRate"><span class="type-signature ">readonly</span>updateRate<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -946,76 +799,50 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Real time in seconds before auto-updating and recalculating time</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Number</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-56">line 56</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-	<dt class="tag-see">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li>Do not modify this value directly. Instead, to update the update rate, use updateUpdateRate.</li>
-			</ul>
-	</dd>
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Do not modify this value directly. Instead, to update the update rate, use updateUpdateRate.</li>
+        </ul>
+    </dd>
+    
+    
+    
 </dl>
 
-
+    
     
 </dd>
 
         
             
-<dt class="name" id="weather_condition">
-    <h4><span class="type-signature"></span>weather_condition<span class="type-signature"> :Object</span></h4>
-
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="weatherCondition">weatherCondition<span class="type-signature type object">Object</span> </h4>
+    </div>
+    
     
 </dt>
 <dd>
@@ -1024,52 +851,40 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
         <p>Set weather condition</p>
     </div>
     
-
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
-
-
-            </li>
-        </ul>
-    
-
     
 <dl class="details">
-	
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
 
-	<h5 class="subsection-title">Properties:</h5>
-
-	<dl>
-
-<table class="props table table-striped">
+<table class="props">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-
 		
-
+		
+		
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>fog</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1078,21 +893,21 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
 
             
             </td>
-
             
-
             
-
-            <td class="description last"><p>Is fog active? (EXPERIMENTAL!!)</p></td>
+            
+            
+            
+            <td class="description last"><p>Is fog active?</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
                 <td class="name"><code>lightning</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1101,21 +916,21 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
 
             
             </td>
-
             
-
             
-
+            
+            
+            
             <td class="description last"><p>Is lightning active?</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
                 <td class="name"><code>rain</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1124,21 +939,21 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
 
             
             </td>
-
             
-
             
-
+            
+            
+            
             <td class="description last"><p>Is rain active?</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
                 <td class="name"><code>snow</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1147,80 +962,76 @@ ig.Atmosphere.lightning_rate = 0.02675;</pre>
 
             
             </td>
-
             
-
             
-
+            
+            
+            
             <td class="description last"><p>Is snow active?</p></td>
         </tr>
-
+	
 	
 	</tbody>
-</table>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-84">line 84</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
+    
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">// Let it snow!
-ig.Atmosphere.weather_condition.snow = true;</pre>
 
+    
+    <pre class="prettyprint"><code>// Let it snow!
+ig.Atmosphere.weatherCondition.snow = true;</code></pre>
+    
 
     
 </dd>
 
         </dl>
     
-
+    
     
         <h3 class="subsection-title">Methods</h3>
-
+        
         <dl>
             
 <dt>
-    <h4 class="name" id="convertGregorianToJulian"><span class="type-signature"></span>convertGregorianToJulian<span class="signature">(gDate)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="convertGregorianToJulian">
+            
+            convertGregorianToJulian<span class="signature">(gDate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line611">line 611</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1236,34 +1047,31 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>gDate</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1272,94 +1080,63 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
 
             
             </td>
-
             
-
             
-
-            <td class="description last"><p>Specified date in Gregorian date</p></td>
+            
+            <td class="description last">
+                
+                <p>Specified date in Gregorian date</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-600">line 600</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
     
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The equivalent Julian Date</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Number</span>
-
-
-	</dd>
-</dl>
-
-
         
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+equivalent Julian Date
+<br />
+
+    
     
     
 </dd>
@@ -1367,8 +1144,19 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
         
             
 <dt>
-    <h4 class="name" id="convertJulianToGregorian"><span class="type-signature"></span>convertJulianToGregorian<span class="signature">(jDate)</span><span class="type-signature"> &rarr; {Date}</span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="convertJulianToGregorian">
+            
+            convertJulianToGregorian<span class="signature">(jDate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Date}</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line641">line 641</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1384,34 +1172,31 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>jDate</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1420,94 +1205,63 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
 
             
             </td>
-
             
-
             
-
-            <td class="description last"><p>Specified date in Julian date</p></td>
+            
+            <td class="description last">
+                
+                <p>Specified date in Julian date</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-630">line 630</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
     
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The equivalent Gregorian Date</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Date</span>
-
-
-	</dd>
-</dl>
-
-
         
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+equivalent Gregorian Date
+<br />
+
+    
     
     
 </dd>
@@ -1515,8 +1269,19 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
         
             
 <dt>
-    <h4 class="name" id="getDateTime"><span class="type-signature"></span>getDateTime<span class="signature">()</span><span class="type-signature"> &rarr; {Date}</span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="getDateTime">
+            
+            getDateTime<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Date}</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line476">line 476</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1535,78 +1300,48 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
     
     
 <dl class="details">
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-465">line 465</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
     
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Current plugin date and time</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Date</span>
-
-
-	</dd>
-</dl>
-
-
         
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+plugin date and time
+<br />
+
+    
     
     
 </dd>
@@ -1614,8 +1349,19 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
         
             
 <dt>
-    <h4 class="name" id="setDateTime"><span class="type-signature"></span>setDateTime<span class="signature">(<span class="optional">datetime</span>)</span><span class="type-signature"></span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="setDateTime">
+            
+            setDateTime<span class="signature">(<span class="optional">datetime</span>)</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line434">line 434</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1631,38 +1377,33 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-		<th>Argument</th>
-		
-
 		
 		<th>Default</th>
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>datetime</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1671,19 +1412,7 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -1691,55 +1420,47 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
                 
                 </td>
             
-
-            <td class="description last"><p>New plugin date and time</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>New plugin date and time</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-423">line 423</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
     
@@ -1756,13 +1477,18 @@ ig.Atmosphere.weather_condition.snow = true;</pre>
     
         <h5>Examples</h5>
         
-    <pre class="sunlight-highlight-javascript">// Set plugin current date and time to today
+
+    
+    <pre class="prettyprint"><code>// Set plugin current date and time to today
 ig.Atmosphere.setDateTime(new Date());
-</pre>
+</code></pre>
+    
 
-    <pre class="sunlight-highlight-javascript">// Set plugin current date and time to April 14, 2014 5:23:37 PM
-ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
 
+    
+    <pre class="prettyprint"><code>// Set plugin current date and time to April 14, 2014 5:23:37 PM
+ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</code></pre>
+    
 
     
 </dd>
@@ -1770,8 +1496,19 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
         
             
 <dt>
-    <h4 class="name" id="updateGeoCoords"><span class="type-signature"></span>updateGeoCoords<span class="signature">(lat, lng)</span><span class="type-signature"></span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="updateGeoCoords">
+            
+            updateGeoCoords<span class="signature">(lat, lng)</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line587">line 587</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1787,34 +1524,31 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>lat</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1823,21 +1557,21 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
 
             
             </td>
-
             
-
             
-
-            <td class="description last"><p>The north-south position</p></td>
+            
+            <td class="description last">
+                
+                <p>The north-south position</p></td>
         </tr>
-
 	
-
+	
+	
         <tr>
             
                 <td class="name"><code>lng</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1846,59 +1580,42 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
 
             
             </td>
-
             
-
             
-
-            <td class="description last"><p>The east-west position</p></td>
+            
+            <td class="description last">
+                
+                <p>The east-west position</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-576">line 576</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
     
@@ -1915,9 +1632,11 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</pre>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">// Set new plugin coordinates to 40.7789 degrees North, 73.9675 degrees West
-ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
 
+    
+    <pre class="prettyprint"><code>// Set new plugin coordinates to 40.7789 degrees North, 73.9675 degrees West
+ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</code></pre>
+    
 
     
 </dd>
@@ -1925,8 +1644,19 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
         
             
 <dt>
-    <h4 class="name" id="updateTimescale"><span class="type-signature"></span>updateTimescale<span class="signature">(<span class="optional">timescale</span>)</span><span class="type-signature"></span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="updateTimescale">
+            
+            updateTimescale<span class="signature">(<span class="optional">timescale</span>)</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line525">line 525</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -1942,38 +1672,33 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-		<th>Argument</th>
-		
-
 		
 		<th>Default</th>
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
                 <td class="name"><code>timescale</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -1982,19 +1707,7 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -2002,55 +1715,47 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
                 
                 </td>
             
-
-            <td class="description last"><p>New plugin time scale</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>New plugin time scale</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-514">line 514</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
     
@@ -2067,13 +1772,18 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</pre>
     
         <h5>Examples</h5>
         
-    <pre class="sunlight-highlight-javascript">// 1 second real time = 0.5 second plugin time
+
+    
+    <pre class="prettyprint"><code>// 1 second real time = 0.5 second plugin time
 ig.Atmosphere.updateTimescale(0.5);
-</pre>
+</code></pre>
+    
 
-    <pre class="sunlight-highlight-javascript">// 1 second real time = 10 second plugin time
-ig.Atmosphere.updateTimescale(10);</pre>
 
+    
+    <pre class="prettyprint"><code>// 1 second real time = 10 second plugin time
+ig.Atmosphere.updateTimescale(10);</code></pre>
+    
 
     
 </dd>
@@ -2081,8 +1791,19 @@ ig.Atmosphere.updateTimescale(10);</pre>
         
             
 <dt>
-    <h4 class="name" id="updateUpdateRate"><span class="type-signature"></span>updateUpdateRate<span class="signature">(<span class="optional">update_rate</span>)</span><span class="type-signature"></span></h4>
+    <div class="nameContainer">
+        <h4 class="name" id="updateUpdateRate">
+            
+            updateUpdateRate<span class="signature">(<span class="optional">updateRate</span>)</span>
+        </h4>
     
+        
+        <div class="tag-source">
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line557">line 557</a>
+        </div>
+        
+    </div>
+
     
 </dt>
 <dd>
@@ -2098,38 +1819,33 @@ ig.Atmosphere.updateTimescale(10);</pre>
     
     
     
-        <h5>Parameters:</h5>
         
 
-<table class="params table table-striped">
+<table class="params">
     <thead>
 	<tr>
 		
 		<th>Name</th>
 		
-
+		
 		<th>Type</th>
-
 		
-		<th>Argument</th>
-		
-
 		
 		<th>Default</th>
 		
-
+		
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-
+	
 	<tbody>
 	
-
+	
         <tr>
             
-                <td class="name"><code>update_rate</code></td>
+                <td class="name"><code>updateRate</code></td>
             
-
+            
             <td class="type">
             
                 
@@ -2138,19 +1854,7 @@ ig.Atmosphere.updateTimescale(10);</pre>
 
             
             </td>
-
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
             
                 <td class="default">
                 
@@ -2158,55 +1862,47 @@ ig.Atmosphere.updateTimescale(10);</pre>
                 
                 </td>
             
-
-            <td class="description last"><p>New plugin update rate</p></td>
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>New plugin update rate</p></td>
         </tr>
-
+	
 	
 	</tbody>
 </table>
-
     
     
     
 <dl class="details">
-	
+    
+        
+    
+    
+    
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="atmosphere.js.html">atmosphere.js</a>,
-				 <a href="atmosphere.js.html#sunlight-1-line-546">line 546</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </dl>
 
     
@@ -2223,116 +1919,38 @@ ig.Atmosphere.updateTimescale(10);</pre>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">// Update plugin every 30 seconds
-ig.Atmosphere.updateUpdateRate(30);</pre>
 
+    
+    <pre class="prettyprint"><code>// Update plugin every 30 seconds
+ig.Atmosphere.updateUpdateRate(30);</code></pre>
+    
 
     
 </dd>
 
         </dl>
     
-
     
-
+    
+    
     
 </article>
 
-</section>
+</section>  
 
 
 
 
-				</div>
 
-				<div class="clearfix"></div>
-				<footer>
-					
-					
-		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wednesday, September 17 2014 12:05:22 GMT-0400 using the <a
-			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
-		</span>
-				</footer>
-			</div>
+        
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
-			
-			<br clear="both">
-		</div>
-
-	</div>
-	<!--<script src="scripts/sunlight.js"></script>-->
-	<script src="scripts/docstrap.lib.js"></script>
-	<script src="scripts/bootstrap-dropdown.js"></script>
-	<script src="scripts/toc.js"></script>
-
-	<script>
-		$( function () {
-			$( "[id*='$']" ).each( function () {
-				var $this = $( this );
-
-				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
-			} );
-
-			$( "#toc" ).toc( {
-				anchorName  : function ( i, heading, prefix ) {
-					return $( heading ).attr( "id" ) || ( prefix + i );
-				},
-				selectors   : "h1,h2,h3,h4",
-				showAndHide : false,
-				scrollTo    : "100px"
-			} );
-
-			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
-			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
-			$( '.dropdown-toggle' ).dropdown();
-//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
-
-			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
-				var $this = $( this );
-
-				var example = $this.find( "code" );
-				exampleText = example.html();
-				var lang = /{@lang (.*?)}/.exec( exampleText );
-				if ( lang && lang[1] ) {
-					exampleText = exampleText.replace( lang[0], "" );
-					example.html( exampleText );
-					lang = lang[1];
-				} else {
-					lang = "javascript";
-				}
-
-				if ( lang ) {
-
-					$this
-						.addClass( "sunlight-highlight-" + lang )
-						.addClass( "linenums" )
-						.html( example.html() );
-
-				}
-			} );
-
-			Sunlight.highlightAll( {
-				lineNumbers : true,
-				showMenu : true,
-				enableDoclinks : true
-			} );
-		} );
-	 </script>
-
-
-
-	<!--Navigation and Symbol Display-->
-	
-
-
-	<!--Google Analytics-->
-	
-
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed Mar 18 2015 22:17:33 GMT-0400 (Eastern Daylight Time)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
 </body>
 </html>
