@@ -1,6 +1,6 @@
 # Impact Atmospheric System Plugin
 
-A plugin for the [Impact game engine](http://impactjs.com) that simulates an atmospheric weather system, day/night cycles and seasonal cycles based on configurable date, time, and geographical coordinates.
+A plugin for the [Impact game engine](http://impactjs.com) that simulates an atmospheric weather system, day/night cycless, and seasonal cycles based on configurable date, time, and geographical coordinates.
 
 
 ## Features
@@ -62,7 +62,7 @@ If you would rather set it up yourself, located in the `demo` directory is a pre
 
         this.atmosphere.update();
 
-5. In the `draw` method of your main game, add the following:
+5. In the `draw` method of your main game, add the following **after** `this.parent()`:
 
         this.atmosphere.draw();
 
