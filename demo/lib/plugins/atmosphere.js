@@ -116,6 +116,8 @@ ig.module(
          */
         lightningRate: 0.025,
 
+        fogDensity: 0.3,
+
         /**
          *  Sky color-related components
          *  @typedef {Object} SkyColorObject
@@ -415,7 +417,7 @@ ig.module(
                     for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
                         for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
                             r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
-                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.25)';
+                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + this.fogDensity + ')';
                             ig.system.context.fillRect(i, j, size, size);
                         }
                     }
