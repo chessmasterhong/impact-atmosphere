@@ -116,7 +116,15 @@ ig.module(
          */
         lightningRate: 0.025,
 
-        fogDensity: 0.3,
+        /**
+         *  Opaqueness of the fog via modifying the alpha channel of the fog
+         *  <br>- Higher values yields thicker (more opaque) fogs
+         *  <br>- Lower values yields thinner (less opaque) fogs
+         *  @name ig.Atmosphere#fogThickness
+         *  @type {Number}
+         *  @default
+         */
+        fogThickness: 0.3,
 
         /**
          *  Sky color-related components
@@ -417,7 +425,7 @@ ig.module(
                     for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
                         for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
                             r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
-                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + this.fogDensity + ')';
+                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + this.fogThickness + ')';
                             ig.system.context.fillRect(i, j, size, size);
                         }
                     }
