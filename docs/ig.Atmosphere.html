@@ -43,27 +43,6 @@
     </div>
     <ul class="list">
     
-        <li class="item" data-name="ig">
-            <span class="title">
-                <a href="ig.html">ig</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="ig.Atmosphere">
             <span class="title">
                 <a href="ig.Atmosphere.html">ig.Atmosphere</a>
@@ -72,6 +51,8 @@
             <ul class="members itemMembers">
             
             <span class="subtitle">Members</span>
+            
+                <li data-name="ig.Atmosphere#fogThickness"><a href="ig.Atmosphere.html#fogThickness">fogThickness</a></li>
             
                 <li data-name="ig.Atmosphere#geoCoords"><a href="ig.Atmosphere.html#geoCoords">geoCoords</a></li>
             
@@ -133,8 +114,6 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ig.html">ig</a>.</span>
-    
     Atmosphere
     </h2>
     
@@ -155,7 +134,7 @@
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line44">line 44</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line41">line 41</a>
         </div>
         
     </div>
@@ -400,6 +379,53 @@ new ig.Atmosphere(new Date(2014, 3, 14, 17, 23, 37), 15, 6);</code></pre>
         <h3 class="subsection-title">Members</h3>
         
         <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="fogThickness">fogThickness<span class="type-signature type number">Number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Opaqueness of the fog via modifying the alpha channel of the fog
+ <br>- Higher values yields thicker (more opaque) fogs
+ <br>- Lower values yields thinner (less opaque) fogs</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
             
 <dt>
     <div class="nameContainer">
@@ -1027,7 +1053,7 @@ ig.Atmosphere.weatherCondition.snow = true;</code></pre>
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line611">line 611</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line618">line 618</a>
         </div>
         
     </div>
@@ -1152,7 +1178,7 @@ equivalent Julian Date
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line641">line 641</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line648">line 648</a>
         </div>
         
     </div>
@@ -1277,7 +1303,7 @@ equivalent Gregorian Date
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line476">line 476</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line483">line 483</a>
         </div>
         
     </div>
@@ -1357,7 +1383,7 @@ plugin date and time
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line434">line 434</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line441">line 441</a>
         </div>
         
     </div>
@@ -1504,7 +1530,7 @@ ig.Atmosphere.setDateTime(new Date(2014, 3, 14, 17, 23, 37));</code></pre>
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line587">line 587</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line594">line 594</a>
         </div>
         
     </div>
@@ -1652,7 +1678,7 @@ ig.Atmosphere.updateGeoCoords(40.7789, -73.9675);</code></pre>
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line525">line 525</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line532">line 532</a>
         </div>
         
     </div>
@@ -1799,7 +1825,7 @@ ig.Atmosphere.updateTimescale(10);</code></pre>
     
         
         <div class="tag-source">
-            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line557">line 557</a>
+            <a href="global.html#atmosphere.js">atmosphere.js</a>, <a href="global.html#atmosphere.js#line564">line 564</a>
         </div>
         
     </div>
@@ -1945,7 +1971,7 @@ ig.Atmosphere.updateUpdateRate(30);</code></pre>
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Wed Mar 18 2015 22:17:33 GMT-0400 (Eastern Daylight Time)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Sun Mar 22 2015 21:15:19 GMT-0400 (Eastern Daylight Time)
         </footer>
     </div>
 </div>
