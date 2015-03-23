@@ -7,9 +7,6 @@
  */
 
 
-/**
- *  @namespace ig
- */
 ig.module(
     'plugins.atmosphere'
 )
@@ -25,7 +22,7 @@ ig.module(
      *  @memberof ig
      *  @extends ig.Game
      *  @param {Date}   [datetime=new Date()] Start from specified date and time
-     *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
+     *  @param {Number} [updateRate=60]      Real time in seconds the plugin should update itself
      *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
      *
      *  @example
@@ -55,13 +52,13 @@ ig.module(
 
         /**
          *  Real time in seconds before auto-updating and recalculating time
-         *  @name ig.Atmosphere#update_rate
+         *  @name ig.Atmosphere#updateRate
          *  @type {Number}
          *  @default
          *  @readonly
          *  @see Do not modify this value directly. Instead, to update the update rate, use {@link updateUpdateRate}.
          */
-        update_rate: 60,
+        updateRate: 60,
 
         /**
          *  Geographical Coordinates
@@ -72,20 +69,20 @@ ig.module(
 
         /**
          *  Geographical coordinate system
-         *  @name ig.Atmosphere#geo_coords
+         *  @name ig.Atmosphere#geoCoords
          *  @type {GeoCoordObject}
          *  @default
          *  @readonly
          *  @see Do not modify this value directly. Instead, to update the geographical coordinates, use {@link updateGeoCoords}.
          */
         // http://ozoneaq.gsfc.nasa.gov/latlon.md
-        geo_coords: {latitude: 40.7789, longitude: -73.9675},
+        geoCoords: {latitude: 40.7789, longitude: -73.9675},
 
         /**
          *  Set weather condition
-         *  @name ig.Atmosphere#weather_condition
+         *  @name ig.Atmosphere#weatherCondition
          *  @type {Object}
-         *  @property {Boolean} fog       Is fog active? (EXPERIMENTAL!!)
+         *  @property {Boolean} fog       Is fog active?
          *  @property {Boolean} lightning Is lightning active?
          *  @property {Boolean} rain      Is rain active?
          *  @property {Boolean} snow      Is snow active?
@@ -93,9 +90,9 @@ ig.module(
          *
          *  @example
          *  // Let it snow!
-         *  ig.Atmosphere.weather_condition.snow = true;
+         *  ig.Atmosphere.weatherCondition.snow = true;
          */
-        weather_condition: {
+        weatherCondition: {
             fog      : false,
             lightning: false,
             rain     : false,
@@ -106,15 +103,25 @@ ig.module(
          *  Probability of lightning flash per update rate
          *  <br>- Higher update rates should have higher lightning rates (increase lightning trigger chance over large time intervals)
          *  <br>- Lower update rates should have lower lightning rates (decrease lightning trigger chance over short time intervals)
-         *  @name ig.Atmosphere#lightning_rate
+         *  @name ig.Atmosphere#lightningRate
          *  @type {Number}
          *  @default
          *
          *  @example
          *  // 2.675% chance for lightning flash per update rate
-         *  ig.Atmosphere.lightning_rate = 0.02675;
+         *  ig.Atmosphere.lightningRate = 0.02675;
          */
-        lightning_rate: 0.025,
+        lightningRate: 0.025,
+
+        /**
+         *  Opaqueness of the fog via modifying the alpha channel of the fog
+         *  <br>- Higher values yields thicker (more opaque) fogs
+         *  <br>- Lower values yields thinner (less opaque) fogs
+         *  @name ig.Atmosphere#fogThickness
+         *  @type {Number}
+         *  @default
+         */
+        fogThickness: 0.3,
 
         /**
          *  Sky color-related components
@@ -141,11 +148,11 @@ ig.module(
 
         /**
          *  Ambient illumination color
-         *  @name ig.Atmosphere#sky_color
+         *  @name ig.Atmosphere#skyColor
          *  @type {SkyColorObject}
          *  @default
          */
-        sky_color: {
+        skyColor: {
             day    : {r:   0, g:   0, b:  0, a: 0   },
             night  : {r:   0, g:   0, b:  0, a: 0.65},
             sunrise: {r: 182, g: 126, b: 81},
@@ -161,7 +168,7 @@ ig.module(
          *  @property {Object} sunset           Computed sunset-related results
          *  @property {Number} sunset.date      Date of next sunset in Julian days
          *  @property {Number} sunset.duration  Duration of next sunset in minutes
-         *  @property {Number} next_update      Date of next solar-related recomputations in Julian days
+         *  @property {Number} nextUpdate      Date of next solar-related recomputations in Julian days
          */
 
         /**
@@ -174,16 +181,16 @@ ig.module(
         solar: {
             sunrise: {date: 0, duration: 60},
             sunset : {date: 0, duration: 60},
-            next_update: 0
+            nextUpdate: 0
         },
 
         /**
          *  Season-related components
          *  @typedef {Object} SeasonObject
-         *  @property {Number} vernal_equinox    Date of next vernal (Spring) equinox in Julian days
-         *  @property {Number} estival_solstice  Date of next estival (Summer) solstice in Julian days
-         *  @property {Number} autumnal_equinox  Date of next autumnal (Autumn) equinox in Julian days
-         *  @property {Number} hibernal_solstice Date of next hibernal (Winter) solstice in Julian days
+         *  @property {Number} vernalEquinox    Date of next vernal (Spring) equinox in Julian days
+         *  @property {Number} estivalSolstice  Date of next estival (Summer) solstice in Julian days
+         *  @property {Number} autumnalEquinox  Date of next autumnal (Autumn) equinox in Julian days
+         *  @property {Number} hibernalSolstice Date of next hibernal (Winter) solstice in Julian days
          */
 
         /**
@@ -194,35 +201,35 @@ ig.module(
          *  @readonly
          */
         season: {
-            vernal_equinox   : 0,
-            estival_solstice : 0,
-            autumnal_equinox : 0,
-            hibernal_solstice: 0
+            vernalEquinox   : 0,
+            estivalSolstice : 0,
+            autumnalEquinox : 0,
+            hibernalSolstice: 0
         },
 
         /**
          *  Maximum number of particles to generate during particle-based weather conditions before stopping
-         *  @name ig.Atmosphere#particles_max
+         *  @name ig.Atmosphere#particlesMax
          *  @type {Number}
          *  @default
          */
-        particles_max : 100,
+        particlesMax : 100,
 
         /**
          *  Current number of particles generated during particle-based weather conditions
-         *  @name ig.Atmosphere#particles_curr
+         *  @name ig.Atmosphere#particlesCurr
          *  @type {Number}
          *  @readonly
          */
-        particles_curr: 0,
+        particlesCurr: 0,
 
         /**
          *  Determines current duration into lightning flash effect
-         *  @name ig.Atmosphere#lightning_active
+         *  @name ig.Atmosphere#_lightningActive
          *  @type {Number}
          *  @private
          */
-        lightning_active: 0,
+        _lightningActive: 0,
 
 
         //---------------------------------------------------------------------
@@ -231,23 +238,23 @@ ig.module(
          *  Plugin initialization. Called when new instance is created.
          *  @method ig.Atmosphere#init
          *  @param {Date}   [datetime=new Date()] Start from specified date and time
-         *  @param {Number} [update_rate=60]      Real time in seconds the plugin should update itself
+         *  @param {Number} [updateRate=60]      Real time in seconds the plugin should update itself
          *  @param {Number} [timescale=1]         Speed relative to real time at which the plugin should run
          *  @private
          */
-        init: function(datetime, update_rate, timescale) {
+        init: function(datetime, updateRate, timescale) {
             // Initialize plugin variables
             this.setDateTime(datetime);
             this.updateTimescale(timescale);
-            this.updateUpdateRate(update_rate);
-            this.updateGeoCoords(this.geo_coords.latitude, this.geo_coords.longitude);
+            this.updateUpdateRate(updateRate);
+            this.updateGeoCoords(this.geoCoords.latitude, this.geoCoords.longitude);
 
             this.nextParticle = new ig.Timer();
 
             //console.log('========== Impact Atmospheric System Plugin initialized ==========');
-            //console.log('Update rate: ' + update_rate + ' seconds');
+            //console.log('Update rate: ' + updateRate + ' seconds');
             //console.log('Timescale: ' + this.timescale + 'x real time');
-            //console.log('Geographical coordinates: (Lat: ' + this.geo_coords.latitude + ', Lng: ' + this.geo_coords.longitude + ')');
+            //console.log('Geographical coordinates: (Lat: ' + this.geoCoords.latitude + ', Lng: ' + this.geoCoords.longitude + ')');
             //console.log('Current: ' + this.convertGregorianToJulian(this.gregorianDate) + ' JD');
             //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
         }, // End init
@@ -265,28 +272,28 @@ ig.module(
                 this.updateTimer.reset();
 
                 // Update and recalculate time
-                //console.log('----- ' + this.update_rate + ' seconds elapsed, date/time updated -----');
-                this.updateDateTime(this.gregorianDate, this.timescale);
+                //console.log('----- ' + this.updateRate + ' seconds elapsed, date/time updated -----');
+                this._updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
                 // Recompute solstices, equinoxes, and current season for new year
-                if(this.gregorianDate.year !== this.convertJulianToGregorian(this.season.vernal_equinox).getFullYear()) {
+                if(this.gregorianDate.year !== this.convertJulianToGregorian(this.season.vernalEquinox).getFullYear()) {
                     //console.log('----- Time to recompute seasons -----');
-                    this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
+                    this.season = this._computeSeasons(this.gregorianDate, this.geoCoords);
                 }
 
                 // Recompute sunrise and sunset times for new day
-                if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.next_update) {
+                if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.nextUpdate) {
                     //console.log('----- Time to recompute sunriset -----');
-                    this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
+                    this.solar = this._computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
                 }
             }
 
             // Generate particles based on weather condition
-            if(this.weather_condition.rain) {
+            if(this.weatherCondition.rain) {
                 // Rain
-                if(this.particles_curr < this.particles_max && this.nextParticle.delta() >= 0) {
-                    this.particles_curr++;
+                if(this.particlesCurr < this.particlesMax && this.nextParticle.delta() >= 0) {
+                    this.particlesCurr++;
                     this.nextParticle.set(1 / (ig.system.height + 1));
                     ig.game.spawnEntity(
                         EntityRain,
@@ -294,43 +301,43 @@ ig.module(
                         ig.game.screen.y,
                         {weight: Math.random() + 0.5} // Randomize raindrop weight (range: 0.5 - 1.5)
                     );
-                } else if(this.particles_curr >= this.particles_max) {
+                } else if(this.particlesCurr >= this.particlesMax) {
                     this.nextParticle.set(0);
                 }
             } else {
-                if(this.particles_curr > 0 && this.nextParticle.delta() >= 0) {
+                if(this.particlesCurr > 0 && this.nextParticle.delta() >= 0) {
                     var r = ig.game.getEntitiesByType(EntityRain)[0];
                     if(typeof r !== 'undefined') {
                         r.kill();
-                        this.particles_curr--;
+                        this.particlesCurr--;
 
-                        this.nextParticle.set(2 / (this.particles_curr + 1));
+                        this.nextParticle.set(2 / (this.particlesCurr + 1));
                     }
                 }
             }
 
-            if(this.weather_condition.snow) {
+            if(this.weatherCondition.snow) {
                 // Snow
-                if(this.particles_curr < this.particles_max && this.nextParticle.delta() >= 0) {
-                    this.particles_curr++;
-                    this.nextParticle.set(1 / (this.particles_max - this.particles_curr + 1));
+                if(this.particlesCurr < this.particlesMax && this.nextParticle.delta() >= 0) {
+                    this.particlesCurr++;
+                    this.nextParticle.set(1 / (this.particlesMax - this.particlesCurr + 1));
                     ig.game.spawnEntity(
                         EntitySnow,
                         Math.random() * (ig.game.screen.x + ig.system.width - ig.game.screen.x) + ig.game.screen.x,
                         ig.game.screen.y,
                         {radius: Math.random() * 0.5 + 1} // Randomize snow particle size (range: 1.0 - 1.5)
                     );
-                } else if(this.particles_curr >= this.particles_max) {
+                } else if(this.particlesCurr >= this.particlesMax) {
                     this.nextParticle.set(0);
                 }
             } else {
-                if(this.particles_curr > 0 && this.nextParticle.delta() >= 0) {
+                if(this.particlesCurr > 0 && this.nextParticle.delta() >= 0) {
                     var s = ig.game.getEntitiesByType(EntitySnow)[0];
                     if(typeof s !== 'undefined') {
                         s.kill();
-                        this.particles_curr--;
+                        this.particlesCurr--;
 
-                        this.nextParticle.set(2 / (this.particles_curr + 1));
+                        this.nextParticle.set(2 / (this.particlesCurr + 1));
                     }
                 }
             }
@@ -345,21 +352,21 @@ ig.module(
          *  @private
          */
         draw: function() {
-            if(this.weather_condition.lightning) {
-                if(this.lightning_active <= 0 && this.updateTimer.delta() === -this.update_rate) {
+            if(this.weatherCondition.lightning) {
+                if(this._lightningActive <= 0 && this.updateTimer.delta() === -this.updateRate) {
                     // Trigger lightning
-                    if(Math.random() < this.lightning_rate) {
-                        this.lightning_active = ig.system.tick;
+                    if(Math.random() < this.lightningRate) {
+                        this._lightningActive = ig.system.tick;
                     }
-                } else if(this.lightning_active > 0) {
+                } else if(this._lightningActive > 0) {
                     // Compute ambient brightness due to lightning flash
-                    ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightning_active) + ')';
+                    ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this._lightningActive) + ')';
                     ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-                    this.lightning_active += ig.system.tick;
+                    this._lightningActive += ig.system.tick;
 
-                    if(this.lightning_active > 1) {
-                        this.lightning_active = 0;
+                    if(this._lightningActive > 1) {
+                        this._lightningActive = 0;
                     }
                 }
             }
@@ -371,51 +378,62 @@ ig.module(
                 // Sun is up
                 if(this.julianDate >= this.solar.sunrise.date + this.solar.sunrise.duration / 1440) {
                     // Sun has risen
-                    this.sun_state = 1;
-                    this.sky.r = this.sky_color.day.r;
-                    this.sky.g = this.sky_color.day.g;
-                    this.sky.b = this.sky_color.day.b;
-                    this.sky.a = this.sky_color.day.a;
+                    this.sunState = 1;
+                    this.sky.r = this.skyColor.day.r;
+                    this.sky.g = this.skyColor.day.g;
+                    this.sky.b = this.skyColor.day.b;
+                    this.sky.a = this.skyColor.day.a;
                 } else {
                     // Sun is rising
-                    this.sun_state = 0;
-                    this.sky.r = (this.sky_color.sunrise.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
-                    this.sky.g = (this.sky_color.sunrise.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
-                    this.sky.b = (this.sky_color.sunrise.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
-                    this.sky.a = this.sky_color.night.a - this.sky_color.night.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
+                    this.sunState = 0;
+                    this.sky.r = (this.skyColor.sunrise.r * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
+                    this.sky.g = (this.skyColor.sunrise.g * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
+                    this.sky.b = (this.skyColor.sunrise.b  * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440)).floor();
+                    this.sky.a = this.skyColor.night.a - this.skyColor.night.a * (this.julianDate - this.solar.sunrise.date) / (this.solar.sunrise.duration / 1440);
                 }
             } else {
                 // Sun is down, handle new day hour wraparound
-                if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.next_update)) {
+                if(this.julianDate >= this.solar.sunset.date + this.solar.sunset.duration / 1440 || (this.julianDate % 1 >= 0.5 && this.julianDate < this.solar.nextUpdate)) {
                     // Sun has set
-                    this.sun_state = 3;
-                    this.sky.r = this.sky_color.night.r;
-                    this.sky.g = this.sky_color.night.g;
-                    this.sky.b = this.sky_color.night.b;
-                    this.sky.a = this.sky_color.night.a;
+                    this.sunState = 3;
+                    this.sky.r = this.skyColor.night.r;
+                    this.sky.g = this.skyColor.night.g;
+                    this.sky.b = this.skyColor.night.b;
+                    this.sky.a = this.skyColor.night.a;
                 } else {
                     // Sun is setting
-                    this.sun_state = 2;
-                    this.sky.r = this.sky_color.sunset.r - (this.sky_color.sunset.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
-                    this.sky.g = this.sky_color.sunset.g - (this.sky_color.sunset.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
-                    this.sky.b = this.sky_color.sunset.b - (this.sky_color.sunset.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
-                    this.sky.a = this.sky_color.night.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
+                    this.sunState = 2;
+                    this.sky.r = this.skyColor.sunset.r - (this.skyColor.sunset.r * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
+                    this.sky.g = this.skyColor.sunset.g - (this.skyColor.sunset.g * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
+                    this.sky.b = this.skyColor.sunset.b - (this.skyColor.sunset.b * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440)).floor();
+                    this.sky.a = this.skyColor.night.a * (this.julianDate - this.solar.sunset.date) / (this.solar.sunset.duration / 1440);
                 }
             }
 
             ig.system.context.fillStyle = 'rgba(' + this.sky.r + ', ' + this.sky.g + ', ' + this.sky.b + ', ' + this.sky.a + ')';
             ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-            if(this.weather_condition.fog) {
+            if(this.weatherCondition.fog) {
                 // Fog
-                var r, g, b, size = 5;
-                for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
-                    for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
-                        r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
-                        ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.4)';
-                        ig.system.context.fillRect(i, j, size, size);
+                if(!this.fog) {
+                    ig.system.context.clearRect(0, 0, ig.system.width, ig.system.height);
+
+                    var r, g, b, size = 5;
+                    for(var i = ig.game.screen.x; i < ig.game.screen.x + ig.system.width; i += size) {
+                        for(var j = ig.game.screen.y; j < ig.game.screen.y + ig.system.height; j += size) {
+                            r = g = b = (255 * PerlinNoise.noise(size * i / ig.system.width, size * j / ig.system.height, 0.6)).round();
+                            ig.system.context.fillStyle = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + this.fogThickness + ')';
+                            ig.system.context.fillRect(i, j, size, size);
+                        }
                     }
+
+                    this.fog = new Image();
+                    this.fog.src = ig.system.context.canvas.toDataURL('image/png');
+                } else {
+                    ig.system.context.drawImage(this.fog, 0, 0);
                 }
+            } else if(this.fog) {
+                delete this.fog;
             }
         }, // End draw
         //---------------------------------------------------------------------
@@ -481,13 +499,13 @@ ig.module(
 
         /**
          *  Updates stored date and time and performs post-recomputations, if necessary
-         *  @method ig.Atmosphere#updateDateTime
+         *  @method ig.Atmosphere#_updateDateTime
          *  @param {Date}   datetime  Current plugin date and time
          *  @param {Number} timescale Elapsed time in seconds to advance current date and time by
          *  @readonly
          *  @private
          */
-        updateDateTime: function(datetime, timescale) {
+        _updateDateTime: function(datetime, timescale) {
             this.setDateTime(new Date(
                 this.gregorianDate.year,
                 this.gregorianDate.month - 1,
@@ -495,21 +513,21 @@ ig.module(
                 this.gregorianDate.hour,
                 this.gregorianDate.minute,
                 this.gregorianDate.second,
-                this.gregorianDate.millisecond + this.update_rate * timescale * 1000
+                this.gregorianDate.millisecond + this.updateRate * timescale * 1000
             ));
 
             this.julianDate = this.convertGregorianToJulian(this.gregorianDate);
 
-            if(this.julianDate < this.season.vernal_equinox || this.julianDate >= this.season.hibernal_solstice) {
-                this.season_state = 3;
-            } else if(this.julianDate < this.season.estival_solstice) {
-                this.season_state = 0;
-            } else if(this.julianDate < this.season.autumnal_equinox) {
-                this.season_state = 1;
-            } else if(this.julianDate < this.season.hibernal_solstice) {
-                this.season_state = 2;
+            if(this.julianDate < this.season.vernalEquinox || this.julianDate >= this.season.hibernalSolstice) {
+                this.seasonState = 3;
+            } else if(this.julianDate < this.season.estivalSolstice) {
+                this.seasonState = 0;
+            } else if(this.julianDate < this.season.autumnalEquinox) {
+                this.seasonState = 1;
+            } else if(this.julianDate < this.season.hibernalSolstice) {
+                this.seasonState = 2;
             }
-        }, // End updateDateTime
+        }, // End _updateDateTime
 
         /**
          *  Updates time scale and performs post-recomputations, if necessary
@@ -546,31 +564,31 @@ ig.module(
         /**
          *  Updates update rate and performs post-recomputations, if necessary
          *  @method ig.Atmosphere#updateUpdateRate
-         *  @param {Number} [update_rate=60] New plugin update rate
+         *  @param {Number} [updateRate=60] New plugin update rate
          *
          *  @example
          *  // Update plugin every 30 seconds
          *  ig.Atmosphere.updateUpdateRate(30);
          */
-        updateUpdateRate: function(update_rate) {
+        updateUpdateRate: function(updateRate) {
             // Sanity check
-            if(typeof update_rate !== 'undefined') {
-                if(typeof update_rate === 'number') {
-                    if(update_rate <= 0) {
-                        console.warn('update_rate \'' + update_rate + '\' not a positive number. Assuming update_rate absolute value.');
-                        update_rate = Math.abs(update_rate);
+            if(typeof updateRate !== 'undefined') {
+                if(typeof updateRate === 'number') {
+                    if(updateRate <= 0) {
+                        console.warn('updateRate \'' + updateRate + '\' not a positive number. Assuming updateRate absolute value.');
+                        updateRate = Math.abs(updateRate);
                     }
                 } else {
-                    console.warn('update_rate \'' + update_rate + '\' not a number. Typecasting update_rate to number.');
-                    update_rate = parseFloat(update_rate);
+                    console.warn('updateRate \'' + updateRate + '\' not a number. Typecasting updateRate to number.');
+                    updateRate = parseFloat(updateRate);
                 }
             } else {
-                //console.warn('update_rate not provided. Defaulting update_rate to 60.');
-                update_rate = 60;
+                //console.warn('updateRate not provided. Defaulting updateRate to 60.');
+                updateRate = 60;
             }
 
-            this.update_rate = update_rate;
-            this.updateTimer = new ig.Timer(update_rate);
+            this.updateRate = updateRate;
+            this.updateTimer = new ig.Timer(updateRate);
         },
 
         /**
@@ -592,9 +610,9 @@ ig.module(
             latitude.limit(-90, 90);
             longitude.limit(-180, 180);
 
-            this.geo_coords = {latitude: latitude, longitude: longitude};
-            this.season = this.computeSeasons(this.gregorianDate, this.geo_coords);
-            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geo_coords);
+            this.geoCoords = {latitude: latitude, longitude: longitude};
+            this.season = this._computeSeasons(this.gregorianDate, this.geoCoords);
+            this.solar = this._computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
         },
 
         /**
@@ -663,36 +681,36 @@ ig.module(
 
         /**
          *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
-         *  @method ig.Atmosphere#computeSunriset
+         *  @method ig.Atmosphere#_computeSunriset
          *  @param  {Date}           jDate     Specified date in Gregorian date
          *  @param  {GeoCoordObject} geoCoords Geographical coordinates
          *  @return {SolarObject}              Computed solar-based results
          *  @private
          */
-        computeSunriset: function(jDate, geoCoords) {
+        _computeSunriset: function(jDate, geoCoords) {
             var julianCycle        = ((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)).round(),
-                solar_noon         = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
-                solar_mean_anomaly = (357.5291 + 0.98560028 * (solar_noon - 2451545)) % 360,
-                equation_of_center = (1.9148 * Math.sin((solar_mean_anomaly).toRad())) +
-                                     (0.0200 * Math.sin((2 * solar_mean_anomaly).toRad())) +
-                                     (0.0003 * Math.sin((3 * solar_mean_anomaly).toRad())),
-                ecliptic_longitude = (solar_mean_anomaly + 102.9372 + equation_of_center + 180) % 360,
-                solar_transit      = solar_noon +
-                                     (0.0053 * Math.sin((solar_mean_anomaly).toRad())) -
-                                     (0.0069 * Math.sin((2 * ecliptic_longitude).toRad())),
-                declination_of_sun = (Math.asin(
-                                       Math.sin((ecliptic_longitude).toRad()) *
+                solarNoon          = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
+                solarMeanAnomaly   = (357.5291 + 0.98560028 * (solarNoon - 2451545)) % 360,
+                equationOfCenter   = (1.9148 * Math.sin((solarMeanAnomaly).toRad())) +
+                                     (0.0200 * Math.sin((2 * solarMeanAnomaly).toRad())) +
+                                     (0.0003 * Math.sin((3 * solarMeanAnomaly).toRad())),
+                eclipticLongitude  = (solarMeanAnomaly + 102.9372 + equationOfCenter + 180) % 360,
+                solarTransit       = solarNoon +
+                                     (0.0053 * Math.sin((solarMeanAnomaly).toRad())) -
+                                     (0.0069 * Math.sin((2 * eclipticLongitude).toRad())),
+                declinationOfSun  = (Math.asin(
+                                       Math.sin((eclipticLongitude).toRad()) *
                                        Math.sin((23.45).toRad())
                                      )).toDeg(),
-                hour_angle         = (Math.acos(
-                                       (Math.sin((-0.83).toRad()) - Math.sin((geoCoords.latitude).toRad()) * Math.sin((declination_of_sun).toRad())) /
-                                       (Math.cos((geoCoords.latitude).toRad()) * Math.cos((declination_of_sun).toRad()))
+                hourAngle          = (Math.acos(
+                                       (Math.sin((-0.83).toRad()) - Math.sin((geoCoords.latitude).toRad()) * Math.sin((declinationOfSun).toRad())) /
+                                       (Math.cos((geoCoords.latitude).toRad()) * Math.cos((declinationOfSun).toRad()))
                                      )).toDeg(),
-                julian_hour_angle  = 2451545 + 0.0009 + ((hour_angle - geoCoords.longitude) / 360) + julianCycle,
-                sunset             = julian_hour_angle +
-                                     (0.0053 * Math.sin((solar_mean_anomaly).toRad())) -
-                                     (0.0069 * Math.sin((2 * ecliptic_longitude).toRad())),
-                sunrise            = solar_transit - (sunset - solar_transit);
+                julianHourAngle    = 2451545 + 0.0009 + ((hourAngle - geoCoords.longitude) / 360) + julianCycle,
+                sunset             = julianHourAngle +
+                                     (0.0053 * Math.sin((solarMeanAnomaly).toRad())) -
+                                     (0.0069 * Math.sin((2 * eclipticLongitude).toRad())),
+                sunrise            = solarTransit - (sunset - solarTransit);
 
             // ** Manual time offset correction applied **
             // Possible timezone issue?
@@ -700,24 +718,24 @@ ig.module(
                 sunrise: { date: sunrise - this.solar.sunrise.duration / 1440 - 0.125, duration: this.solar.sunrise.duration },
                 sunset : { date: sunset - this.solar.sunset.duration / 1440 - 0.125,   duration: this.solar.sunset.duration  },
 
-                next_update: jDate.floor() + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1) // 0.7063657403923571 JD = 4:57:10
+                nextUpdate: jDate.floor() + 0.7063657403923571 + (jDate % 1 < 0.7063657403923571 ? 0 : 1) // 0.7063657403923571 JD = 4:57:10
             };
 
             //console.log('----- computeSunriset() -----');
             //console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
             //console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
-            //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.next_update).toString());
-        }, // End computeSunriset
+            //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.nextUpdate).toString());
+        }, // End _computeSunriset
 
         /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
-         *  @method ig.Atmosphere#computeSeasons
+         *  @method ig.Atmosphere#_computeSeasons
          *  @param  {Date}           gDate     Specified date in Gregorian date
          *  @param  {GeoCoordObject} geoCoords Geographical coordinates
          *  @return {SeasonObject}             Computed season-related results
          *  @private
          */
-        computeSeasons: function(gDate, geoCoords) {
+        _computeSeasons: function(gDate, geoCoords) {
             /*  NOTE: This algorithm has no creditable source (or at least that I can find); it was
              *        something I made up. I was trying to find some form of mathematical equation to
              *        compute solstices and equinoxes but with no luck. So, I used various tiny bits of
@@ -775,80 +793,80 @@ ig.module(
 
             // Estimated bound for solstice and equinox dates
             // TODO: Account for arbitrary latitudes (for polar day and polar night)
-            var jDate_vernal_min   = this.convertGregorianToJulian({year: gDate.year, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
-                jDate_vernal_max   = jDate_vernal_min + 3, // March 23
-                jDate_estival_min  = this.convertGregorianToJulian({year: gDate.year, month:  6, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // June 20
-                jDate_estival_max  = jDate_estival_min + 3, // June 23
-                jDate_autumnal_min = this.convertGregorianToJulian({year: gDate.year, month:  9, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // September 20
-                jDate_autumnal_max = jDate_autumnal_min + 3, // September 23
-                jDate_hibernal_min = this.convertGregorianToJulian({year: gDate.year, month: 12, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // December 20
-                jDate_hibernal_max = jDate_hibernal_min + 3; // December 23
+            var jDateVernalMin   = this.convertGregorianToJulian({year: gDate.year, month:  3, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // March 20
+                jDateVernalMax   = jDateVernalMin + 3, // March 23
+                jDateEstivalMin  = this.convertGregorianToJulian({year: gDate.year, month:  6, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // June 20
+                jDateEstivalMax  = jDateEstivalMin + 3, // June 23
+                jDateAutumnalMin = this.convertGregorianToJulian({year: gDate.year, month:  9, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // September 20
+                jDateAutumnalMax = jDateAutumnalMin + 3, // September 23
+                jDateHibernalMin = this.convertGregorianToJulian({year: gDate.year, month: 12, day: 20, hour: 12, minute: 0, second: 0, millisecond: 0}), // December 20
+                jDateHibernalMax = jDateHibernalMin + 3; // December 23
 
-            var jDate_vernal_equinox    = -1, v_day_length = 1,
-                jDate_estival_solstice  = -1, e_day_length = 0,
-                jDate_autumnal_equinox  = -1, a_day_length = 1,
-                jDate_hibernal_solstice = -1, h_day_length = 1,
-                day_length;
+            var jDateVernalEquinox    = -1, vDayLength = 1,
+                jDateEstivalSolstice  = -1, eDayLength = 0,
+                jDateAutumnalEquinox  = -1, aDayLength = 1,
+                jDateHibernalSolstice = -1, hDayLength = 1,
+                dayLength;
 
             // Compute vernal equinox
-            for(var v = jDate_vernal_min; v <= jDate_vernal_max; v++) {
-                day_length = this.computeSunriset(v, geoCoords);
+            for(var v = jDateVernalMin; v <= jDateVernalMax; v++) {
+                dayLength = this._computeSunriset(v, geoCoords);
 
-                if(day_length.sunset.date - day_length.sunrise.date < v_day_length) {
-                    jDate_vernal_equinox = v;
-                    v_day_length = day_length.sunset.date - day_length.sunrise.date;
+                if(dayLength.sunset.date - dayLength.sunrise.date < vDayLength) {
+                    jDateVernalEquinox = v;
+                    vDayLength = dayLength.sunset.date - dayLength.sunrise.date;
                 }
             }
 
             // Compute estival solstice
-            for(var e = jDate_estival_min; e <= jDate_estival_max; e++) {
-                day_length = this.computeSunriset(e, geoCoords);
+            for(var e = jDateEstivalMin; e <= jDateEstivalMax; e++) {
+                dayLength = this._computeSunriset(e, geoCoords);
 
-                if(day_length.sunset.date - day_length.sunrise.date > e_day_length) {
-                    jDate_estival_solstice = e;
-                    e_day_length = day_length.sunset.date - day_length.sunrise.date;
+                if(dayLength.sunset.date - dayLength.sunrise.date > eDayLength) {
+                    jDateEstivalSolstice = e;
+                    eDayLength = dayLength.sunset.date - dayLength.sunrise.date;
                 }
             }
 
             // Compute autumnal equinox
-            for(var a = jDate_autumnal_min; a <= jDate_autumnal_max; a++) {
-                day_length = this.computeSunriset(a, geoCoords);
+            for(var a = jDateAutumnalMin; a <= jDateAutumnalMax; a++) {
+                dayLength = this._computeSunriset(a, geoCoords);
 
-                if(day_length.sunset.date - day_length.sunrise.date < a_day_length) {
-                    jDate_autumnal_equinox = a;
-                    a_day_length = day_length.sunset.date - day_length.sunrise.date;
+                if(dayLength.sunset.date - dayLength.sunrise.date < aDayLength) {
+                    jDateAutumnalEquinox = a;
+                    aDayLength = dayLength.sunset.date - dayLength.sunrise.date;
                 }
             }
 
             // Compute hibernal solstice
-            for(var h = jDate_hibernal_min; h <= jDate_hibernal_max; h++) {
-                day_length = this.computeSunriset(h, geoCoords);
+            for(var h = jDateHibernalMin; h <= jDateHibernalMax; h++) {
+                dayLength = this._computeSunriset(h, geoCoords);
 
-                if(day_length.sunset.date - day_length.sunrise.date < h_day_length) {
-                    jDate_hibernal_solstice = h;
-                    h_day_length = day_length.sunset.date - day_length.sunrise.date;
+                if(dayLength.sunset.date - dayLength.sunrise.date < hDayLength) {
+                    jDateHibernalSolstice = h;
+                    hDayLength = dayLength.sunset.date - dayLength.sunrise.date;
                 }
             }
 
             // Determine current season based on current date relative to solstices and equinoxs
             var jDate = this.convertGregorianToJulian(gDate);
-            if(jDate < jDate_vernal_equinox || jDate >= jDate_hibernal_solstice) {
-                this.season_state = 3;
-            } else if(jDate < jDate_estival_solstice) {
-                this.season_state = 0;
-            } else if(jDate < jDate_autumnal_equinox) {
-                this.season_state = 1;
-            } else if(jDate < jDate_hibernal_solstice) {
-                this.season_state = 2;
+            if(jDate < jDateVernalEquinox || jDate >= jDateHibernalSolstice) {
+                this.seasonState = 3;
+            } else if(jDate < jDateEstivalSolstice) {
+                this.seasonState = 0;
+            } else if(jDate < jDateAutumnalEquinox) {
+                this.seasonState = 1;
+            } else if(jDate < jDateHibernalSolstice) {
+                this.seasonState = 2;
             }
 
             return {
-                vernal_equinox   : jDate_vernal_equinox,
-                estival_solstice : jDate_estival_solstice,
-                autumnal_equinox : jDate_autumnal_equinox,
-                hibernal_solstice: jDate_hibernal_solstice
+                vernalEquinox   : jDateVernalEquinox,
+                estivalSolstice : jDateEstivalSolstice,
+                autumnalEquinox : jDateAutumnalEquinox,
+                hibernalSolstice: jDateHibernalSolstice
             };
-        }, // End computeSeasons
+        }, // End _computeSeasons
     }); // End ig.Atmosphere
     //#########################################################################
 
@@ -978,7 +996,7 @@ ig.module(
         }
     }); // End EntityRain
 
-    // 
+    //
     /**
      *  Snow particle
      *  @extends {ig.Entity}
