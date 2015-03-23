@@ -7,9 +7,6 @@
  */
 
 
-/**
- *  @namespace ig
- */
 ig.module(
     'plugins.atmosphere'
 )
@@ -228,11 +225,11 @@ ig.module(
 
         /**
          *  Determines current duration into lightning flash effect
-         *  @name ig.Atmosphere#lightningActive
+         *  @name ig.Atmosphere#_lightningActive
          *  @type {Number}
          *  @private
          */
-        lightningActive: 0,
+        _lightningActive: 0,
 
 
         //---------------------------------------------------------------------
@@ -276,19 +273,19 @@ ig.module(
 
                 // Update and recalculate time
                 //console.log('----- ' + this.updateRate + ' seconds elapsed, date/time updated -----');
-                this.updateDateTime(this.gregorianDate, this.timescale);
+                this._updateDateTime(this.gregorianDate, this.timescale);
                 //console.log('Current: ' + this.convertJulianToGregorian(this.convertGregorianToJulian(this.gregorianDate)).toString());
 
                 // Recompute solstices, equinoxes, and current season for new year
                 if(this.gregorianDate.year !== this.convertJulianToGregorian(this.season.vernalEquinox).getFullYear()) {
                     //console.log('----- Time to recompute seasons -----');
-                    this.season = this.computeSeasons(this.gregorianDate, this.geoCoords);
+                    this.season = this._computeSeasons(this.gregorianDate, this.geoCoords);
                 }
 
                 // Recompute sunrise and sunset times for new day
                 if(this.convertGregorianToJulian(this.gregorianDate) >= this.solar.nextUpdate) {
                     //console.log('----- Time to recompute sunriset -----');
-                    this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
+                    this.solar = this._computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
                 }
             }
 
@@ -356,20 +353,20 @@ ig.module(
          */
         draw: function() {
             if(this.weatherCondition.lightning) {
-                if(this.lightningActive <= 0 && this.updateTimer.delta() === -this.updateRate) {
+                if(this._lightningActive <= 0 && this.updateTimer.delta() === -this.updateRate) {
                     // Trigger lightning
                     if(Math.random() < this.lightningRate) {
-                        this.lightningActive = ig.system.tick;
+                        this._lightningActive = ig.system.tick;
                     }
-                } else if(this.lightningActive > 0) {
+                } else if(this._lightningActive > 0) {
                     // Compute ambient brightness due to lightning flash
-                    ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this.lightningActive) + ')';
+                    ig.system.context.fillStyle = 'rgba(255, 255, 255, ' + (0.7 - this._lightningActive) + ')';
                     ig.system.context.fillRect(0, 0, ig.system.realWidth, ig.system.realHeight);
 
-                    this.lightningActive += ig.system.tick;
+                    this._lightningActive += ig.system.tick;
 
-                    if(this.lightningActive > 1) {
-                        this.lightningActive = 0;
+                    if(this._lightningActive > 1) {
+                        this._lightningActive = 0;
                     }
                 }
             }
@@ -502,13 +499,13 @@ ig.module(
 
         /**
          *  Updates stored date and time and performs post-recomputations, if necessary
-         *  @method ig.Atmosphere#updateDateTime
+         *  @method ig.Atmosphere#_updateDateTime
          *  @param {Date}   datetime  Current plugin date and time
          *  @param {Number} timescale Elapsed time in seconds to advance current date and time by
          *  @readonly
          *  @private
          */
-        updateDateTime: function(datetime, timescale) {
+        _updateDateTime: function(datetime, timescale) {
             this.setDateTime(new Date(
                 this.gregorianDate.year,
                 this.gregorianDate.month - 1,
@@ -530,7 +527,7 @@ ig.module(
             } else if(this.julianDate < this.season.hibernalSolstice) {
                 this.seasonState = 2;
             }
-        }, // End updateDateTime
+        }, // End _updateDateTime
 
         /**
          *  Updates time scale and performs post-recomputations, if necessary
@@ -614,8 +611,8 @@ ig.module(
             longitude.limit(-180, 180);
 
             this.geoCoords = {latitude: latitude, longitude: longitude};
-            this.season = this.computeSeasons(this.gregorianDate, this.geoCoords);
-            this.solar = this.computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
+            this.season = this._computeSeasons(this.gregorianDate, this.geoCoords);
+            this.solar = this._computeSunriset(this.convertGregorianToJulian(this.gregorianDate), this.geoCoords);
         },
 
         /**
@@ -684,13 +681,13 @@ ig.module(
 
         /**
          *  Computes the approximate sunrise and sunset time for specified date and geographical coordinates
-         *  @method ig.Atmosphere#computeSunriset
+         *  @method ig.Atmosphere#_computeSunriset
          *  @param  {Date}           jDate     Specified date in Gregorian date
          *  @param  {GeoCoordObject} geoCoords Geographical coordinates
          *  @return {SolarObject}              Computed solar-based results
          *  @private
          */
-        computeSunriset: function(jDate, geoCoords) {
+        _computeSunriset: function(jDate, geoCoords) {
             var julianCycle        = ((jDate - 2451545 - 0.0009) + (geoCoords.longitude / 360)).round(),
                 solarNoon          = 2451545 + 0.0009 - (geoCoords.longitude / 360) + julianCycle,
                 solarMeanAnomaly   = (357.5291 + 0.98560028 * (solarNoon - 2451545)) % 360,
@@ -728,17 +725,17 @@ ig.module(
             //console.log('Sunrise: ' + this.convertJulianToGregorian(this.solar.sunrise.date).toString());
             //console.log('Sunset : ' + this.convertJulianToGregorian(this.solar.sunset.date).toString());
             //console.log('Next computeSunriset() at: ' + this.convertJulianToGregorian(this.solar.nextUpdate).toString());
-        }, // End computeSunriset
+        }, // End _computeSunriset
 
         /**
          *  Compute the solstices, equinoxes, and current season based on specified specified date
-         *  @method ig.Atmosphere#computeSeasons
+         *  @method ig.Atmosphere#_computeSeasons
          *  @param  {Date}           gDate     Specified date in Gregorian date
          *  @param  {GeoCoordObject} geoCoords Geographical coordinates
          *  @return {SeasonObject}             Computed season-related results
          *  @private
          */
-        computeSeasons: function(gDate, geoCoords) {
+        _computeSeasons: function(gDate, geoCoords) {
             /*  NOTE: This algorithm has no creditable source (or at least that I can find); it was
              *        something I made up. I was trying to find some form of mathematical equation to
              *        compute solstices and equinoxes but with no luck. So, I used various tiny bits of
@@ -813,7 +810,7 @@ ig.module(
 
             // Compute vernal equinox
             for(var v = jDateVernalMin; v <= jDateVernalMax; v++) {
-                dayLength = this.computeSunriset(v, geoCoords);
+                dayLength = this._computeSunriset(v, geoCoords);
 
                 if(dayLength.sunset.date - dayLength.sunrise.date < vDayLength) {
                     jDateVernalEquinox = v;
@@ -823,7 +820,7 @@ ig.module(
 
             // Compute estival solstice
             for(var e = jDateEstivalMin; e <= jDateEstivalMax; e++) {
-                dayLength = this.computeSunriset(e, geoCoords);
+                dayLength = this._computeSunriset(e, geoCoords);
 
                 if(dayLength.sunset.date - dayLength.sunrise.date > eDayLength) {
                     jDateEstivalSolstice = e;
@@ -833,7 +830,7 @@ ig.module(
 
             // Compute autumnal equinox
             for(var a = jDateAutumnalMin; a <= jDateAutumnalMax; a++) {
-                dayLength = this.computeSunriset(a, geoCoords);
+                dayLength = this._computeSunriset(a, geoCoords);
 
                 if(dayLength.sunset.date - dayLength.sunrise.date < aDayLength) {
                     jDateAutumnalEquinox = a;
@@ -843,7 +840,7 @@ ig.module(
 
             // Compute hibernal solstice
             for(var h = jDateHibernalMin; h <= jDateHibernalMax; h++) {
-                dayLength = this.computeSunriset(h, geoCoords);
+                dayLength = this._computeSunriset(h, geoCoords);
 
                 if(dayLength.sunset.date - dayLength.sunrise.date < hDayLength) {
                     jDateHibernalSolstice = h;
@@ -869,7 +866,7 @@ ig.module(
                 autumnalEquinox : jDateAutumnalEquinox,
                 hibernalSolstice: jDateHibernalSolstice
             };
-        }, // End computeSeasons
+        }, // End _computeSeasons
     }); // End ig.Atmosphere
     //#########################################################################
 
